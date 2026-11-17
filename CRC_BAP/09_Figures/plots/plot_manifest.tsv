@@ -33,3 +33,5 @@ plot_31	09_Figures/plots/plot_31	CPTAC-COAD: ecotype agreement phospho vs protei
 plot_32	09_Figures/plots/plot_32	CPTAC-COAD: permutation null of the cross-layer ARI
 plot_33	09_Figures/plots/plot_33	GSE14333: disease-free survival by ecotype (secondary endpoint)
 plot_34	09_Figures/plots/plot_34	GSE14333: DFS hazard ratios, unadjusted/adjusted/stage II-III
+plot_35	09_Figures/plots/plot_35	GSE39582: RFS replication hazard ratios (stage I-III and all stages)
+plot_36	09_Figures/plots/plot_36	GSE39582: RFS Kaplan-Meier by ecotype, stage I-III

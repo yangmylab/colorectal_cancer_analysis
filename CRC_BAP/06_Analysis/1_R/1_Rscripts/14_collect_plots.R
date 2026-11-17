@@ -105,7 +105,9 @@ layer_plots <- list(
   list(n = 31, src = "09_Figures/plots/plot_31", desc = "CPTAC-COAD: ecotype agreement phospho vs protein"),
   list(n = 32, src = "09_Figures/plots/plot_32", desc = "CPTAC-COAD: permutation null of the cross-layer ARI"),
   list(n = 33, src = "09_Figures/plots/plot_33", desc = "GSE14333: disease-free survival by ecotype (secondary endpoint)"),
-  list(n = 34, src = "09_Figures/plots/plot_34", desc = "GSE14333: DFS hazard ratios, unadjusted/adjusted/stage II-III")
+  list(n = 34, src = "09_Figures/plots/plot_34", desc = "GSE14333: DFS hazard ratios, unadjusted/adjusted/stage II-III"),
+  list(n = 35, src = "09_Figures/plots/plot_35", desc = "GSE39582: RFS replication hazard ratios (stage I-III and all stages)"),
+  list(n = 36, src = "09_Figures/plots/plot_36", desc = "GSE39582: RFS Kaplan-Meier by ecotype, stage I-III")
 )
 for (lp in layer_plots) {
   if (file.exists(paste0(lp$src, ".pdf"))) add_plot(lp$n, lp$src, lp$desc)

@@ -37,6 +37,7 @@ The graded ledger is authoritative: `13_Reports/Findings_Ledger.csv` (F01–F10)
 | F08 | Bulk classifier does not transfer to Visium spots; spatial data descriptive only | not_supported |
 | F09 | Ecotypes reproduce at the phosphoproteome level (87.5 % agreement, ARI 0.558, permutation p < 0.001) | E3 |
 | F10 | Ecotypes associated with DFS in GSE14333 (adjusted HR 2.37, p = 0.004) — secondary endpoint | E1 |
+| F11 | The disease-free association replicates in independent GSE39582 (RFS stage I-III, adjusted HR 1.50, p = 0.018) | E2 |
 
 ## 8. Biological interpretation
 The stable axis is a two-way split between a Hedgehog / pancreas-beta / MYC-V2 programme (E1) and an
@@ -52,6 +53,10 @@ overall survival, which is null in discovery and in external validation.
 - **DFS (secondary endpoint, GSE14333, n = 226, 50 events):** adjusted HR 2.37 (1.27–4.40), LRT p = 0.0043;
   stage II–III subset HR 2.15; 500-resample bootstrap 100 % of HRs above 1. Graded E1, kept strictly
   separate from the OS analysis — DFS and OS are never pooled.
+- **RFS replication (GSE39582, independent cohort, stage I–III, n = 483, 137 events):** adjusted HR
+  1.50 (1.07–2.10), p = 0.018; all stages HR 1.55 (1.12–2.15), p = 0.008; bootstrap 99 % of resamples
+  above 1. GSE17536 RFS stage I–III HR 2.51 (1.14–5.53), p = 0.022. Fixed-effect summary with GSE14333
+  HR 1.67 (1.24–2.24), p = 0.0007, no heterogeneity (p = 0.21) — graded **E2** (F11).
 - **K=4 partition** did not replicate in either OS cohort (p = 0.090 / 0.200) and remains post hoc (E1).
 
 ## 10. Robustness
@@ -89,7 +94,9 @@ classifier; an independent DFS cohort (e.g. GSE38832) to test F10.
 
 ## 15. Evidence-grade distribution
 - E3 (cross-platform convergence): F06 (protein), F09 (phosphoproteome)
-- E1 (exploratory / post hoc): F02 (K=4 discovery), F10 (DFS, secondary endpoint)
+- **E2 (replicated association): F11 (disease-free/RFS, GSE39582)**
+- E1 (exploratory / post hoc): F02 (K=4 discovery), F10 (DFS discovery, secondary endpoint)
 - descriptive: F05 (single-cell deconvolution)
 - not_supported: F01, F03, F04 (OS association), F07 (methylation), F08 (spatial transfer)
-- E2: none — no ecotype–prognosis association has replicated in an independent cohort.
+- The dissociation is the message: the ecotype axis reproduces across assays and predicts disease-free
+  survival, but no OS association replicates in any cohort tested.

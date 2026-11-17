@@ -43,3 +43,4 @@ timestamp	step	decision	rationale
 2026-11-17T04:17:51Z	22b_gse14333	PASS	GSE14333 DFS (secondary endpoint): n=226, events=50; adjusted HR=2.365 p=0.00429; bootstrap CI 1.3-4.64; grade=E1; kept separate from OS
 2026-11-17T04:56:38Z	17_proteomics	PASS	agreement 83.3%; ARI 0.439; median programme r 0.403; gene-set source: frozen GMT (03_Raw_Data/hallmark_frozen.gmt; symbol); OS HR 2.44 p 0.29
 2026-11-17T04:57:58Z	22c_gse38832	BLOCKED	expression built (22167 symbols x 122 arrays); series matrix metadata missing
+2026-11-17T05:08:57Z	22d_replication	PASS	GSE39582 RFS stage I-III: n=483, events=137; adjusted HR=1.502 p=0.0181; bootstrap 1.06-2.13; GSE17536 HR=2.51 p=0.022; grade=E2

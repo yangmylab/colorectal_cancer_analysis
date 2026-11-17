@@ -1,0 +1,9 @@
+metric	value
+cohort	
+n	483
+events	137
+bootstrap_reps	500
+hr_median	1.48396771147175
+hr_lower_2.5	1.05827568517656
+hr_upper_97.5	2.12911871657046
+frac_above_1	0.99
