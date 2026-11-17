@@ -1,0 +1,28 @@
+plot	source	description
+plot_1	06_Analysis/09_SingleCell/celltype_signature_symbols.tsv; 09_Figures/plots/plot_1	GSE132465 single-cell marker signatures
+plot_2	05_QC/Figures/01_pca_uncorrected	QC PCA, uncorrected
+plot_3	05_QC/Figures/01_pca_batch_corrected	QC PCA, batch-corrected
+plot_4	05_QC/Figures/01_library_size	Library size by group
+plot_5	05_QC/Figures/01_top_variable_heatmap	Top 500 variable features
+plot_6	06_Analysis/05_Immune_Analysis/02_signature_heatmap	Hallmark signature heatmap
+plot_7	06_Analysis/03_Clustering/03_consensus_heatmap	Consensus matrix for selected K
+plot_8	06_Analysis/03_Clustering/03_ecotype_pca	SNF ecotype PCA
+plot_9	09_Figures/Figure_1_stability	Ecotype stability across K
+plot_10	09_Figures/Figure_2_km	Kaplan-Meier by ecotype
+plot_11	06_Analysis/06_Other_Analysis/04_calibration_5y	5-year calibration
+plot_12	06_Analysis/06_Other_Analysis/04_dca_5y	5-year decision curve
+plot_13	signature_scores.rds$deconv	Mean TCGA cell-type fractions
+plot_14	08_Robustness/K_sensitivity.tsv	K sensitivity of the survival model
+plot_15	validation_performance.tsv + validation_meta_analysis.tsv	Validation forest plot
+plot_16	09_Figures/plots/plot_16	CPTAC-COAD: protein programme heatmap by ecotype
+plot_17	09_Figures/plots/plot_17	CPTAC-COAD: mRNA vs protein programme concordance
+plot_18	09_Figures/plots/plot_18	CPTAC-COAD: KM by protein-assigned ecotype
+plot_19	09_Figures/plots/plot_19	CPTAC-COAD: ecotype agreement mRNA vs protein
+plot_20	09_Figures/plots/plot_20	TCGA 450K: CIMP score by ecotype
+plot_21	09_Figures/plots/plot_21	TCGA 450K: global methylation by ecotype
+plot_22	09_Figures/plots/plot_22	TCGA 450K: top differentially methylated genes
+plot_23	09_Figures/plots/plot_23	TCGA 450K: KM by methylation cluster
+plot_24	09_Figures/plots/plot_24	TCGA 450K: RNA ecotype vs methylation cluster
+plot_25	09_Figures/plots/plot_25	Spatial: E2-defining programme score per Visium spot
+plot_26	09_Figures/plots/plot_26	Spatial: within- vs between-section variation of the E2 programme
+plot_27	09_Figures/plots/plot_27	Spatial: covariate-shift diagnostic, spots vs bulk

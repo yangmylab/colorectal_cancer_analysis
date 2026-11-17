@@ -1,0 +1,22 @@
+# ---- never track raw or intermediate data (≈12 GB) ----
+CRC_BAP/03_Raw_Data/
+CRC_BAP/04_Processed_Data/
+CRC_BAP/99_Synthetic_DryRun/**/processed_bulk.rds
+
+# ---- regenerable rasters and scratch ----
+*.jpg
+*.part
+*.aria2
+CRC_BAP/Rplots.pdf
+.Rhistory
+.RData
+__pycache__/
+.reasonix/
+
+# ---- logs (decision log is kept) ----
+CRC_BAP/Logs/*.log
+CRC_BAP/Logs/run_all_*.log
+
+# ---- derived R objects and synthetic-run inputs (regenerable) ----
+*.rds
+CRC_BAP/99_Synthetic_DryRun/data/

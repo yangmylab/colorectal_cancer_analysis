@@ -1,0 +1,4 @@
+analysis	statistic	verdict
+bulk self-check (simplified statistic vs GSVA labels)	agreement 0.604; ARI 0.042	statistic is not a faithful transfer of the classifier
+spot calls: bulk-referenced normalisation	100% of spots called E2	all spots fall on one side of the decision boundary (covariate shift)
+spot calls: per-section normalisation	not computed (forces ~50/50 by construction; invalid)	discarded

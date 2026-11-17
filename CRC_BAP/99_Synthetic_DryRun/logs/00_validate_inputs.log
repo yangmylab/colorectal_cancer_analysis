@@ -1,0 +1,10 @@
+== 00_validate_inputs ==
+synthetic: TRUE 
+project root: /run/media/meng/Seqdata/colorectal_cancer/CRC_BAP 
+  · group 'tumour': 120 samples / 120 donors
+Annotation audit: 99_Synthetic_DryRun/metadata/Sample_Annotation.csv
+
+✅ [PASS] 120 samples, 1 groups, 3 batch(es) checked
+
+VERDICT: PASS 
+G1 validated: 120 samples, 2000 features

@@ -1,0 +1,391 @@
+# Track A study configuration
+# Single source of truth for paths, cohorts, QC thresholds and model parameters.
+# Freeze this file before outcome modeling; record any later change in manifests/config_changelog.tsv.
+
+project:
+  name: crc_multiomics_ecotypes
+  version: 0.1.0
+  date: "2026-11-17"
+  seed: 20261117
+  description: "Cross-platform, single-cell-anchored ecotype taxonomy of colorectal cancer"
+
+paths:
+  data_raw: analysis/data/raw
+  data_processed: analysis/processed
+  reference: analysis/reference
+  results: analysis/results
+  figures: analysis/figures
+  manifests: analysis/manifests
+  metadata: analysis/metadata
+  logs: analysis/logs
+
+cohorts:
+  discovery:
+    - id: TCGA-COAD
+      accession: TCGA-COAD
+      source: GDC
+      role: discovery
+      modalities: [rna_seq, methylation, cnv, mutation, rppa, clinical, slides]
+    - id: TCGA-READ
+      accession: TCGA-READ
+      source: GDC
+      role: discovery
+      modalities: [rna_seq, methylation, cnv, mutation, rppa, clinical, slides]
+  proteome_anchor:
+    - id: CPTAC-COLON
+      accession: PDC000116
+      source: PDC
+      role: proteome_anchor
+      modalities: [proteome, phosphoproteome]
+      note: "Confirm current PDC study ID and data level before download."
+  reference_atlas:
+    - id: GSE132465
+      source: GEO
+      role: reference
+      modalities: [scRNA]
+      n_samples: 23
+    - id: GSE144735
+      source: GEO
+      role: reference
+      modalities: [scRNA]
+      n_samples: 6
+    - id: GSE178341
+      source: GEO
+      role: reference
+      modalities: [scRNA]
+      n_samples: 181
+    - id: GSE166555
+      source: GEO
+      role: reference
+      modalities: [scRNA]
+      n_samples: 25
+    - id: GSE201348
+      source: GEO
+      role: reference
+      modalities: [scRNA, scATAC]
+      n_samples: 72
+    - id: GSE231559
+      source: GEO
+      role: reference
+      modalities: [scRNA]
+      n_samples: 26
+    - id: GSE312983
+      source: GEO
+      role: reference
+      modalities: [snRNA]
+      n_samples: 189
+    - id: GSE285117
+      source: GEO
+      role: reference
+      modalities: [scRNA]
+      n_samples: null
+  spatial:
+    - id: GSE225857
+      source: GEO
+      role: spatial
+      modalities: [scRNA, spatial]
+      n_samples: 8
+    - id: GSE283052
+      source: GEO
+      role: spatial
+      modalities: [spatial]
+      n_samples: 12
+    - id: GSE320042
+      source: GEO
+      role: spatial
+      modalities: [spatial]
+      n_samples: 38
+    - id: GSE284989
+      source: GEO
+      role: spatial
+      modalities: [spatial]
+      n_samples: 22
+    - id: GSE280311
+      source: GEO
+      role: spatial
+      modalities: [spatial]
+      n_samples: 12
+    - id: GSE280312
+      source: GEO
+      role: spatial
+      modalities: [spatial]
+      n_samples: 16
+    - id: GSE270745
+      source: GEO
+      role: spatial
+      modalities: [spatial]
+      n_samples: 6
+    - id: GSE217414
+      source: GEO
+      role: spatial
+      modalities: [spatial]
+      n_samples: 4
+  validation_bulk:
+    - id: GSE39582
+      source: GEO
+      role: validation
+      modalities: [expression_array, clinical]
+      n_samples: 585
+    - id: GSE17536
+      source: GEO
+      role: validation
+      modalities: [expression_array, clinical]
+      n_samples: 177
+    - id: GSE14333
+      source: GEO
+      role: validation
+      modalities: [expression_array, clinical]
+      n_samples: 290
+    - id: GSE38832
+      source: GEO
+      role: validation
+      modalities: [expression_array, clinical]
+      n_samples: 122
+    - id: GSE87211
+      source: GEO
+      role: validation_rectal
+      modalities: [expression_array, clinical]
+      n_samples: 363
+    - id: GSE103479
+      source: GEO
+      role: validation_treatment
+      modalities: [expression_array, clinical]
+      n_samples: 156
+  optional:
+    microbiome: curatedMetagenomicData
+    metabolome: [MetabolomicsWorkbench, MetaboLights]
+    imaging: [TCGA_slides, IDC, HPA]
+    normal_reference: HCA_Gut_Cell_Atlas
+
+inclusion:
+  sample_types: [primary_tumor]
+  exclude_metastasis_from_discovery: true
+  require_stage: true
+  require_survival: true
+  min_tumor_purity: 0.20
+  min_genes_detected: 10000
+  max_missing_clinical_fraction: 0.20
+  outlier_sd: 4
+
+endpoints:
+  primary: css
+  secondary: [os, rfs]
+  exploratory: [ici_response, anti_egfr_response, adjuvant_chemo_response]
+  time_unit: days
+
+normalization:
+  rna: tpm_log2
+  arrays: rma
+  methylation: bmiq_mvalues
+  proteome: median_log2
+  phospho: protein_normalized_log2
+  cnv: gene_level_log2_ratio
+
+batch_correction:
+  bulk_counts: combat_seq
+  arrays: remove_batch_effect
+  single_cell: scvi
+  single_cell_sensitivity: harmony
+  microbiome: mmuphin
+
+qc:
+  min_samples_discovery: 500
+  min_events_discovery: 100
+  max_outlier_fraction: 0.05
+  min_cross_platform_correlation: 0.20
+  pca_batch_residual_check: true
+
+deconvolution:
+  methods: [cibersortx, epic, quantiseq, mcp_counter, xcell]
+  consensus: rank_mean
+  purity_adjustment: true
+  min_method_concordance_spearman: 0.70
+
+programs:
+  method: nmf
+  min_genes: 20
+  bootstrap_stability: 0.80
+  scoring: [ssgsea, gsva, aucell]
+  compartments: [epithelial, fibroblast, myeloid, t_nk, b_plasma, endothelial, glial]
+
+integration:
+  primary: mofa
+  factors: 15
+  views: [rna_programs, methylation, proteome, phospho, cnv]
+  sensitivity: [iclusterbayes, snf, diablo]
+  min_variance_explained_per_view: 0.30
+
+ecotypes:
+  k_range: [2, 8]
+  k_preferred: [3, 6]
+  consensus_bootstraps: 1000
+  min_group_fraction: 0.05
+  stability_ari_min: 0.70
+  replication_ari_min: 0.50
+  classifier: nearest_shrunken_centroid
+  classifier_cv_folds: 10
+  classifier_cv_repeats: 10
+
+survival:
+  base_covariates: [age, sex, stage, msi_status, sidedness, cms]
+  full_model_extra: [ecotype]
+  metrics: [c_index, time_auc, calibration_slope, calibration_intercept, dca, nri, idi]
+  time_auc_years: [3, 5]
+  bootstrap: 1000
+  calibration_bins: 10
+  dca_thresholds: [0.10, 0.20, 0.30, 0.40, 0.50]
+  fdr_secondary: 0.05
+
+spatial:
+  deconvolution: [cell2location, rctd]
+  sensitivity: [spatialdecon]
+  niche_method: cellcharter
+  neighborhood: squidpy
+  ligand_receptor: [cellchat, nichenet]
+  signatures: [tls, invasive_front, hypoxia, immune_exclusion, caf_rich]
+  min_datasets_for_replication: 2
+  meta_analysis: random_effects
+
+drug:
+  signature_genes: 150
+  resources: [cmap, lincs, gdsc, ctrp, prism, depmap]
+  max_candidates_per_ecotype: 20
+  prioritize: 5
+  claim_level: hypothesis_generating
+
+proteogenomics:
+  - id: PXD079707
+    source: PRIDE
+    role: proteomic_anchor
+    content: [dia_proteome, targeted_genomics, wsi, clinical]
+    n_cases: 1000
+    access: open_cc0
+    note: "Confirm processed tables and metadata completeness."
+  - id: PXD052391
+    source: ProteomeXchange/iProx
+    role: progression
+    content: [proteome, phosphoproteome]
+    n_patients: 148
+    n_samples: 435
+    note: "WES restricted under HRA007452."
+  - id: IPX0007391001
+    source: iProx/GSA
+    role: metastasis
+    content: [genomics, transcriptome, proteome, phosphoproteome]
+    n_patients: 34
+    n_samples: 102
+    note: "PRJCA020890."
+  - id: PXD019103
+    source: PRIDE
+    role: orthogonal_validation
+    content: [proteome]
+
+validation_bulk_extended:
+  - {id: GSE241101, n_samples: 286, role: multiregional}
+  - {id: GSE159216, n_samples: 283, role: crlm}
+  - {id: GSE248381, n_samples: 258, role: subtype_validation}
+  - {id: GSE161158, n_samples: 250, role: stage_ii_iii}
+  - {id: GSE233616, n_samples: 188, role: epigenome_subtyping}
+  - {id: GSE106584, n_samples: 156, role: chemotherapy}
+  - {id: GSE140973, n_samples: 114, role: anti_egfr_resistance}
+  - {id: GSE333907, n_samples: 83, role: eocrc}
+  - {id: GSE313035, n_samples: 67, role: metimmox}
+  - {id: GSE339362, n_samples: 56, role: tnt}
+  - {id: GSE156915, n_samples: 361, role: oxaliplatin_ddir}
+  - {id: GSE220150, n_samples: 172, role: ancestry_diversity}
+  - {id: GSE294511, n_samples: 169, role: crlm_organoids}
+  - {id: GSE237249, n_samples: 72, role: cms_transition}
+  - {id: GSE233602, n_samples: 61, role: polyps}
+
+liquid_biopsy:
+  - {id: GSE263030, n_samples: 602, analyte: cfDNA_5hmC}
+  - {id: GSE97923, n_samples: 773, analyte: cfDNA_methylation}
+  - {id: GSE188627, n_samples: 290, analyte: EV_miRNA}
+  - {id: GSE188433, n_samples: 123, analyte: EV_longRNA}
+  - {id: GSE315715, n_samples: 56, analyte: circulating_mRNA}
+  - {id: GSE216561, n_samples: 113, analyte: cfRNA_human_microbial}
+  - {id: GSE259422, n_samples: 156, analyte: EV_transcriptome}
+  - {id: GSE86078, n_samples: 149, analyte: cfDNA_methylation_monitoring}
+
+methylation_extended:
+  - {id: TCGA-COAD-READ, platform: 450K, role: core}
+  - {id: GSE233616, n_samples: 188, role: subtype_validation}
+  - {id: GSE220160, n_samples: 16, role: progression}
+  - {id: GSE124775, n_samples: 198, role: cfDNA_methylation}
+  - {id: GSE208596, n_samples: 95, role: cfDNA_monitoring}
+
+pathology:
+  resources:
+    - {id: TCGA_diagnostic_slides, n_slides: 625}
+    - {id: PXD079707_WSI, n_slides: 1000}
+  tools: [chief, musk, uni, conch]
+  external_validation: true
+
+perturbation:
+  resources: [depmap, gdsc, ctrp, prism, lincs, dreimt]
+
+extensions:
+  progression:
+    enabled: true
+    cohorts: [PXD052391, GSE201348, GSE8671, GSE37364, GSE41657, GSE233602]
+  metastasis:
+    enabled: true
+    cohorts: [IPX0007391001, GSE159216, GSE225857, GSE217414]
+  pathology:
+    enabled: true
+    tools: [chief, musk, uni, conch]
+    external_split: [TCGA, PXD079707]
+  circulating:
+    enabled: true
+    analytes: [cfDNA_methylation, cfDNA_5hmC, EV_miRNA, EV_longRNA, circulating_mRNA]
+    min_cohorts_for_claim: 2
+  therapy:
+    enabled: true
+    contexts: [anti_egfr, chemotherapy, tnt, metimmox, mmrd_ici]
+    claim_level: exploratory
+  benchmark:
+    enabled: true
+    subtyping: [cms, cris, pds]
+    integration: [mofa, iclusterbayes, snf, diablo]
+    deconvolution: [cell2location, rctd, bayesprism, instaprism]
+    niche: [cellcharter, banksy, cellniche]
+    survival: [coxnet, rsf, xgboost, deepsurv]
+  causal:
+    enabled: false
+    resources: [gtex, eqtl_catalogue, ukb_ppp, decode]
+  microbiome:
+    enabled: false
+    resources: [curatedMetagenomicData, GSE174302, GSE216561, GSE264208]
+
+benchmark:
+  stability_metric: ari
+  runtime: true
+  external_replication: true
+  calibration: true
+
+tools:
+  primary:
+    single_cell_integration: scvi
+    annotation: celltypist
+    deconvolution_spatial: cell2location
+    integration_multiomics: mofa
+    clustering: consensusclusterplus
+    niche: cellcharter
+    cci: cellchat_v2
+    survival: coxnet
+    pathology: chief
+  sensitivity:
+    single_cell_integration: harmony
+    deconvolution_spatial: rctd
+    integration_multiomics: iclusterbayes
+    niche: banksy
+    survival: rsf
+    pathology: musk
+
+reporting:
+  prediction_model: TRIPOD+AI
+  prognostic_marker: REMARK
+  observational: STROBE
+  code_availability: true
+  data_availability: true
+  preprint: true

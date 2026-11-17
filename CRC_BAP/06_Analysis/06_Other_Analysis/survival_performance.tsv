@@ -1,0 +1,2 @@
+endpoint	n	events	c_index_base	c_index_full	lrt_p	ph_min_p	covariates
+os	476	79	0.763179605643099	0.772027885487996	0.107007682391756	0.191677192753821	age,sex,stage_num,sidedness

@@ -1,0 +1,2 @@
+analysis	n	events	c_index_base	c_index_full	lrt_p
+primary K=2 excluding QC outliers	463	77	0.767227911820864	0.773151362610658	0.150842304256702

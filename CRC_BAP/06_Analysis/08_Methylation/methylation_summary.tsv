@@ -1,0 +1,12 @@
+metric	value
+genes_gene_level	19269
+samples	393
+samples_with_ecotype	388
+cimp_genes_available	8
+cimp_high	313
+cimp_low	80
+dmps_fdr05_lfc05	5
+ari_rna_vs_methylation	0.006
+mean_global_beta_E1	0.4756
+mean_global_beta_E2	0.4808
+global_beta_wilcox_p	0.113

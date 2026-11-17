@@ -1,0 +1,40 @@
+project:
+  name: CRC_BAP_synthetic_dryrun
+  seed: 20261117
+  synthetic: true
+
+paths:
+  raw: 99_Synthetic_DryRun/data
+  processed: 99_Synthetic_DryRun/processed
+  qc: 99_Synthetic_DryRun/qc
+  analysis: 99_Synthetic_DryRun/analysis
+  validation: 99_Synthetic_DryRun/validation
+  robustness: 99_Synthetic_DryRun/robustness
+  figures: 99_Synthetic_DryRun/figures
+  tables: 99_Synthetic_DryRun/tables
+  logs: 99_Synthetic_DryRun/logs
+  metadata: 99_Synthetic_DryRun/metadata
+
+inputs:
+  expression: 99_Synthetic_DryRun/data/expression.tsv
+  clinical: 99_Synthetic_DryRun/data/clinical.tsv
+  signatures: 99_Synthetic_DryRun/data/signatures.gmt
+  methylation: 99_Synthetic_DryRun/data/methylation.tsv
+  protein: 99_Synthetic_DryRun/data/protein.tsv
+  celltype_signatures: null
+  validation_dir: 99_Synthetic_DryRun/data/validation
+  ready_sentinel: 99_Synthetic_DryRun/data/READY
+
+params:
+  min_samples: 60
+  min_events: 30
+  max_outlier_fraction: 0.10
+  k_min: 2
+  k_max: 6
+  consensus_runs: 50
+  consensus_bootstraps: 100
+  stability_ari_min: 0.70
+  min_group_fraction: 0.05
+  fdr: 0.05
+  n_workers: 8
+  seed: 20261117

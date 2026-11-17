@@ -1,0 +1,28 @@
+timestamp	step	decision	rationale
+2026-11-17T02:14:45Z	00_validate	PASS	samples: 624 genes: 15000
+2026-11-16T18:14:55Z	01_bulk_qc	PASS	normalization: quantile-normalized log2 ; outliers: 14 of 624 ; batch: corrected (limma removeBatchEffect; 2 levels)
+2026-11-16T18:15:30Z	02_signatures	PASS	source: MSigDB Hallmark (msigdbr; ensembl_gene) ; sets: 50 ; deconvolution: No cell-type signature matrix supplied; signature scores are marker scores, not absolute fractions
+2026-11-16T18:15:56Z	03_ecotypes	PASS	K = 2 ; bootstrap ARI = 0.975 ; CV accuracy = 0.979
+2026-11-16T18:15:56Z	04_survival	COMPLETE_CASE	excluded 53 rows with missing model covariates
+2026-11-16T18:15:57Z	04_survival	PASS	endpoint: os ; n: 476 ; events: 79 ; C-index: 0.772 ; LRT p: 0.107 ; PH min p: 0.192
+2026-11-16T18:15:58Z	05_report	PASS	final report written
+2026-11-16T18:22:54Z	04_survival	COMPLETE_CASE	excluded 53 rows with missing model covariates
+2026-11-16T18:22:54Z	04_survival	PASS	endpoint: os ; n: 476 ; events: 79 ; C-index: 0.772 ; LRT p: 0.107 ; PH min p: 0.192
+2026-11-16T18:26:52Z	04_survival	COMPLETE_CASE	excluded 53 rows with missing model covariates
+2026-11-16T18:27:27Z	04_survival	PASS	endpoint: os ; n: 476 ; events: 79 ; C-index: 0.772 ; LRT p: 0.107 ; PH min p: 0.192
+2026-11-16T18:29:55Z	04_survival	COMPLETE_CASE	excluded 53 rows with missing model covariates
+2026-11-16T18:30:29Z	04_survival	PASS	endpoint: os ; n: 476 ; events: 79 ; C-index: 0.772 ; LRT p: 0.107 ; PH min p: 0.192
+2026-11-17T00:24:20Z	04_survival	COMPLETE_CASE	excluded 53 rows with missing model covariates
+2026-11-17T00:24:59Z	04_survival	PASS	endpoint: os ; n: 476 ; events: 79 ; C-index: 0.772 ; LRT p: 0.107 ; PH min p: 0.192
+2026-11-17T00:25:16Z	04_survival	COMPLETE_CASE	excluded 53 rows with missing model covariates
+2026-11-17T00:25:56Z	04_survival	PASS	endpoint: os ; n: 476 ; events: 79 ; C-index: 0.772 ; LRT p: 0.107 ; PH min p: 0.192
+2026-11-17T00:35:47Z	02_signatures	PASS	source: MSigDB Hallmark (msigdbr; ensembl_gene) ; sets: 50 ; deconvolution: NNLS fractions from user-supplied cell-type signatures
+2026-11-17T00:38:13Z	02_signatures	PASS	source: MSigDB Hallmark (msigdbr; ensembl_gene) ; sets: 50 ; deconvolution: NNLS fractions from user-supplied cell-type signatures
+2026-11-17T00:38:53Z	03_ecotypes	PASS	K = 5 ; bootstrap ARI = 0.885 ; CV accuracy = 0.553
+2026-11-17T00:39:06Z	04_survival	COMPLETE_CASE	excluded 53 rows with missing model covariates
+2026-11-17T00:39:46Z	04_survival	PASS	endpoint: os ; n: 476 ; events: 79 ; C-index: 0.769 ; LRT p: 0.198 ; PH min p: 0.247
+2026-11-17T00:41:24Z	05_report	PASS	final report written
+2026-11-17T00:42:36Z	03_ecotypes	PASS	K = 2 ; bootstrap ARI = 0.976 ; CV accuracy = 0.986
+2026-11-17T00:42:37Z	04_survival	COMPLETE_CASE	excluded 53 rows with missing model covariates
+2026-11-17T00:43:18Z	04_survival	PASS	endpoint: os ; n: 476 ; events: 79 ; C-index: 0.772 ; LRT p: 0.107 ; PH min p: 0.192
+2026-11-17T00:44:13Z	05_report	PASS	final report written

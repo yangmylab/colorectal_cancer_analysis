@@ -1,0 +1,40 @@
+project:
+  name: CRC_BAP
+  seed: 20261117
+  synthetic: false
+
+paths:
+  raw: 03_Raw_Data
+  processed: 04_Processed_Data
+  qc: 05_QC
+  analysis: 06_Analysis
+  validation: 07_Validation
+  robustness: 08_Robustness
+  figures: 09_Figures
+  tables: 10_Tables
+  logs: Logs
+  metadata: 02_Metadata
+
+inputs:
+  expression: 03_Raw_Data/expression.tsv
+  clinical: 03_Raw_Data/clinical.tsv
+  signatures: 03_Raw_Data/signatures.gmt
+  methylation: 03_Raw_Data/methylation.tsv
+  protein: 03_Raw_Data/protein.tsv
+  celltype_signatures: 03_Raw_Data/celltype_signatures.tsv
+  validation_dir: 03_Raw_Data/validation
+  ready_sentinel: 03_Raw_Data/READY
+
+params:
+  min_samples: 60
+  min_events: 30
+  max_outlier_fraction: 0.10
+  k_min: 2
+  k_max: 6
+  consensus_runs: 50
+  consensus_bootstraps: 200
+  stability_ari_min: 0.70
+  min_group_fraction: 0.05
+  fdr: 0.05
+  n_workers: 8
+  seed: 20261117

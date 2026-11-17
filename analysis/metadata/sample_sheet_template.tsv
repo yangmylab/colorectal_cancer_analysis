@@ -1,0 +1,3 @@
+sample_id	patient_id	cohort	accession	source	tissue	sample_type_code	platform	assay	modality	stage	ajcc_version	msi_status	mmr_status	sidedness	age	sex	treatment	treatment_line	os_time_days	os_event	css_time_days	css_event	rfs_time_days	rfs_event	purity	purity_method	batch	included	exclusion_reason	notes
+EXAMPLE_TCGA-01	EXAMPLE_PATIENT-01	TCGA-COAD	TCGA-COAD	GDC	primary_tumor	01	Illumina	RNA-seq	rna_seq	IIA	8	MSS	proficient	right	67	F	none	na	1450	0	1450	0	1200	0	0.62	ESTIMATE	batch_1	TRUE		example row - replace
+EXAMPLE_GSE39582-01	EXAMPLE_PATIENT-02	GSE39582	GSE39582	GEO	primary_tumor	na	Affymetrix	expression_array	expression_array	IIIB	7	MSS	proficient	left	58	M	surgery_only	na	980	1	980	1	700	1	0.45	pathology	batch_2	TRUE		example row - replace
