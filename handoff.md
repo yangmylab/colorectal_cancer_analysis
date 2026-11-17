@@ -165,11 +165,14 @@ Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
 ## 4. Next Steps (What to do next)
 
 **P0 — manuscript (owner: Prof. Meng + agent; trigger: now)**
-`CRC_BAP/12_Manuscript/` around: stable K=2 axis; protein + phospho reproducibility (E3); methylation and
-spatial non-reproduction; **null OS (F01/F03)**; the disease-free association (F11 E2) **together with its
-limit — not incremental over CMS (F14)**. The framing must be "reproducible, directionally prognostic, not
-demonstrably better than CMS", not "a new prognostic classifier". Resume from the ledger F01–F14 and
-`plot_manifest.tsv` (42 figures). Fill `Authors.xlsx`.
+**Draft v0.1 EXISTS** (2026-11-17): `CRC_BAP/12_Manuscript/manuscript.md` + `manuscript.docx` (built with the
+user's TNR/FangSong/red-code reference template) + `claims_to_evidence.tsv` (every claim mapped to its finding,
+grade and citation caveat) + `README.md`. Framing per the evidence: reproducible axis (F06/F09 E3), disease-free
+association (F11 E2) **together with its limit — not incremental over CMS (F14)**, null OS (F01/F03/F15),
+negative methylation (F07) and spatial transfer (F08). What remains: the author list (`Authors.xlsx` is still an
+empty template), journal choice (drives reference style and word limits), and assembling the 44 plots into
+main/supplementary figures. Regenerate the Word file with
+`pandoc 12_Manuscript/manuscript.md -o 12_Manuscript/manuscript.docx --toc --toc-depth=2`.
 
 **P0 — GSE38832 DFS (owner: user file + agent; blocked by #1)**
 Drop `GSE38832_series_matrix.txt.gz` into `03_Raw_Data/GSE38832/`, then
