@@ -34,8 +34,8 @@ copy_pair <- function(src_base, n, desc) {
 add_plot(1, "06_Analysis/09_SingleCell/celltype_signature_symbols.tsv; 09_Figures/plots/plot_1", "GSE132465 single-cell marker signatures")
 
 # 2-5 QC
-copy_pair("05_QC/Figures/01_pca_uncorrected", 2, "QC PCA, uncorrected")
-copy_pair("05_QC/Figures/01_pca_batch_corrected", 3, "QC PCA, batch-corrected")
+copy_pair("05_QC/Figures/01_pca_uncorrected", 2, "QC PCA of all tumours, coloured by TCGA project (no technical batch)")
+copy_pair("05_QC/Figures/01_project_variance", 3, "Share of each principal component explained by the COAD/READ project")
 copy_pair("05_QC/Figures/01_library_size", 4, "Library size by group")
 copy_pair("05_QC/Figures/01_top_variable_heatmap", 5, "Top 500 variable features")
 

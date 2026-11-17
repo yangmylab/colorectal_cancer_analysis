@@ -164,12 +164,15 @@ published taxonomy (F14).
 Every supplementary panel underpins a specific main-figure claim. They are cited here in order, after the main
 figures, and each is explicitly tied to the panel(s) it supports.
 
-**Supplementary Figure 1A** shows sample separation before batch correction and **Supplementary Figure 1B** after
-it. The ecotypes separate in both embeddings, but only the batch-corrected one is used downstream, which is what
-licenses reading Figure 1A–1D as biology rather than an artefact of processing. Library sizes were comparable
-between groups (**Supplementary Figure 1C**) and the top 500 variable features that drive the embedding are shown
-in **Supplementary Figure 1D**, so the separation in Figure 1C cannot be attributed to uneven sequencing depth or
-to a handful of features.
+**Supplementary Figure 1A** shows the PCA of all 624 quantified tumours, with points coloured and shaped by TCGA
+project. COAD and READ intermix across the principal plane, and the only grouping available here is anatomical
+(colon versus rectum) rather than technical: the discovery data come from one platform and one processing pipeline,
+so there is no batch term to remove. **Supplementary Figure 1B** quantifies that group structure component by
+component — the project term accounts for at most 2.8% of the variance of any of the first ten components (0.5% of
+PC1) — which is why no correction was applied and why the downstream analyses use the quantile-normalised matrix
+as it stands. Library sizes were comparable between groups (**Supplementary Figure 1C**) and the top 500 variable
+features that drive the embedding are shown in **Supplementary Figure 1D**, so the separation in Figure 1C cannot
+be attributed to uneven sequencing depth or to a handful of features.
 
 **Supplementary Figure 2A** (five-year calibration) and **Supplementary Figure 2B** (decision curve) characterise
 the discovery overall-survival model of Figure 6A and the covariate comparison of Figure 6D. Because that model
@@ -279,9 +282,11 @@ recurrence-free survival. (E) GSE38832 DSS versus DFS hazard ratios. (F) GSE3883
 ecotype. (B) K sensitivity of the survival model (K=4 is post hoc). (C) External OS validation forest.
 (D) C-index by covariate set, with and without the ecotype. (E) Ecotype versus CMS composition.
 
-**Supplementary Figure 1. Quality control underpinning Figure 1.** (A) PCA before batch correction.
-(B) PCA after batch correction. (C) Library size by group. (D) Top 500 variable features. Each panel supports the
-reading of Figure 1A–1D as biological separation.
+**Supplementary Figure 1. Quality control underpinning Figure 1.** (A) PCA of all 624 quantified tumours, coloured
+and shaped by TCGA project (COAD versus READ) — no technical batch exists in this dataset. (B) Share of each
+principal component explained by the project term (red) against the variance that component explains (grey); at
+most 2.8% for any of PC1–PC10, so no correction was applied. (C) Library size by group. (D) Top 500 variable
+features. Each panel supports the reading of Figure 1A–1D as biological separation.
 
 **Supplementary Figure 2. Diagnostics and negative controls underpinning Figures 2, 3 and 6.** (A) Five-year
 calibration of the null OS model (supports Figure 6A). (B) Five-year decision curve (supports Figure 6D; no

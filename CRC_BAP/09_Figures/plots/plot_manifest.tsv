@@ -1,7 +1,7 @@
 plot	source	description
 plot_1	06_Analysis/09_SingleCell/celltype_signature_symbols.tsv; 09_Figures/plots/plot_1	GSE132465 single-cell marker signatures
-plot_2	05_QC/Figures/01_pca_uncorrected	QC PCA, uncorrected
-plot_3	05_QC/Figures/01_pca_batch_corrected	QC PCA, batch-corrected
+plot_2	05_QC/Figures/01_pca_uncorrected	QC PCA of all tumours, coloured by TCGA project (no technical batch)
+plot_3	05_QC/Figures/01_project_variance	Share of each principal component explained by the COAD/READ project
 plot_4	05_QC/Figures/01_library_size	Library size by group
 plot_5	05_QC/Figures/01_top_variable_heatmap	Top 500 variable features
 plot_6	06_Analysis/05_Immune_Analysis/02_signature_heatmap	Hallmark signature heatmap

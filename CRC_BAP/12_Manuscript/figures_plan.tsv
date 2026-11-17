@@ -35,8 +35,8 @@ Figure 6	B	plot_14	K sensitivity of the survival model	F02	-
 Figure 6	C	plot_15	External OS validation forest	F03	-
 Figure 6	D	plot_41	C-index by covariate set with and without the ecotype	F14	-
 Figure 6	E	plot_42	Ecotype vs CMS composition	F14	-
-Supplementary Figure 1	A	plot_2	QC PCA, uncorrected	--	Figure 1A-1D
-Supplementary Figure 1	B	plot_3	QC PCA, batch-corrected	--	Figure 1C-1D
+Supplementary Figure 1	A	plot_2	QC PCA of all tumours, coloured/shaped by TCGA project	--	Figure 1A-1D
+Supplementary Figure 1	B	plot_3	Share of each principal component explained by the COAD/READ project	--	Figure 1A-1D
 Supplementary Figure 1	C	plot_4	Library size by group	--	Figure 1A
 Supplementary Figure 1	D	plot_5	Top 500 variable features	--	Figure 1C
 Supplementary Figure 2	A	plot_11	Five-year calibration (null model; not a utility claim)	F01	Figure 6A

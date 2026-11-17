@@ -240,6 +240,16 @@ activity result leave E1; the PhosphoSitePlus prior is already in place (`KSEAap
 27. **Adding a model spec breaks any factor() built from the old level list.** In `25_incremental_value.R` a
     fifth model left the plotting factor with four levels, which turned filtered rows into `NA` and silently
     duplicated report bullets; a `stopifnot(nrow(...) == 1)` now guards every selected row.
+28. **Do not "batch-correct" a biological covariate, and do not trust a panel that looks unchanged.** The QC
+    panel labelled "batch-corrected" removed `limma::removeBatchEffect()` output for **TCGA project (COAD vs READ)**
+    — anatomical cohorts of the same tissue on one platform, explaining at most 2.8% of any of PC1–PC10 — so the
+    "corrected" PCA was visually identical to the uncorrected one (user caught it). The corrected matrix was never
+    used downstream either. Fixed in `01_bulk_qc.R`: the project effect is now *quantified* (`05_QC/Figures/
+    01_project_variance`, `05_QC/Project_effect_by_PC.tsv`) rather than removed, and panel A colours by project.
+    Lesson: if two panels of "before/after" look the same, the effect size is the finding — report it as a number.
+29. **Check cross-references after regenerating a source panel.** `14_collect_plots.R` maps each `plot_N` to a
+    source file; renaming a source (`01_pca_batch_corrected` → `01_project_variance`) silently leaves a stale copy
+    in place unless the mapping is updated too.
 
 ---
 

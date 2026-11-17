@@ -54,16 +54,25 @@ run_bulk_qc <- function(cfg, synthetic = FALSE) {
   )
   outlier <- md > stats::qchisq(0.999, df = pc_n)
 
+  # `batch` here is the TCGA project (COAD vs READ): anatomical cohorts of the same tissue on one platform, not a
+  # technical batch. Quantify its influence rather than "correcting" it, and do not carry a corrected matrix
+  # forward — nothing downstream used one, and the earlier "batch-corrected" panel was a near-duplicate of the
+  # uncorrected PCA for exactly this reason.
   batch <- factor(clin$batch)
-  if (nlevels(batch) > 1 && !any(is.na(batch))) {
-    log_expr_bc <- limma::removeBatchEffect(log_expr, batch = batch)
-    pca_bc <- stats::prcomp(t(log_expr_bc), scale. = TRUE)
-    batch_status <- paste("corrected (limma removeBatchEffect;", nlevels(batch), "levels)")
+  k_pc <- min(10, ncol(pca$x))
+  project_r2 <- if (nlevels(batch) > 1 && !any(is.na(batch))) {
+    vapply(seq_len(k_pc), function(i) summary(stats::lm(pca$x[, i] ~ batch))$r.squared, numeric(1))
   } else {
-    log_expr_bc <- log_expr
-    pca_bc <- pca
-    batch_status <- "not corrected (one level or missing batch)"
+    rep(NA_real_, k_pc)
   }
+  batch_status <- if (nlevels(batch) > 1 && !all(is.na(project_r2))) {
+    paste0("no technical batch: TCGA project (", nlevels(batch), " levels) explains at most ",
+           round(100 * max(project_r2, na.rm = TRUE), 1), "% of any of PC1-", k_pc, "; not removed")
+  } else {
+    "not assessed (one level or missing project)"
+  }
+  log_expr_bc <- log_expr   # retained in the saved object for schema compatibility; no correction is applied
+  pca_bc <- pca
 
   qc <- data.frame(
     sample_id = colnames(expr),
@@ -83,15 +92,30 @@ run_bulk_qc <- function(cfg, synthetic = FALSE) {
 
   fig_dir <- file.path(cfg$paths$qc, "Figures")
   dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
-  pca_df <- data.frame(PC1 = pca$x[, 1], PC2 = pca$x[, 2], group = clin$group, batch = clin$batch)
+  pca_df <- data.frame(PC1 = pca$x[, 1], PC2 = pca$x[, 2], project = factor(clin$batch), sample_id = clin$sample_id)
+  var_pc <- 100 * pca$sdev^2 / sum(pca$sdev^2)
   save_plot(function() {
-    print(ggplot(pca_df, aes(PC1, PC2, colour = group, shape = batch)) + geom_point(size = 2, alpha = 0.8) + theme_bw() + labs(title = "PCA (uncorrected)"))
+    print(ggplot(pca_df, aes(PC1, PC2, colour = project, shape = project)) + geom_point(size = 2, alpha = 0.8) +
+      theme_bw() +
+      labs(title = sprintf("PCA of %d quantified tumours", ncol(log_expr)),
+           subtitle = sprintf("no technical batch (single platform, single pipeline); PC1 %.1f%%, PC2 %.1f%%",
+                              var_pc[1], var_pc[2]),
+           colour = "TCGA project", shape = "TCGA project"))
   }, file.path(fig_dir, "01_pca_uncorrected"), 7, 5)
 
-  pca_bc_df <- data.frame(PC1 = pca_bc$x[, 1], PC2 = pca_bc$x[, 2], group = clin$group, batch = clin$batch)
+  proj_df <- data.frame(PC = factor(paste0("PC", seq_len(k_pc)), levels = paste0("PC", seq_len(k_pc))),
+                        variance_explained = var_pc[seq_len(k_pc)],
+                        project_r2 = project_r2)
   save_plot(function() {
-    print(ggplot(pca_bc_df, aes(PC1, PC2, colour = group, shape = batch)) + geom_point(size = 2, alpha = 0.8) + theme_bw() + labs(title = "PCA (batch-corrected for display)"))
-  }, file.path(fig_dir, "01_pca_batch_corrected"), 7, 5)
+    print(ggplot(proj_df, aes(PC)) +
+      geom_col(aes(y = variance_explained), fill = "grey70") +
+      geom_point(aes(y = 100 * project_r2), colour = "#C0392B", size = 2.2) +
+      geom_line(aes(y = 100 * project_r2, group = 1), colour = "#C0392B") +
+      theme_bw(base_size = 9) +
+      labs(x = NULL, y = "percent",
+           title = "Cohort (COAD vs READ) structure is minor and not removed",
+           subtitle = "grey bars = variance explained by each PC; red = share of that PC attributable to project"))
+  }, file.path(fig_dir, "01_project_variance"), 7, 5)
 
   qc_df <- data.frame(sample_id = qc$sample_id, group = qc$group, library_size = qc$library_size, detected = qc$detected_features)
   save_plot(function() {
