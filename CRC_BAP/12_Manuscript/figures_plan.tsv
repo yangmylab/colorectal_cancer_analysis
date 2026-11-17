@@ -1,0 +1,45 @@
+figure	panel	source	description	supports
+Figure 1	A	plot_6	Hallmark programme heatmap defining the two ecotypes	F06; F09
+Figure 1	B	plot_7	Consensus matrix for K=2	F11
+Figure 1	C	plot_8	SNF ecotype PCA	F11
+Figure 1	D	plot_9	Ecotype stability across K	F11
+Figure 1	E	plot_1	Single-cell marker signatures used as deconvolution reference	F05
+Figure 1	F	plot_13	Mean TCGA cell-type fractions	F05
+Figure 2	A	plot_16	Protein programme scores by ecotype (CPTAC-COAD)	F06
+Figure 2	B	plot_17	Programme-level mRNA vs protein concordance	F06
+Figure 2	C	plot_19	Ecotype agreement, mRNA vs protein	F06
+Figure 2	D	plot_28	Phospho programme scores by ecotype	F09
+Figure 2	E	plot_29	Three-layer programme concordance	F09
+Figure 2	F	plot_31	Ecotype agreement, phospho vs protein	F09
+Figure 3	A	plot_20	CIMP score by ecotype	F07
+Figure 3	B	plot_21	Global methylation by ecotype	F07
+Figure 3	C	plot_22	Top differentially methylated genes	F07
+Figure 3	D	plot_24	RNA ecotype vs methylation cluster	F07
+Figure 3	E	plot_25	E2 programme score per Visium spot	F08
+Figure 3	F	plot_26	Within- vs between-section variation	F08
+Figure 3	G	plot_27	Covariate shift, spots vs bulk	F08
+Figure 4	A	plot_30	Differential phosphosite volcano	F09
+Figure 4	B	plot_32	Permutation null of the cross-layer ARI	F09
+Figure 4	C	plot_37	Kinase-substrate activity volcano	F12
+Figure 4	D	plot_38	Kinase activity vs kinase abundance	F12
+Figure 4	E	plot_39	Moran's I of Hallmark programmes across sections	F13
+Figure 4	F	plot_40	Per-section Moran's I for E2 programmes	F13
+Figure 5	A	plot_33	GSE14333 disease-free survival by ecotype	F11
+Figure 5	B	plot_34	GSE14333 DFS hazard ratios across models	F11
+Figure 5	C	plot_35	GSE39582 RFS replication forest	F11
+Figure 5	D	plot_36	GSE39582 RFS Kaplan-Meier	F11
+Figure 5	E	plot_43	GSE38832 DSS vs DFS hazard ratios	F15
+Figure 5	F	plot_44	GSE38832 cancer-specific survival	F15
+Figure 6	A	plot_10	Kaplan-Meier by ecotype, overall survival (discovery)	F01
+Figure 6	B	plot_14	K sensitivity of the survival model	F02
+Figure 6	C	plot_15	External OS validation forest	F03
+Figure 6	D	plot_41	C-index by covariate set with and without the ecotype	F14
+Figure 6	E	plot_42	Ecotype vs CMS composition	F14
+Supplementary Figure 1	A	plot_2	QC PCA, uncorrected	--
+Supplementary Figure 1	B	plot_3	QC PCA, batch-corrected	--
+Supplementary Figure 1	C	plot_4	Library size by group	--
+Supplementary Figure 1	D	plot_5	Top 500 variable features	--
+Supplementary Figure 2	A	plot_11	Five-year calibration (null model; not a utility claim)	F01
+Supplementary Figure 2	B	plot_12	Five-year decision curve (null model; not a utility claim)	F01
+Supplementary Figure 2	C	plot_18	Protein-assigned ecotype KM (8 deaths; underpowered)	F06
+Supplementary Figure 2	D	plot_23	Methylation-cluster KM (negative control)	F07

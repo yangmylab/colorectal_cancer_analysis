@@ -1,253 +1,283 @@
-# A reproducible two-ecotype transcriptomic axis in colorectal cancer predicts recurrence but not survival, and is not incremental over CMS
+# Reproducibility without incremental value: a two-ecotype transcriptomic axis in colorectal cancer predicts recurrence but not death, and adds nothing to CMS
 
-**Draft v0.1 — generated 2026-11-17 from `13_Reports/Findings_Ledger.csv` (F01–F15).**
-Every quantitative statement below is traceable to a graded finding; the mapping is in
-`claims_to_evidence.tsv`. Claims are not permitted to exceed their evidence grade (E1–E3).
+**Draft v0.2 — figures composed 2026-11-17.** Six main figures (36 panels) and two supplementary figures
+(8 panels) cover all 44 published panels. Every panel is cited in order in Results. Every quantitative claim is
+traceable to a graded finding (F01–F15, `13_Reports/Findings_Ledger.csv`); the mapping is in
+`12_Manuscript/claims_to_evidence.tsv` and the panel composition in `12_Manuscript/figures_plan.tsv`.
 
 ---
 
 ## Abstract
 
-**Background.** Molecular taxonomies of colorectal cancer (CRC) — CMS, CRIS, PDS — have repeatedly been proposed
-and repeatedly failed to reach clinical use, in part because their reproducibility across assays and cohorts has
-not been established with the same rigour as their discovery. We asked whether a two-group expression ecotype
-axis is (i) reproducible across platforms relevant to clinical assays, and (ii) prognostic beyond the published
-taxonomy.
+**Background.** Molecular taxonomies of colorectal cancer have repeatedly failed to reach clinical use. Their
+reproducibility across assays is rarely tested as rigorously as their discovery, and their incremental value over
+existing classifiers is rarely tested at all. We asked whether a two-group expression ecotype axis is (i)
+reproducible across clinically relevant platforms and (ii) prognostic beyond CMS and MSI.
 
-**Methods.** Consensus clustering of 50 Hallmark programme scores from 624 TCGA-COAD/READ tumours selected a
-K=2 partition (E1, Hedgehog/pancreas-β/MYC-V2; E2, EMT/angiogenesis/IL6–JAK–STAT3), frozen as a nearest-centroid
-classifier and then applied without refitting to independent cohorts: protein and phosphoproteome (CPTAC-COAD),
-450K methylation (TCGA), Visium spatial transcriptomics (16 sections, 43,818 spots), and disease-free and
-overall survival (GSE14333, GSE39582, GSE17536, GSE38832). Every claim was assigned an evidence grade before
-writing.
+**Methods.** Hallmark programme scores from 624 TCGA-COAD/READ tumours were clustered by similarity network fusion
+and consensus k-means; K=2 was selected on stability and frozen as a nearest-centroid classifier. The classifier
+was then applied without refitting to CPTAC-COAD proteome and phosphoproteome, TCGA 450K methylation, 16 Visium
+sections, and three independent cohorts with disease-free endpoints and three with mortality endpoints. Each
+analysis was pre-assigned an evidence grade.
 
-**Results.** The K=2 partition was stable (bootstrap ARI 0.975; classifier cross-validation 0.979). It reproduced
-at the protein level (83.3% agreement with the mRNA call, ARI 0.439; **F06, E3**) and at the phosphoproteome
-level (87.5%, ARI 0.558; permutation p<0.001; **F09, E3**), where kinase-substrate inference further identified
-ecotype-associated kinase activity not explained by kinase abundance (**F12, E1**). It did **not** reproduce in
-promoter methylation (ARI 0.006; **F07**) and the bulk classifier did **not** transfer to Visium spots (ARI 0.042
-in a self-check; **F08**), although E2 programmes are spatially autocorrelated and co-localise with the stromal
-compartment (**F13, descriptive**). Prognostically, the axis was **not** associated with overall survival in
-discovery (**F01**) or in external validation (meta HR 1.25, 95% CI 0.97–1.61, p=0.081; **F03**), and a
-cancer-specific death analysis in an independent cohort was likewise null (**F15**). In contrast, the axis was
-associated with **disease-free survival**, replicating across three cohorts (GSE14333 HR 2.37; GSE39582 HR 1.50,
-p=0.018; GSE17536 HR 2.51; fixed-effect 1.67, p=0.0007; **F11, E2**). That association, however, **did not survive
-adjustment for CMS** (HR 1.42, p=0.107; ecotype–CMS Cramér's V = 0.52; **F14**).
+**Results.** The K=2 partition was stable (bootstrap ARI 0.975; cross-validated classifier accuracy 0.979) and
+reproduced at the protein level (83.3% agreement, ARI 0.439; E3) and the phosphoproteome level (87.5%, ARI 0.558,
+permutation p<0.001; E3). It did not reproduce in promoter methylation (ARI 0.006) and the bulk classifier did not
+transfer to spatial spots (self-check ARI 0.042). The axis was associated with disease-free survival in three
+cohorts (fixed-effect HR 1.67, 1.24–2.24, p=0.0007; E2) but with neither overall survival (meta HR 1.25, p=0.081)
+nor cancer-specific death (HR 1.00, p=0.997). Adjusting for CMS removed the disease-free association (HR 1.42,
+p=0.107; ecotype–CMS Cramér's V=0.52).
 
-**Conclusions.** A two-ecotype axis is reproducible across transcriptome, proteome and phosphoproteome, which
-distinguishes it from taxonomies that exist only at the RNA level. It is directionally prognostic for recurrence
-but not for death, and it is not demonstrably incremental over CMS. Reproducibility is established; clinical
-added value is not.
+**Conclusions.** Expression-based ecotypes can be made reproducible from transcriptome to phosphoproteome, but
+reproducibility does not imply incremental clinical value: in the one cohort able to test it, the axis added
+nothing over CMS, and it was unassociated with death in every cohort tested. Taxonomy studies should report both
+properties.
 
 ---
 
 ## Introduction
 
-Colorectal cancer has no shortage of molecular classifications. Consensus Molecular Subtypes (CMS1–4) are the
-most widely used; CRIS and PDS1–3 add alternatives; each was derived from expression data, each claims biological
-meaning, and none has displaced stage in the clinic. Two problems recur across this literature. First,
-classification instability: partitions are sensitive to cohort composition, platform and algorithm, so a subtype
-label learned in one study frequently does not transfer. Second, incremental value: a new taxonomy must be shown
-to add information to what clinicians already have — stage, MSI status, and for research purposes CMS — rather
-than restate it.
+Colorectal cancer has no shortage of molecular classifications. CMS1–4 are the most widely used; CRIS and PDS1–3
+offer alternatives. Each was derived from expression data, each claims biological meaning, and none has displaced
+stage in the clinic. Two problems recur. Classification instability: partitions respond to cohort composition,
+platform and algorithm, so a label learned in one study often fails to transfer. Incremental value: a new taxonomy
+must add information to what is already available — stage, MSI, and for research purposes CMS — rather than
+restate it.
 
-We therefore treated reproducibility as the primary object of study rather than a footnote. A K=2 partition of
-Hallmark programme scores was derived in TCGA-COAD/READ and frozen; every subsequent analysis applies that frozen
-classifier to a different assay, cohort or endpoint without refitting. Because a null result is as informative as
-a positive one, each analysis was pre-assigned an evidence grade: **E3** for cross-platform convergence spanning
-assays, **E2** for an association replicated in an independent cohort, **E1** for exploratory or post-hoc
-observations, **descriptive** for characterisations with no inferential claim, and **not_supported** where the
-pre-specified analysis did not reach significance. Claims in this manuscript may not exceed the grade of the
-finding that licenses them.
-
-The specific questions were: (1) does the axis survive a change of assay — protein, phosphoprotein, methylation,
-spatial? (2) is it associated with outcome, and does any association replicate? (3) does it add anything beyond
-CMS and MSI?
+We therefore made reproducibility the object of study rather than a footnote, and we made incremental value a
+pre-specified test rather than a discussion point. A K=2 partition of Hallmark programme scores was derived in
+TCGA-COAD/READ and frozen; every subsequent analysis applies that classifier to a different assay, cohort or
+endpoint without refitting. Findings were graded before writing — **E3** cross-platform convergence, **E2**
+association replicated in an independent cohort, **E1** exploratory or post hoc, **descriptive**, and
+**not_supported** — and no claim exceeds its grade.
 
 ---
 
 ## Results
 
-### 1. A stable two-group axis in discovery
+### 1. A stable two-ecotype axis in discovery (Figure 1)
 
-Fifty Hallmark programmes were scored in 624 TCGA-COAD/READ tumours, integrated by similarity network fusion, and
-clustered by consensus k-means across K=2–6. K=2 was selected on stability and deployability: cluster sizes 355
-(E1) and 269 (E2), bootstrap adjusted Rand index **0.975**, nearest-centroid classifier cross-validated accuracy
-**0.979**. E1 is characterised by Hedgehog, pancreas-β-cell and MYC-V2 programmes; E2 by epithelial–mesenchymal
-transition, angiogenesis and IL6–JAK–STAT3 signalling. K=4 also produced a stable partition and an OS association
-in discovery (C-index 0.785, LRT p=0.024) but is **post hoc** and did not replicate (**F02 E1**, **F04**).
+Fifty Hallmark programmes were scored in 624 TCGA-COAD/READ tumours and clustered after similarity network
+fusion. **Figure 1A** shows the two programme blocks that define the partition: E1 is characterised by Hedgehog,
+pancreas-β-cell and MYC-V2 programmes, E2 by EMT, angiogenesis and IL6–JAK–STAT3. The consensus matrix
+(**Figure 1B**) is essentially block-diagonal at K=2, and the fused-view embedding (**Figure 1C**) separates the
+two groups without overlap. Stability across candidate K (**Figure 1D**) peaked at K=2 (bootstrap ARI 0.975) and
+degraded at higher K, which is why K=2 — not the K=4 solution explored later — was frozen for external testing.
 
-Single-cell deconvolution of the same tumours against 63,689 cells from six lineages gave a plausible tissue
-composition (epithelial 0.546, stromal 0.267, myeloid 0.123; **F05, descriptive**) and was used only as context.
+To interpret the composition of these tumours we used a single-cell reference of 63,689 cells from six lineages,
+whose marker genes are shown in **Figure 1E**, and deconvolved the bulk tumours against it: epithelial 0.546,
+stromal 0.267, myeloid 0.123, B 0.044, T 0.015, mast 0.006 (**Figure 1F**). This is descriptive context
+(F05), and it matters only because it shows the axis is not a crude epithelial-versus-stroma ratio.
 
-### 2. The axis reproduces at the protein and phosphoproteome level
+### 2. The axis reproduces at the protein and phosphoproteome level (Figure 2)
 
-In CPTAC-COAD, the frozen classifier was applied to Hallmark scores computed from protein abundance. **83.3%** of
-96 tumours received the same ecotype from mRNA and protein (**ARI 0.439**), and programme-level concordance was
-highest for the programmes that define E2 and the immune axis (IFN-α r=0.87, IFN-γ r=0.81, EMT r=0.71;
-**F06, E3**). Applying the same classifier to the phosphoproteome — 11,334 sites quantified in at least half of
-the tumours, aggregated to gene level so that hyper-phosphorylated proteins do not dominate — raised agreement to
-**87.5% (ARI 0.558)**, against a 1000-permutation null whose 95th percentile was 0.033 (**p=0.000999**;
-**F09, E3**). Differential phosphorylation between ecotypes reached FDR<0.05 at 3,095 sites, of which 538 exceeded
-|log2FC|>0.5.
+In CPTAC-COAD the frozen classifier was applied to Hallmark scores computed from protein abundance. **Figure 2A**
+orders tumours by protein-assigned ecotype and shows the same E1/E2 programme blocks as the transcriptome.
+Programme-level concordance between mRNA and protein (**Figure 2B**) was highest for the programmes that define E2
+and the immune axis (IFN-α r=0.87, IFN-γ r=0.81, EMT r=0.71, angiogenesis r=0.69). At the level of the assignment
+itself, **Figure 2C** shows that 83.3% of the 96 profiled tumours received the same ecotype from both layers
+(ARI 0.439) — imperfect, but far above the chance level implied by two groups.
 
-Kinase–substrate inference on the same data (PhosphoSitePlus prior; 78 kinases with at least five measured
-substrates) identified 9 kinases at FDR<0.05, five of them without any change in the kinase's own abundance — most
-notably CDK7 activity lower in E2 (d=−1.00, FDR 1.1×10⁻⁴; **F12, E1**). Activity and abundance were only partly
-correlated across kinases (r=0.31), which is the point: some of the phosphoproteome difference is signalling, not
-protein quantity. This remains exploratory — activity is inferred, not measured, in a single cohort.
+The phosphoproteome behaved the same way, and more strongly. **Figure 2D** shows the same programme blocks
+computed from phosphosite data (11,334 sites quantified in at least half the tumours, averaged per gene so that
+proteins with many measured sites do not dominate). Concordance across all three layers (**Figure 2E**) puts
+phospho–protein correlation (median r=0.22) below protein–mRNA (0.42), as expected for a signalling layer, while
+the assignment itself agrees with the protein call in 87.5% of tumours (**Figure 2F**; ARI 0.558).
 
-### 3. Where the axis does not reproduce
+### 3. The axis does not reproduce in methylation, and does not transfer to spots (Figure 3)
 
-**Methylation.** Using gene-level promoter β values for 19,269 genes (annotation-based selection, fixed before
-testing), the ecotype showed essentially no relationship to methylation structure: ARI against an unsupervised
-methylation partition **0.006**, only 5 genes at FDR<0.05 with |logFC|>0.5, global β p=0.113, and CIMP-high
-proportions of 74.5% (E1) versus 84.3% (E2) (**F07, not_supported**). The axis is not a methylation phenotype.
+We tested the same partition against promoter methylation, selecting genes by annotation (19,269 genes) rather than
+by variance, so that the test was not circular. CIMP-high status was equally common in both ecotypes (74.5% E1
+versus 84.3% E2; **Figure 3A**) and global methylation did not differ (p=0.113; **Figure 3B**). Differential
+methylation between ecotypes was essentially absent: only 5 of 19,269 genes reached FDR<0.05 with |logFC|>0.5
+(**Figure 3C**), and an unsupervised methylation partition bore no relationship to the ecotype (ARI 0.006;
+**Figure 3D**). The axis is not a methylation phenotype (F07).
 
-**Spatial projection.** The frozen bulk classifier cannot be applied to 55 µm Visium spots: an internal
-self-check on the bulk training domain returned ARI 0.042, every spot fell on one side of the decision boundary,
-and spot-level programme scores sat about 5 SD below the bulk distribution (**F08, not_supported**). This is a
-statement about transfer, not about biology — a spot has no bulk tumour's compartment structure.
+We then asked whether the same classifier could label Visium spots. It cannot. **Figure 3E** maps the E2 programme
+score across a section and shows fine-grained intra-tumour structure rather than the two-block pattern expected
+from a transferable classifier; **Figure 3F** shows that variation of the E2 programme within sections exceeds
+variation between them. The failure is diagnostic rather than subtle: after scoring in the bulk reference space,
+every spot fell on one side of the decision boundary and spot scores sat about 5 SD below the bulk distribution
+(**Figure 3G**), and a self-check of the same simplified statistic on the bulk training data returned ARI 0.042.
+A 55 µm spot has no compartment structure comparable to a bulk tumour, so the bulk classifier is simply the wrong
+instrument (F08).
 
-**What the spots do show.** Analysing sections on their own terms (k=6 neighbour graph, 199 permutations) showed
-that the E2-defining programmes are spatially autocorrelated (mean Moran's I 0.528) — but **no more so than
-Hallmark programmes generally** (0.587), and they co-localise with the stromal compartment (median ρ=0.49) rather
-than the myeloid (0.04) (**F13, descriptive**). Two caveats are stated rather than buried: with ~2,570 spots per
-section the permutation test rejects the null for every programme (a ceiling effect, so only effect sizes are
-interpreted), and a 400-spot cell2location cross-check did not corroborate the NNLS fractions used for the
-co-localisation statistic (median r=0.11). The spatial co-localisation is therefore method-dependent; the
-autocorrelation results are not, as they involve no deconvolution.
+### 4. What the phosphoproteome and the sections do say about mechanism (Figure 4)
 
-### 4. No association with overall survival, in any cohort
+Between ecotypes, 3,095 phosphosites reached FDR<0.05, of which 538 exceeded |log2FC|>0.5 (**Figure 4A**). Because
+cross-layer agreement could in principle arise by chance, we compared the observed ARI of 0.558 against 1,000 label
+permutations: the null's 95th percentile is 0.033 and the observed value is far outside it (p=0.000999;
+**Figure 4B**). The phosphoproteome reproduces the partition, and does so beyond chance.
 
-In discovery (n=476, 79 events, adjusted for age, sex, stage and sidedness), adding the ecotype improved the
-C-index from 0.763 to 0.772 with a likelihood-ratio **p=0.107** (**F01, not_supported**). The frozen classifier
-reproduced this null externally: meta-analysis of GSE39582 (p=0.333) and GSE17536 (p=0.0785) gave **HR 1.25 (0.97–1.61),
-p=0.081** with consistent direction but no significance (**F03, not_supported**). A third, independent cohort
-analysed on cancer-specific survival (28 cancer deaths) was also null (**HR 1.00, 0.46–2.17, p=0.997**;
-**F15, not_supported**).
+Kinase–substrate inference (PhosphoSitePlus prior; 78 kinases with at least five measured substrates) identified
+9 kinases at FDR<0.05 (**Figure 4C**), and comparing kinase activity with the kinase's own protein abundance
+(**Figure 4D**) separated activity from quantity: CDK7 activity is lower in E2 (d=−1.00) without any change in CDK7
+protein, whereas ROCK1 and PRKG1 differ largely because their abundance differs. Across kinases the two measures
+correlate only r=0.31. This is exploratory — activity is inferred, not measured, in one cohort (F12).
 
-### 5. Association with disease-free survival replicates — but is not incremental over CMS
+Spatial data, analysed on their own terms rather than by projection, show that the E2 programmes are spatially
+structured: mean Moran's I 0.528 on a k=6 neighbour graph (**Figure 4E**). They are, however, no more structured
+than Hallmark programmes in general (0.587), and the per-section view (**Figure 4F**) confirms that this holds
+across sections rather than in one or two. E2 scores co-localise with the stromal compartment (median ρ=0.49) but
+not the myeloid (0.04). We report this descriptively, with two caveats: with ~2,570 spots per section the
+permutation test rejects the null for every programme, so only effect sizes are interpreted; and a 400-spot
+cell2location cross-check did not corroborate the NNLS fractions used for the co-localisation statistic
+(median r=0.11), so that co-localisation is method-dependent whereas the autocorrelation results are not (F13).
 
-The one positive outcome association concerns recurrence. In GSE14333 (226 tumours, 50 disease-free events,
-stage I–III), the adjusted hazard ratio for E2 versus E1 was **2.37 (1.27–4.40), LRT p=0.0043**. Applying the
-frozen classifier to recurrence-free survival in GSE39582 (483 tumours, 137 events, stage I–III) gave **HR 1.50
-(1.07–2.10), p=0.018**, and in GSE17536 (135 tumours, 32 events) **HR 2.51 (1.14–5.53), p=0.022**. The fixed-effect
-summary across the three cohorts is **HR 1.67 (1.24–2.24), p=0.0007**, with no evidence of heterogeneity (p=0.21);
-bootstrapping the fully adjusted estimate left 99% of resamples above 1 (**F11, E2**).
+### 5. Disease-free survival replicates; cancer-specific death does not (Figure 5)
 
-That result is, however, not independent of the published taxonomy. In GSE39582, which carries CMS calls, ecotype
-and CMS overlap substantially (Cramér's V=0.52). Adding CMS to the model removed the disease-free association:
-**HR 1.42 (0.93–2.17), p=0.107**, with a C-index gain over covariates of +0.015 (versus +0.025 when only stage,
-age and sex were adjusted for). The same adjustment removed the (already weaker) OS signal (HR 1.17, p=0.40)
-(**F14, not_supported**). We therefore report the disease-free association as replicated and directionally
-consistent, but not demonstrably incremental over CMS in the one cohort that can test it.
+The one outcome association that replicates concerns recurrence. In GSE14333 (226 tumours, 50 disease-free events,
+stage I–III) E2 tumours recurred sooner (**Figure 5A**; adjusted HR 2.37, LRT p=0.0043), and the effect was stable
+across model specifications and in a 500-resample bootstrap (**Figure 5B**). Applying the frozen classifier without
+refitting to GSE39582 (483 tumours, 137 events, stage I–III) gave HR 1.50 (1.07–2.10), p=0.018, with the all-stage
+and unadjusted models pointing the same way (**Figure 5C**), and the corresponding survival curves separate
+visibly (**Figure 5D**). GSE17536 (135 tumours, 32 events) gave HR 2.51 (1.14–5.53), p=0.022. The fixed-effect
+summary across the three cohorts is HR 1.67 (1.24–2.24), p=0.0007, without heterogeneity (p=0.21) — graded E2
+(F11).
+
+The same cohort that made this test possible also shows its limit. GSE38832 records only 9 recurrences (too few to
+test F11) but 28 cancer deaths, so it was analysed on cancer-specific survival, an endpoint never pooled with
+disease-free endpoints. **Figure 5E** places both endpoints side by side: disease-free survival in this cohort is
+uninformative (HR 0.92, dashed with 9 events), while cancer-specific death shows no association at all (HR 1.00,
+0.46–2.17, p=0.997). The corresponding survival curves are superimposable (**Figure 5F**). The axis predicts
+recurrence, not death (F15).
+
+### 6. No overall-survival association, and no incremental value over CMS (Figure 6)
+
+In discovery (476 tumours, 79 events, adjusted for age, sex, stage and sidedness) the survival curves by ecotype
+overlap (**Figure 6A**) and adding the ecotype to the model moved the C-index from 0.763 to 0.772 with LRT p=0.107
+(F01). A K=4 solution did show an OS association in discovery (C-index 0.785, p=0.024), and **Figure 6B** shows the
+K-sensitivity of the survival model across candidate K — but this was post hoc, the chosen K remains 2, and the K=4
+association did not replicate (F02 E1, F04). External validation reproduced the null: GSE39582 p=0.333, GSE17536
+p=0.0785, fixed-effect meta HR 1.25 (0.97–1.61), p=0.081 (**Figure 6C**).
+
+Finally, the question that determines whether any of this matters clinically. In GSE39582, which carries CMS calls,
+nested models were compared (**Figure 6D**): with stage, age and sex alone the ecotype contributed a C-index gain of
++0.025 (HR 1.50, p=0.018); adding CMS cut the gain to +0.018, and adding MSI and CMS together left **+0.015 with
+HR 1.42 (0.93–2.17), p=0.107**. The reason is visible in **Figure 6E**: ecotype and CMS are substantially
+overlapping classifications (Cramér's V=0.52), with E2 enriched in CMS4 and depleted in CMS1–2. The disease-free
+association is therefore replicated and directionally consistent, but not demonstrable incremental over the
+published taxonomy (F14).
+
+### 7. Supplementary analyses and diagnostics (Supplementary Figures 1 and 2)
+
+Quality control preceded all discovery analyses. **Supplementary Figure 1A** shows sample separation before batch
+correction and **Supplementary Figure 1B** after it; library sizes were comparable across groups
+(**Supplementary Figure 1C**) and the top 500 variable features (**Supplementary Figure 1D**) were used for the
+QC embedding. Four further panels are reported for completeness rather than as claims.
+**Supplementary Figure 2A** (calibration) and **Supplementary Figure 2B** (decision-curve analysis) describe the
+discovery OS model, which is null — they are not a claim of clinical utility, and no net-benefit advantage is
+interpreted. **Supplementary Figure 2C** shows survival by protein-assigned ecotype in CPTAC-COAD: with only 8
+deaths it is uninformative (HR 2.44, p=0.286) and is reported as a direction check, not a test. **Supplementary
+Figure 2D** is the negative control for the methylation layer: survival by methylation cluster does not differ
+(HR 0.74, p=0.398), consistent with the ecotype carrying no methylation signal.
 
 ---
 
 ## Discussion
 
 The axis we describe is unusual less in what it predicts than in where it survives. It persists from mRNA to
-protein to phosphoprotein — three assays with different dynamic ranges, different quantification and only partly
-overlapping gene coverage — with concordance at the level usually reported between technical replicates of the
-same assay. It disappears at the methylome and cannot be projected onto spatial spots. Read together, these
-results suggest the partition captures something about the tumour–stroma–immune axis that is post-transcriptionally
-and post-translationally maintained, rather than a promoter-methylation program or a property of individual
-cells in situ.
+protein to phosphoprotein — three assays with different dynamic ranges, coverage and quantification — at a level
+of concordance usually reported between technical replicates. It vanishes at the methylome and cannot be projected
+onto spots. Together these results suggest the partition tracks something about the tumour–stroma–immune axis that
+is post-transcriptionally and post-translationally maintained, rather than a promoter-methylation programme.
 
-The prognostic picture is more deflationary. Three independent cohorts, analysed on the endpoint each can support,
-give no association with death; the one association that replicates is with recurrence. This pattern — recurrence
-yes, death no — is biologically plausible in a disease where salvage therapy and competing mortality dilute the
-recurrence signal, but it is also exactly the pattern that should make one cautious about claiming clinical
-utility. The incremental-value analysis settles the question for this dataset collection: with stage, MSI and CMS
-in the model, the ecotype adds nothing detectable.
+The prognostic picture is deflationary, and that is the paper's point. Three independent cohorts, each analysed on
+the endpoint it can support, show no association with death; the one association that replicates concerns
+recurrence. That dissociation is biologically plausible — salvage therapy and competing mortality dilute recurrence
+signals — but it is also exactly the pattern that should restrain claims of clinical utility. The incremental-value
+analysis then settles the question for this dataset collection: with stage, MSI and CMS in the model, the ecotype
+adds nothing detectable.
 
-Our results do not show that expression-based taxonomy of CRC is worthless. They show something narrower and more
-useful for the field: a two-group axis can be made reproducible across assays if it is frozen early and tested
-without refitting, and reproducibility does not imply incremental clinical value. Both properties have to be
-demonstrated, and they can dissociate.
+We do not conclude that expression-based taxonomy of colorectal cancer is worthless. We conclude something narrower
+and, for the field, more useful: a two-group axis can be made reproducible across assays if it is frozen early and
+tested without refitting, and reproducibility does not imply incremental clinical value. Both properties must be
+demonstrated, and they can dissociate. Studies proposing new subtypes would do well to report the second test as
+routinely as the first.
 
-**Limitations.** All data are retrospective and public; there is no wet-lab validation and no prospective cohort.
-Cross-platform layers come from small cohorts (CPTAC-COAD: 96 tumours, 8 deaths; GSE14333: 226 tumours, 50 events),
-so protein and phospho analyses test reproducibility, not prognosis. The phosphoproteome is 59.8% missing before
-filtering; kinase activity is inferred rather than measured. The incremental-value test rests on a single cohort
-(GSE39582), because the other cohorts carry no CMS calls; CMS itself was expression-derived in that same cohort,
-so ecotype and CMS are not independent by construction. Endpoint definitions differ slightly between cohorts (DFS
-in GSE14333 and GSE38832, RFS in GSE39582 and GSE17536) and disease-free endpoints are never pooled with overall
-survival. Finally, classifier agreement is sensitive to how programme scores are built: recomputing Hallmark
-scores from a different gene-set mapping moved protein-layer agreement from 85.4% to 83.3% by flipping 2 of 96
-borderline tumours, a sensitivity we report rather than hide.
+**Limitations.** All data are retrospective and public: no wet-lab validation, no prospective cohort. Cross-platform
+layers come from small cohorts (CPTAC-COAD 96 tumours and 8 deaths; GSE14333 226 tumours and 50 events), so protein
+and phospho analyses test reproducibility rather than prognosis. The phosphoproteome is 59.8% missing before
+filtering and kinase activity is inferred, not measured. The incremental-value test rests on one cohort, because the
+others carry no CMS calls, and CMS itself is expression-derived in that cohort, so ecotype and CMS are not
+independent by construction. Endpoint definitions differ slightly across cohorts (DFS in GSE14333 and GSE38832, RFS
+in GSE39582 and GSE17536), and disease-free endpoints are never pooled with mortality endpoints. Classifier
+agreement is sensitive to how programme scores are built: a different gene-set mapping moved protein-layer agreement
+from 85.4% to 83.3% by flipping 2 of 96 borderline tumours — a sensitivity we report rather than hide. One spatial
+co-localisation statistic is method-dependent, as noted in Results.
 
-**What we do not claim.** We do not claim a new prognostic classifier, a clinically actionable subtype, a causal
-role for any programme, or that the ecotype refines CMS. We do not claim kinase activity as a measured quantity.
-We do not claim any spatial ecotype assignment — the bulk classifier does not transfer to spots, and no spot was
-labelled.
+**What we do not claim.** No new prognostic classifier; no clinically actionable subtype; no causal role for any
+programme; no refinement beyond CMS; no measured kinase activity; no spatial ecotype assignment.
 
 ---
 
 ## Methods
 
-**Data.** TCGA-COAD/READ RNA-seq (624 tumours, GDC Data Release 46.0); external cohorts GSE39582 (585), GSE17536
-(177), GSE14333 (290, DFS only), GSE38832 (122, CEL files); CPTAC-COAD proteome and phosphoproteome (PDC000116,
-cBioPortal datahub); TCGA 450K methylation (393 tumours); Visium sections GSE283052 (12) and GSE267401 (4).
-Single-cell reference: GSE132465 (63,689 cells, six lineages).
+**Data.** TCGA-COAD/READ RNA-seq (624 tumours; GDC Data Release 46.0). External cohorts: GSE39582 (585), GSE17536
+(177), GSE14333 (290, DFS only), GSE38832 (122, CEL files). CPTAC-COAD proteome and phosphoproteome (PDC000116, via
+the cBioPortal datahub). TCGA 450K methylation (393 tumours). Visium: GSE283052 (12 sections) and GSE267401 (4).
+Single-cell reference: GSE132465.
 
-**Programme scoring.** Fifty Hallmark sets. Discovery used GSVA; external layers used the mean of gene-wise
-z-scores within a set, with sites averaged per gene in the phosphoproteome so that proteins with many measured
-sites do not dominate. The sets are frozen in `Environment/hallmark_frozen.gmt` so scoring is reproducible offline.
+**Scoring.** Fifty Hallmark sets; discovery used GSVA, external layers the mean of within-set gene z-scores, with
+phosphosites averaged per gene. Sets are frozen in `Environment/hallmark_frozen.gmt` so scoring is offline and
+reproducible.
 
-**Classifier.** Nearest centroid on the 50 programme scores, computed in the discovery data and frozen. Applied to
-every external layer without refitting; features recoverable in each layer are reported (50/50 in CPTAC,
-49/50 in the phosphoproteome).
+**Classifier.** Nearest centroid on 50 programme scores, computed in discovery and frozen. Applied to every external
+layer without refitting; recoverable features are reported for each layer.
 
-**Statistics.** Cox proportional hazards with likelihood-ratio tests; C-index for discrimination; fixed-effect
-inverse-variance meta-analysis; bootstrap (500 resamples) for stability; permutation nulls (1,000 for cross-layer
-ARI, 199 for spatial autocorrelation). Endpoints are analysed separately and never pooled across families
-(OS/CSS/DSS versus DFS/RFS). Complete-case analysis for covariates, with counts reported.
+**Statistics.** Cox models with likelihood-ratio tests; C-index; fixed-effect inverse-variance meta-analysis;
+bootstrap (500 resamples) for stability; permutation nulls (1,000 for cross-layer ARI; 199 for spatial
+autocorrelation). Endpoints analysed separately and never pooled across families (OS/CSS/DSS versus DFS/RFS).
+Complete-case analysis for covariates, with counts reported.
 
-**Evidence grading.** E3 = cross-platform convergence across assays; E2 = association replicated in an independent
-cohort; E1 = exploratory or post hoc; descriptive = characterisation without inference; not_supported = the
-pre-specified analysis did not reach significance. Fifteen findings were graded (F01–F15) and every claim in this
-manuscript maps to one of them (`claims_to_evidence.tsv`).
+**Grading.** E3 cross-platform convergence; E2 replicated association; E1 exploratory/post hoc; descriptive;
+not_supported. Fifteen findings (F01–F15) were graded and are the sole licence for claims.
 
-**Reproducibility.** All analyses are scripted (`06_Analysis/1_R/1_Rscripts/`), logged to a decision log, and version
-controlled. Analysis scripts use one level of parallelism (6 workers) with BLAS pinned to one thread per worker.
-
-**Code and data availability.** Code and derived tables are in this repository; raw data are public and referenced
-by accession. A Zenodo DOI is pending.
+**Reproducibility.** All analyses scripted (`06_Analysis/1_R/1_Rscripts/`), logged (`Logs/DECISION_LOG.tsv`) and
+version-controlled. One level of parallelism (6 workers) with BLAS pinned to one thread per worker. Figures are
+composed from a machine-readable plan (`12_Manuscript/figures_plan.tsv`) by `Scripts/compose_figures.R`.
 
 ---
 
 ## Figure legends
 
-| Figure | Content |
-|---|---|
-| plot_1 | Single-cell marker signatures from GSE132465 (six lineages) |
-| plot_2–5 | Quality control: PCA before/after batch correction, library size, top variable features |
-| plot_6–8 | Hallmark signature heatmap, consensus matrix for K=2, SNF ecotype PCA |
-| plot_9–10 | Ecotype stability across K; Kaplan–Meier by ecotype (OS, discovery) |
-| plot_11–12 | Five-year calibration; decision-curve analysis |
-| plot_13 | Mean TCGA cell-type fractions (NNLS against the single-cell reference) |
-| plot_14 | K-sensitivity of the survival model |
-| plot_15 | External-validation forest plot (GSE39582, GSE17536, fixed-effect) |
-| plot_16–19 | CPTAC-COAD protein layer: programme heatmap by ecotype, mRNA–protein concordance, KM, agreement matrix |
-| plot_20–24 | TCGA 450K: CIMP score, global methylation, top differentially methylated genes, KM by methylation cluster, ecotype versus methylation cluster |
-| plot_25–27 | Spatial transfer diagnostics: spot programme scores, within- versus between-section variation, covariate shift |
-| plot_28–32 | Phosphoproteome: programme heatmap, three-layer concordance, differential-site volcano, phospho–protein agreement, permutation null |
-| plot_33–34 | GSE14333 disease-free survival: KM, hazard ratios across models |
-| plot_35–36 | GSE39582 recurrence-free survival: replication forest, KM |
-| plot_37–38 | Kinase-substrate activity: volcano, activity versus abundance |
-| plot_39–40 | Spatial niches: Moran's I per programme, per-section Moran's I for E2 programmes |
-| plot_41–42 | Incremental value: C-index by covariate set, ecotype versus CMS composition |
-| plot_43–44 | GSE38832: DSS versus DFS hazard ratios, cancer-specific survival by ecotype |
+**Figure 1. A stable two-ecotype axis in TCGA-COAD/READ.** (A) Hallmark programme scores ordered by ecotype.
+(B) Consensus matrix at K=2. (C) Similarity-fusion embedding coloured by ecotype. (D) Stability across candidate K.
+(E) Single-cell marker signatures from GSE132465. (F) Mean deconvolved cell-type fractions.
+
+**Figure 2. The axis reproduces at the protein and phosphoproteome level.** (A) Protein programme scores by
+ecotype. (B) Programme-level mRNA–protein concordance. (C) Ecotype agreement, mRNA versus protein. (D) Phospho
+programme scores by ecotype. (E) Three-layer programme concordance. (F) Ecotype agreement, phospho versus protein.
+
+**Figure 3. The axis does not reproduce in methylation and does not transfer to spots.** (A) CIMP score by
+ecotype. (B) Global methylation by ecotype. (C) Top differentially methylated genes. (D) RNA ecotype versus
+methylation cluster. (E) E2 programme score per Visium spot. (F) Within- versus between-section variation.
+(G) Covariate shift of spot scores relative to bulk.
+
+**Figure 4. Signalling and tissue architecture.** (A) Differential phosphosite volcano. (B) Permutation null of the
+cross-layer ARI. (C) Kinase-substrate activity volcano. (D) Kinase activity versus kinase abundance. (E) Moran's I
+of Hallmark programmes across sections. (F) Per-section Moran's I for the E2 programmes.
+
+**Figure 5. Disease-free survival replicates; cancer-specific death does not.** (A) GSE14333 disease-free survival
+by ecotype. (B) GSE14333 hazard ratios across models. (C) GSE39582 replication forest. (D) GSE39582
+recurrence-free survival. (E) GSE38832 DSS versus DFS hazard ratios. (F) GSE38832 cancer-specific survival.
+
+**Figure 6. No overall-survival association and no incremental value over CMS.** (A) Discovery overall survival by
+ecotype. (B) K sensitivity of the survival model (K=4 is post hoc). (C) External OS validation forest.
+(D) C-index by covariate set, with and without the ecotype. (E) Ecotype versus CMS composition.
+
+**Supplementary Figure 1. Quality control.** (A) PCA before batch correction. (B) PCA after batch correction.
+(C) Library size by group. (D) Top 500 variable features.
+
+**Supplementary Figure 2. Model diagnostics and negative controls.** (A) Five-year calibration of the null OS
+model. (B) Five-year decision curve (no utility claim). (C) Survival by protein-assigned ecotype (8 deaths;
+underpowered). (D) Survival by methylation cluster (negative control).
 
 ---
 
 ## Pending before submission
 
 1. **Author list and affiliations** — `Authors.xlsx` is still an empty template.
-2. **Target journal and formatting** — reference style, word limits, supplementary structure.
-3. **Optional strengthening** — a properly trained cell2location reference (GSE132465 labels and TPM matrix are
-   on disk) would settle whether the E2–stromal co-localisation survives a second deconvolution method.
-4. **Optional** — an independent cohort with CMS/MSI plus a disease-free endpoint would test whether F14
-   (non-incrementality) is cohort-specific.
+2. **Journal choice** — reference style, word limits, supplementary structure.
+3. **Optional strengthening** — a properly trained cell2location reference (GSE132465 labels and TPM matrix are on
+   disk) would settle whether the F13 co-localisation survives a second deconvolution method.
