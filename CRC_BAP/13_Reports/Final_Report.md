@@ -40,6 +40,7 @@ The graded ledger is authoritative: `13_Reports/Findings_Ledger.csv` (F01–F13)
 | F12 | A subset of kinases shows ecotype-associated activity not explained by kinase abundance (9/78 at FDR<0.05, 5 abundance-independent; inferred) | E1 |
 | F13 | E2 programmes are spatially autocorrelated and co-localise with the stromal compartment, but are not more structured than other Hallmark programmes | descriptive |
 | F14 | The ecotype does not add disease-free prognostic information beyond stage, MSI and CMS (HR 1.42, p = 0.107 after adjustment; ecotype–CMS Cramér's V = 0.52) | not_supported |
+| F15 | No association between the ecotype and cancer-specific death (DSS) in GSE38832 (adjusted HR 1.00, p = 0.997) | not_supported |
 
 ## 8. Biological interpretation
 The stable axis is a two-way split between a Hedgehog / pancreas-beta / MYC-V2 programme (E1) and an
@@ -65,6 +66,11 @@ overall survival, which is null in discovery and in external validation.
   covariates) and also removes the OS association (HR 1.17, p = 0.40). Ecotype and CMS overlap substantially
   (Cramér's V = 0.52). The ecotype is therefore reproducible and directionally prognostic, but **not
   demonstrably incremental over CMS** in the one cohort that carries CMS calls.
+- **Third cohort, GSE38832 (F15, `not_supported`):** GEO's record for this cohort holds only 9 recurrences
+  (so it cannot test F11) but 28 cancer deaths. On DSS, adjusted for stage (no age/sex in the record) the
+  ecotype HR is **1.00 (0.46–2.17), p = 0.997** — no association with cancer-specific death, consistent with
+  the F01/F03 nulls. Metadata were obtained through GEO's SOFT endpoint because `ftp.ncbi.nlm.nih.gov` is
+  blocked from this host.
 
 ## 10. Robustness
 Outlier-excluded discovery model C-index 0.773 (LRT p = 0.151); K-sensitivity table in `08_Robustness/`;
@@ -107,7 +113,7 @@ classifier; an independent DFS cohort (e.g. GSE38832) to test F10.
 - E1 (exploratory / post hoc): F02 (K=4 discovery), F12 (kinase activity, inferred, single cohort)
 - descriptive: F05 (single-cell deconvolution), F13 (spatial programme structure, no outcome)
 - not_supported: F01, F03, F04 (OS association), F07 (methylation), F08 (spatial transfer),
-  **F14 (no incremental value beyond CMS/MSI)**
+  **F14 (no incremental value beyond CMS/MSI)**, **F15 (no association with cancer-specific death in GSE38832)**
 - The dissociation is the message, with its limit stated: the ecotype axis reproduces across assays and is
   associated with disease-free survival, but no OS association replicates, and the disease-free association is
   not incremental over CMS (F14). Reproducibility is therefore established; clinical added value is not.

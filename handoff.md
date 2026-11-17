@@ -64,6 +64,10 @@ The manuscript must state reproducibility as established and clinical added valu
   + CMS: RFS stage I–III HR 1.42 (0.93–2.17), p 0.107, LRT p 0.109, ΔC-index +0.015 over covariates
   (was +0.025 with stage/age/sex alone). Bootstrap of the adjusted HR: median 1.25 (0.82–1.88), 88 % > 1.
   OS is likewise removed by CMS (1.17, p 0.40). Ecotype–CMS Cramér's V = 0.52.
+- **Third cohort (F15, `not_supported`) — NEW**: `22e_gse38832_endpoints.R`. GSE38832's GEO record holds only
+  9 recurrences (so it cannot test F11) but 28 cancer deaths; on DSS, stage-adjusted, HR = 1.00 (0.46–2.17),
+  p 0.997 — no association with cancer-specific death, consistent with the F01/F03 nulls. Metadata came from
+  GEO's SOFT endpoint (122 brief records) because `ftp.ncbi.nlm.nih.gov` is blocked.
 
 ### 2.4 Cross-platform layers
 
@@ -107,12 +111,13 @@ Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
 
 ### 2.6 Outputs
 
-- **Figures:** `09_Figures/plots/plot_1` … `plot_42` (PDF + JPEG 300 dpi), `plot_manifest.tsv` (42 entries).
-  Numbering assigned in `14_collect_plots.R`; append at `plot_43+`.
+- **Figures:** `09_Figures/plots/plot_1` … `plot_44` (PDF + JPEG 300 dpi), `plot_manifest.tsv` (44 entries).
+  Numbering assigned in `14_collect_plots.R`; append at `plot_45+`.
   plot_16–19 protein; 20–24 methylation; 25–27 spatial transfer; **28–32 phospho; 33–34 GSE14333 DFS;
-  35–36 GSE39582 RFS; 37–38 kinase activity; 39–40 spatial niches; 41–42 incremental value beyond CMS**.
-- **Ledger:** `13_Reports/Findings_Ledger.csv` — F01–F14 (12 fields, always in id order). F09, F11, F12, F13
-  and F14 are written by their scripts and rewritten in place; do not hand-edit them. F11's
+  35–36 GSE39582 RFS; 37–38 kinase activity; 39–40 spatial niches; 41–42 incremental value beyond CMS;
+  43–44 GSE38832 endpoints**.
+- **Ledger:** `13_Reports/Findings_Ledger.csv` — F01–F15 (12 fields, always in id order). F09, F11, F12, F13,
+  F14 and F15 are written by their scripts and rewritten in place; do not hand-edit them. F11's
   contradicting_evidence is refreshed by `25_incremental_value.R`.
 - **Reports:** `13_Reports/Final_Report.md`; `07_Validation/{Validation,K4_validation,Proteomics,
   Methylation,Spatial}_Report.md`; `21_Phospho_Report.md`; `22b_DFS_Report.md`; `22d_DFS_Replication_Report.md`;
@@ -125,10 +130,11 @@ Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
 
 ## 3. Current Blockers (Where we are stuck)
 
-1. **GSE38832 has no metadata.** The RAW archive is CEL-only; `GSE38832_series_matrix.txt.gz` is absent and
-   NCBI is unreachable from this host (IPv4/IPv6, http/https, eutils — all fail; Chinese mirrors work).
-   Expression is already built, so the cohort runs the moment the file lands in
-   `03_Raw_Data/GSE38832/`. **Needs a manual download by the user.**
+1. **GSE38832 is RESOLVED (2026-11-17).** `ftp.ncbi.nlm.nih.gov` is still blocked from this host, but the GEO
+   **SOFT endpoint on `www.ncbi.nlm.nih.gov`** works: `Scripts/fetch_gse38832_metadata.py` fetched all 122 brief
+   sample records and assembled `GSE38832_series_matrix.txt.gz`, so the cohort is built and analysed (F15).
+   Caveat from that cohort: GEO's record holds only 9 recurrences (so it cannot test F11) but 28 cancer deaths,
+   and no age/sex. If a *fuller* follow-up ever matters, the series-matrix download remains the better source.
 2. **`msigdbdf` cannot be installed** (not on any reachable mirror). `msigdbr()` therefore cannot fetch;
    everything now goes through the frozen GMT. If a future step needs a *different* MSigDB collection
    (not Hallmark), it must be added to the GMT manually.
@@ -138,9 +144,12 @@ Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
    descriptive (F08).
 5. **CPTAC-COAD survival is uninformative** (8 deaths) — protein/phospho layers test reproducibility only.
 6. **450K methylation covers promoters only** — EPIC/WGBS needed to exclude non-promoter regulation.
-7. **`cell2location` is not installed** — the 539 MB torch wheel never finished downloading (aliyun failed at
-   10.5 MB; the Tsinghua retry is still in flight), so spot deconvolution is NNLS. A retried install on a
-   stable link, or a GPU host, is needed for cell2location-scale deconvolution.
+7. **cell2location: installed and RUN, but the cross-check is inconclusive.** `pip install cell2location` finally
+   succeeded on the Tsinghua mirror once the link improved (needs `pyro-ppl==1.8.6`; 1.9.2 breaks the import with
+   `deep_getattr`). Trained with the signature matrix as `cell_state_df` on 2 sections / 400 spots / 100 epochs:
+   fractions came back near-uniform and did **not** corroborate NNLS (median r = 0.11), so F13's E2-stromal
+   co-localisation is method-dependent while its Moran's I results are not. A verdict requires a properly trained
+   reference (GSE132465 labels + TPM matrix are on disk) or a GPU host — see `Scripts/cell2location_check.py`.
 8. **No second cohort with CMS/MSI calls** — GSE14333 has no CMS and GSE17536 has neither CMS nor MSI, so
    F14 (non-incrementality over CMS) cannot be tested outside GSE39582. This is the main limitation on the
    clinical-value conclusion.
@@ -273,7 +282,9 @@ activity result leave E1; the PhosphoSitePlus prior is already in place (`KSEAap
   GSE14333 DFS: `22a_build_gse14333_dfs.R` + `22b_dfs_validation.R`;
   **GSE38832 build: `22c_build_gse38832_dfs.R`**; **RFS replication: `22d_dfs_replication.R`**;
   **kinase activity: `23_kinase_activity.R`**; **spatial niches: `24_spatial_niches.R`**;
-  **incremental value beyond CMS: `25_incremental_value.R`**.
+  **incremental value beyond CMS: `25_incremental_value.R`**; **GSE38832 endpoints: `22e_gse38832_endpoints.R`**.
+- Metadata/robustness helpers: `Scripts/fetch_gse38832_metadata.py` (GEO SOFT fallback when FTP is blocked),
+  `Scripts/cell2location_check.py` (NNLS vs cell2location concordance).
 - Environment: `Scripts/install_missing_packages.R`, `Scripts/export_frozen_hallmark_gmt.R`,
   `Environment/hallmark_frozen.gmt` (50 Hallmark sets, Ensembl).
 - Figure manifest: `14_collect_plots.R` (run last; idempotent; safe self-copy).

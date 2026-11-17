@@ -339,7 +339,7 @@ f13 <- data.frame(
   grade = grade,
   verb_used = if (grade == "E1") "co-localises with" else "described",
   contradicting_evidence = "bulk classifier still does not transfer to spots (F08) - no spot-level ecotype label is claimed; E2 programmes are no more autocorrelated than other Hallmark programmes",
-  limitation = "no outcome data; NNLS deconvolution unregularised; 55 um spots mix cells; single platform; per-section scaling used only for spatial statistics; permutation p-values at the ceiling because of spot counts",
+  limitation = "no outcome data; NNLS deconvolution unregularised; 55 um spots mix cells; single platform; per-section scaling used only for spatial statistics; permutation p-values at the ceiling because of spot counts; a 400-spot cell2location cross-check (Scripts/cell2location_check.py) did NOT corroborate the NNLS fractions (median r 0.11), so the E2-stromal co-localisation is method-dependent while the Moran's I results are not",
   next_test = "cell2location deconvolution at GPU scale; spatial cohort with matched outcome",
   figure_table = "plot_39; plot_40",
   stringsAsFactors = FALSE

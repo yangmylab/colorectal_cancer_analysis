@@ -41,3 +41,5 @@ plot_39	09_Figures/plots/plot_39	Spatial: Moran's I of Hallmark programmes acros
 plot_40	09_Figures/plots/plot_40	Spatial: per-section Moran's I for the E2-defining programmes
 plot_41	09_Figures/plots/plot_41	GSE39582: C-index by covariate set, with and without the ecotype
 plot_42	09_Figures/plots/plot_42	GSE39582: ecotype vs CMS subtype composition
+plot_43	09_Figures/plots/plot_43	GSE38832: DSS vs DFS hazard ratios (mortality vs disease-free endpoint)
+plot_44	09_Figures/plots/plot_44	GSE38832: cancer-specific survival (DSS) by ecotype
