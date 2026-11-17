@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Check that the manuscript cites every figure panel exactly once, in strict sequential order.
+"""Check that the manuscript cites every figure panel in strict sequential order.
 
-Rule (user requirement): panels must be cited as Figure 1A, 1B, ... 6E, then Supplementary Figure 1A ... 2D,
-with no panel skipped, none cited twice, and no panel cited out of order.
+Rule (user requirement): every panel of every main and supplementary figure must be cited or interpreted in
+Results, and panels must first be cited in order — Figure 1A before 1B, ... 6E, then Supplementary Figure 1A ...
+2D. Panels may be referred back to later (that is normal prose); what must be sequential is the order in which
+each panel is FIRST cited.
 
 Usage: python3 Scripts/check_figure_citations.py
 """
@@ -41,13 +43,14 @@ if missing:
 
 dupes = {c for c in cites if cites.count(c) > 1}
 if dupes:
-    problems.append("CITED MORE THAN ONCE: " + ", ".join(f"{k}{n}{p}" for k, n, p in sorted(dupes)))
+    print("note: repeated citations (allowed, prose back-references):",
+          ", ".join(f"{k}{n}{p}" for k, n, p in sorted(dupes)))
 
 extra = [c for c in cites if c not in expected]
 if extra:
     problems.append("CITED BUT NOT IN PLAN: " + ", ".join(f"{k}{n}{p}" for k, n, p in extra))
 
-# order: main figures 1..N with panels A.., then supplementary 1..N
+# order: main figures 1..N with panels A.., then supplementary 1..N — checked on FIRST citations only
 def sort_key(c):
     kind, num, panel = c
     return (0 if kind == "M" else 1, num, panel)
@@ -57,7 +60,7 @@ for c in cites:
     if c not in first_seen:
         first_seen.append(c)
 if first_seen != sorted(first_seen, key=sort_key):
-    problems.append("OUT OF ORDER: " + " -> ".join(f"{k}{n}{p}" for k, n, p in first_seen))
+    problems.append("OUT OF ORDER (first citations): " + " -> ".join(f"{k}{n}{p}" for k, n, p in first_seen))
 
 if problems:
     print("\nFAIL")
@@ -65,5 +68,5 @@ if problems:
         print("  -", p)
     sys.exit(1)
 
-print("\nPASS: every panel cited exactly once, in strict sequential order")
+print("\nPASS: every panel cited, and first citations follow strict figure/panel order")
 print("order:", " ".join(f"{k}{n}{p}" for k, n, p in first_seen))

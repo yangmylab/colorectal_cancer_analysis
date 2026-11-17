@@ -159,18 +159,31 @@ overlapping classifications (Cramér's V=0.52), with E2 enriched in CMS4 and dep
 association is therefore replicated and directionally consistent, but not demonstrable incremental over the
 published taxonomy (F14).
 
-### 7. Supplementary analyses and diagnostics (Supplementary Figures 1 and 2)
+### 7. Evidence supporting Figures 1–6 (Supplementary Figures 1 and 2)
 
-Quality control preceded all discovery analyses. **Supplementary Figure 1A** shows sample separation before batch
-correction and **Supplementary Figure 1B** after it; library sizes were comparable across groups
-(**Supplementary Figure 1C**) and the top 500 variable features (**Supplementary Figure 1D**) were used for the
-QC embedding. Four further panels are reported for completeness rather than as claims.
-**Supplementary Figure 2A** (calibration) and **Supplementary Figure 2B** (decision-curve analysis) describe the
-discovery OS model, which is null — they are not a claim of clinical utility, and no net-benefit advantage is
-interpreted. **Supplementary Figure 2C** shows survival by protein-assigned ecotype in CPTAC-COAD: with only 8
-deaths it is uninformative (HR 2.44, p=0.286) and is reported as a direction check, not a test. **Supplementary
-Figure 2D** is the negative control for the methylation layer: survival by methylation cluster does not differ
-(HR 0.74, p=0.398), consistent with the ecotype carrying no methylation signal.
+Every supplementary panel underpins a specific main-figure claim. They are cited here in order, after the main
+figures, and each is explicitly tied to the panel(s) it supports.
+
+**Supplementary Figure 1A** shows sample separation before batch correction and **Supplementary Figure 1B** after
+it. The ecotypes separate in both embeddings, but only the batch-corrected one is used downstream, which is what
+licenses reading Figure 1A–1D as biology rather than an artefact of processing. Library sizes were comparable
+between groups (**Supplementary Figure 1C**) and the top 500 variable features that drive the embedding are shown
+in **Supplementary Figure 1D**, so the separation in Figure 1C cannot be attributed to uneven sequencing depth or
+to a handful of features.
+
+**Supplementary Figure 2A** (five-year calibration) and **Supplementary Figure 2B** (decision curve) characterise
+the discovery overall-survival model of Figure 6A and the covariate comparison of Figure 6D. Because that model
+carries no significant ecotype term, no net-benefit advantage is interpreted: both panels are reported for
+completeness, not as a claim of clinical utility.
+
+**Supplementary Figure 2C** gives survival by protein-assigned ecotype in CPTAC-COAD, the cohort behind
+Figure 2A–2C. With 8 deaths it is uninformative (HR 2.44, p=0.286) and serves only as a direction check on the
+protein assignment; it cannot test prognosis.
+
+**Supplementary Figure 2D** is the methylation counterpart of Figure 3A–3D: survival by methylation cluster does
+not differ (HR 0.74, p=0.398). That null is what would be expected if the ecotype carried no methylation signal,
+and it rules out the possibility that the negative methylation result reflects a methylation cluster with better
+outcome.
 
 ---
 
@@ -266,12 +279,14 @@ recurrence-free survival. (E) GSE38832 DSS versus DFS hazard ratios. (F) GSE3883
 ecotype. (B) K sensitivity of the survival model (K=4 is post hoc). (C) External OS validation forest.
 (D) C-index by covariate set, with and without the ecotype. (E) Ecotype versus CMS composition.
 
-**Supplementary Figure 1. Quality control.** (A) PCA before batch correction. (B) PCA after batch correction.
-(C) Library size by group. (D) Top 500 variable features.
+**Supplementary Figure 1. Quality control underpinning Figure 1.** (A) PCA before batch correction.
+(B) PCA after batch correction. (C) Library size by group. (D) Top 500 variable features. Each panel supports the
+reading of Figure 1A–1D as biological separation.
 
-**Supplementary Figure 2. Model diagnostics and negative controls.** (A) Five-year calibration of the null OS
-model. (B) Five-year decision curve (no utility claim). (C) Survival by protein-assigned ecotype (8 deaths;
-underpowered). (D) Survival by methylation cluster (negative control).
+**Supplementary Figure 2. Diagnostics and negative controls underpinning Figures 2, 3 and 6.** (A) Five-year
+calibration of the null OS model (supports Figure 6A). (B) Five-year decision curve (supports Figure 6D; no
+utility claim). (C) Survival by protein-assigned ecotype, 8 deaths, underpowered (supports Figure 2A–2C).
+(D) Survival by methylation cluster, negative control (supports Figure 3A–3D).
 
 ---
 

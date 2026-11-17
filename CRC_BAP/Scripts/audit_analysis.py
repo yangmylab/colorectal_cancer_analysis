@@ -63,7 +63,7 @@ check("6 main figures with 5-7 panels", len(main) == 6 and all(5 <= v <= 7 for v
 check("2 supplementary figures with 4-6 panels", len(supp) == 2 and all(4 <= v <= 6 for v in supp.values()),
       str(supp))
 
-composite = ROOT / "09_Figures" / "composite"
+composite = ROOT / "12_Manuscript" / "Figures"
 comp_files = sorted(p.stem for p in composite.glob("*.jpg"))
 check("composite figures rendered", len(comp_files) == 8, ", ".join(comp_files))
 

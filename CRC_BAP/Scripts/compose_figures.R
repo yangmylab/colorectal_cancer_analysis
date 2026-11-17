@@ -16,7 +16,7 @@ suppressPackageStartupMessages({
 
 PLAN <- "12_Manuscript/figures_plan.tsv"
 SRC <- "09_Figures/plots"
-OUT <- "09_Figures/composite"
+OUT <- "12_Manuscript/Figures"
 dir.create(OUT, recursive = TRUE, showWarnings = FALSE)
 
 plan <- fread(PLAN, data.table = FALSE)

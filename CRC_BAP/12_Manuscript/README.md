@@ -8,9 +8,9 @@ Draft **v0.2** (2026-11-17): figure set composed, Results rewritten so every pan
 |---|---|
 | `manuscript.md` | Main draft: abstract, introduction, Results (panel-by-panel), discussion, methods, figure legends, pending items |
 | `manuscript.docx` | Word rendering built with the reference template `MN/Paper_1/reference/tnr_fangsong_redcode.docx` (Times New Roman + FangSong) |
-| `figures_plan.tsv` | **Single source of truth** for panel composition: 44 panels → 6 main + 2 supplementary figures |
+| `figures_plan.tsv` | **Single source of truth** for panel composition: 44 panels → 6 main + 2 supplementary figures, with a `supports_main` column recording which main panel each supplementary panel backs |
 | `claims_to_evidence.tsv` | Every claim → finding id, grade, datasets, figures, ledger statistic, citation caveat |
-| `../09_Figures/composite/` | The composed figures: `Figure_1` … `Figure_6`, `Supplementary_Figure_1`, `_2` (PDF + JPEG) |
+| `Figures/` | The composed figures: `Figure_1` … `Figure_6`, `Supplementary_Figure_1`, `_2` (PDF + JPEG), generated directly here by `Scripts/compose_figures.R` |
 
 ## The rule this manuscript follows
 
@@ -42,10 +42,12 @@ Two constraints matter most when editing:
 | Supplementary Figure 1 | 4 (A–D) | 2, 3, 4, 5 | quality control |
 | Supplementary Figure 2 | 4 (A–D) | 11, 12, 18, 23 | diagnostics and negative controls |
 
-Nothing is dropped: all 44 panels appear, and every panel is cited in Results in strict order
-(Figure 1A → 1B → … → 6E → Supplementary Figure 1A → … → 2D). Panels that could overstate
-(post-hoc K=4, calibration/decision-curve for a null model, underpowered KMs) sit in the supplement **and are
-cited with their limitation stated**.
+Nothing is dropped: all 44 panels appear, and every panel is cited in Results with **first citations in strict
+order** (Figure 1A → 1B → … → 6E → Supplementary Figure 1A → … → 2D); later back-references are allowed.
+Supplementary panels are cited in a dedicated part of Results and each is explicitly tied to the main panel it
+supports (the `supports_main` column of `figures_plan.tsv` records the same mapping). Panels that could overstate
+(post-hoc K=4, calibration/decision-curve for a null model, underpowered KMs) sit in the supplement **and are cited
+with their limitation stated**.
 
 ## Regenerating
 
