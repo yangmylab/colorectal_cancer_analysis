@@ -1,0 +1,8 @@
+metric	value
+n	493
+events	152
+reps	500
+hr_median	1.25241167716928
+hr_lower_2.5	0.820634873836869
+hr_upper_97.5	1.88465932581314
+frac_above_1	0.876

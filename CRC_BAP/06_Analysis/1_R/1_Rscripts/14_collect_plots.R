@@ -111,7 +111,9 @@ layer_plots <- list(
   list(n = 37, src = "09_Figures/plots/plot_37", desc = "CPTAC-COAD: kinase-substrate activity volcano (E2 vs E1)"),
   list(n = 38, src = "09_Figures/plots/plot_38", desc = "CPTAC-COAD: kinase activity effect vs kinase abundance difference"),
   list(n = 39, src = "09_Figures/plots/plot_39", desc = "Spatial: Moran's I of Hallmark programmes across sections"),
-  list(n = 40, src = "09_Figures/plots/plot_40", desc = "Spatial: per-section Moran's I for the E2-defining programmes")
+  list(n = 40, src = "09_Figures/plots/plot_40", desc = "Spatial: per-section Moran's I for the E2-defining programmes"),
+  list(n = 41, src = "09_Figures/plots/plot_41", desc = "GSE39582: C-index by covariate set, with and without the ecotype"),
+  list(n = 42, src = "09_Figures/plots/plot_42", desc = "GSE39582: ecotype vs CMS subtype composition")
 )
 for (lp in layer_plots) {
   if (file.exists(paste0(lp$src, ".pdf"))) add_plot(lp$n, lp$src, lp$desc)

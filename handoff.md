@@ -18,9 +18,10 @@ manuscript whose every claim is licensed by the evidence grade (E1–E3; E4 unre
 Success criteria: stable taxonomy in discovery **and** independent validation, honest reporting of
 negative results, and no claim beyond the data (no causal or clinical-utility claims).
 
-**Current headline:** the axis reproduces across assays (protein E3, phosphoproteome E3) and **predicts
-disease-free survival in three cohorts (E2, F11)**, while **no OS association replicates (F01/F03)**.
-That dissociation — recurrence yes, death no — is the story the manuscript has to tell.
+**Current headline:** the axis reproduces across assays (protein E3, phosphoproteome E3) and is **associated with
+disease-free survival in three cohorts (E2, F11)** — but **not incrementally over CMS** (F14: HR 1.42, p 0.107
+after stage+MSI+CMS; ecotype–CMS Cramér's V 0.52), and **no OS association replicates (F01/F03)**.
+The manuscript must state reproducibility as established and clinical added value as *not* demonstrated.
 
 ---
 
@@ -52,13 +53,17 @@ That dissociation — recurrence yes, death no — is the story the manuscript h
 
 - **OS (F03/F04, `not_supported`)**: GSE39582 C-index 0.609/p 0.333; GSE17536 0.765/p 0.0785;
   meta HR 1.25 (0.97–1.61), p 0.081. K=4 did not replicate (p 0.090/0.200).
-- **DFS discovery (F10, E1)**: GSE14333, n=226, 50 events, adjusted HR 2.37 (1.27–4.40), LRT p 0.0043.
-- **RFS replication (F11, E2) — NEW**: `22d_dfs_replication.R`. GSE39582 stage I–III adjusted
-  **HR 1.50 (1.07–2.10), p 0.018** (n=483, 137 events; C-index 0.545→0.570); all stages 1.55 (1.12–2.15),
+- **DFS discovery (part of F11, E2)**: GSE14333, n=226, 50 events, adjusted HR 2.37 (1.27–4.40), LRT p 0.0043.
+- **RFS replication (F11, E2) — NEW**: `22d_dfs_replication.R`. GSE39582 stage I–III adjusted  **HR 1.50 (1.07–2.10), p 0.018** (n=483, 137 events; C-index 0.545→0.570); all stages 1.55 (1.12–2.15),
   p 0.008; unadjusted stage I–III 1.48 (1.06–2.07), p 0.023. Bootstrap 500 × 6 workers: median 1.48
   (1.06–2.13), **99 % above 1**. GSE17536 RFS stage I–III HR 2.51 (1.14–5.53), p 0.022 (all stages 2.83,
   p 0.0056). Fixed-effect with GSE14333: HR 1.67 (1.24–2.24), p 0.0007, heterogeneity p 0.21.
   Primary model is stage I–III by user decision (curative-intent, matches GSE14333 which has no stage IV).
+- **Incremental value beyond CMS (F14, `not_supported`) — NEW**: `25_incremental_value.R`. In GSE39582
+  (CMS for 585 tumours, MSI for 536) the disease-free association does not survive adjustment for stage + MSI
+  + CMS: RFS stage I–III HR 1.42 (0.93–2.17), p 0.107, LRT p 0.109, ΔC-index +0.015 over covariates
+  (was +0.025 with stage/age/sex alone). Bootstrap of the adjusted HR: median 1.25 (0.82–1.88), 88 % > 1.
+  OS is likewise removed by CMS (1.17, p 0.40). Ecotype–CMS Cramér's V = 0.52.
 
 ### 2.4 Cross-platform layers
 
@@ -102,12 +107,13 @@ Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
 
 ### 2.6 Outputs
 
-- **Figures:** `09_Figures/plots/plot_1` … `plot_40` (PDF + JPEG 300 dpi), `plot_manifest.tsv` (40 entries).
-  Numbering assigned in `14_collect_plots.R`; append at `plot_41+`.
+- **Figures:** `09_Figures/plots/plot_1` … `plot_42` (PDF + JPEG 300 dpi), `plot_manifest.tsv` (42 entries).
+  Numbering assigned in `14_collect_plots.R`; append at `plot_43+`.
   plot_16–19 protein; 20–24 methylation; 25–27 spatial transfer; **28–32 phospho; 33–34 GSE14333 DFS;
-  35–36 GSE39582 RFS; 37–38 kinase activity; 39–40 spatial niches**.
-- **Ledger:** `13_Reports/Findings_Ledger.csv` — F01–F13 (12 fields, always in id order). F09, F11, F12 and
-  F13 are written by their scripts and rewritten in place; do not hand-edit them.
+  35–36 GSE39582 RFS; 37–38 kinase activity; 39–40 spatial niches; 41–42 incremental value beyond CMS**.
+- **Ledger:** `13_Reports/Findings_Ledger.csv` — F01–F14 (12 fields, always in id order). F09, F11, F12, F13
+  and F14 are written by their scripts and rewritten in place; do not hand-edit them. F11's
+  contradicting_evidence is refreshed by `25_incremental_value.R`.
 - **Reports:** `13_Reports/Final_Report.md`; `07_Validation/{Validation,K4_validation,Proteomics,
   Methylation,Spatial}_Report.md`; `21_Phospho_Report.md`; `22b_DFS_Report.md`; `22d_DFS_Replication_Report.md`;
   `23_kinase_activity_report.md`; `06_Analysis/11_SpatialNiches/24_Spatial_Niche_Report.md`.
@@ -132,9 +138,12 @@ Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
    descriptive (F08).
 5. **CPTAC-COAD survival is uninformative** (8 deaths) — protein/phospho layers test reproducibility only.
 6. **450K methylation covers promoters only** — EPIC/WGBS needed to exclude non-promoter regulation.
-7. **`cell2location` is not installed** — the 539 MB torch wheel never downloaded (10.5 MB of it after six
-   attempts on the aliyun mirror), so spot deconvolution is NNLS. A retried install on a stable link, or a
-   GPU host, is needed for cell2location-scale deconvolution.
+7. **`cell2location` is not installed** — the 539 MB torch wheel never finished downloading (aliyun failed at
+   10.5 MB; the Tsinghua retry is still in flight), so spot deconvolution is NNLS. A retried install on a
+   stable link, or a GPU host, is needed for cell2location-scale deconvolution.
+8. **No second cohort with CMS/MSI calls** — GSE14333 has no CMS and GSE17536 has neither CMS nor MSI, so
+   F14 (non-incrementality over CMS) cannot be tested outside GSE39582. This is the main limitation on the
+   clinical-value conclusion.
 8. **Manuscript not started** (`12_Manuscript/` empty). `Authors.xlsx` is still an unfilled template.
 9. **Optional packages still absent** (would need approval): MOFA2, ConsensusClusterPlus, decoupleR,
    iClusterBayes, SPOTlight, immunedeconv, EPIC, xCell, estimate, timeROC, survminer.
@@ -148,9 +157,10 @@ Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
 
 **P0 — manuscript (owner: Prof. Meng + agent; trigger: now)**
 `CRC_BAP/12_Manuscript/` around: stable K=2 axis; protein + phospho reproducibility (E3); methylation and
-spatial non-reproduction; **null OS (F01/F03) vs replicated disease-free association (F11 E2)** — the
-dissociation is the paper. Resume from the ledger F01–F11 and `plot_manifest.tsv` (36 figures). Fill
-`Authors.xlsx`.
+spatial non-reproduction; **null OS (F01/F03)**; the disease-free association (F11 E2) **together with its
+limit — not incremental over CMS (F14)**. The framing must be "reproducible, directionally prognostic, not
+demonstrably better than CMS", not "a new prognostic classifier". Resume from the ledger F01–F14 and
+`plot_manifest.tsv` (42 figures). Fill `Authors.xlsx`.
 
 **P0 — GSE38832 DFS (owner: user file + agent; blocked by #1)**
 Drop `GSE38832_series_matrix.txt.gz` into `03_Raw_Data/GSE38832/`, then
@@ -212,6 +222,12 @@ activity result leave E1; the PhosphoSitePlus prior is already in place (`KSEAap
     cell2location was installed; it was not (torch wheel never downloaded). Verify, then write.
 25. **`pkill -f <pattern>` bit twice in one session** — it kills the calling shell when the pattern is in its own
     command line. Always `pgrep -f` first, then `kill <pid>`.
+26. **A replicated association can still be non-incremental.** F11 legitimately replicated (E2), yet F14 shows it
+    adds nothing over CMS (HR 1.42, p 0.107). Always test a "novel" subtype against the published taxonomy
+    before framing it as a prognostic advance.
+27. **Adding a model spec breaks any factor() built from the old level list.** In `25_incremental_value.R` a
+    fifth model left the plotting factor with four levels, which turned filtered rows into `NA` and silently
+    duplicated report bullets; a `stopifnot(nrow(...) == 1)` now guards every selected row.
 
 ---
 
@@ -256,7 +272,8 @@ activity result leave E1; the PhosphoSitePlus prior is already in place (`KSEAap
   spatial: `20_spatial_analysis.R`; phospho: `21_phospho_analysis.R`;
   GSE14333 DFS: `22a_build_gse14333_dfs.R` + `22b_dfs_validation.R`;
   **GSE38832 build: `22c_build_gse38832_dfs.R`**; **RFS replication: `22d_dfs_replication.R`**;
-  **kinase activity: `23_kinase_activity.R`**; **spatial niches: `24_spatial_niches.R`**.
+  **kinase activity: `23_kinase_activity.R`**; **spatial niches: `24_spatial_niches.R`**;
+  **incremental value beyond CMS: `25_incremental_value.R`**.
 - Environment: `Scripts/install_missing_packages.R`, `Scripts/export_frozen_hallmark_gmt.R`,
   `Environment/hallmark_frozen.gmt` (50 Hallmark sets, Ensembl).
 - Figure manifest: `14_collect_plots.R` (run last; idempotent; safe self-copy).

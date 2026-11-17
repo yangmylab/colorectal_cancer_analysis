@@ -52,3 +52,7 @@ timestamp	step	decision	rationale
 2026-11-17T09:20:18Z	24_spatial_niches	PASS	sections=16; tests=800; sig=800; meanI E2=0.528 other=0.587; rho stromal=0.49; grade=descriptive
 2026-11-17T09:23:26Z	24_spatial_niches	PASS	sections=16; tests=800; sig=800; meanI E2=0.528 other=0.587; rho stromal=0.49; grade=descriptive
 2026-11-17T09:24:29Z	24_spatial_niches	PASS	sections=16; tests=800; sig=800; meanI E2=0.528 other=0.587; rho stromal=0.49; grade=descriptive
+2026-11-17T09:30:55Z	25_incremental	PASS	RFS stage I-III after stage+MSI+CMS: HR=1.418 p=0.107 LRT p=0.109 deltaC=0.015; Cramer V=0.52; grade=not_supported
+2026-11-17T09:31:17Z	25_incremental	PASS	RFS stage I-III after stage+MSI+CMS: HR=1.418 p=0.107 LRT p=0.109 deltaC=0.015; Cramer V=0.52; grade=not_supported
+2026-11-17T09:31:17Z	25_incremental	PASS	RFS stage I-III after stage+MSI+CMS: HR=NA p=NA LRT p=NA deltaC=NA; Cramer V=0.52; grade=not_supported
+2026-11-17T09:31:48Z	25_incremental	PASS	RFS stage I-III after stage+MSI+CMS: HR=1.418 p=0.107 LRT p=0.109 deltaC=0.015; Cramer V=0.52; grade=not_supported
