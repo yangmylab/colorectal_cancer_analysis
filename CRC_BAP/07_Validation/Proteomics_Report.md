@@ -28,10 +28,10 @@ downloaded as processed tables from the cBioPortal data hub (`coad_cptac_2019`).
 |---|---|
 | Samples with both layers | 96 |
 | Protein-assigned E1 / E2 | 49 / 47 |
-| mRNA vs protein ecotype agreement | **85.4 %** |
-| Adjusted Rand index (mRNA vs protein) | **0.496** |
-| Median programme correlation (mRNA vs protein) | **r = 0.41** |
-| Top concordant programmes | IFN-α response r=0.86; IFN-γ response r=0.80; EMT r=0.71; angiogenesis r=0.68 |
+| mRNA vs protein ecotype agreement | **83.3 %** |
+| Adjusted Rand index (mRNA vs protein) | **0.439** |
+| Median programme correlation (mRNA vs protein) | **r = 0.40** |
+| Top concordant programmes | IFN-α response r=0.87; IFN-γ response r=0.81; EMT r=0.71; angiogenesis r=0.69 |
 
 Survival in CPTAC-COAD is **not informative**: only **8 deaths** among 96 patients with protein data.
 
@@ -43,8 +43,13 @@ Survival in CPTAC-COAD is **not informative**: only **8 deaths** among 96 patien
 
 - The **immune (IFN) and stromal (EMT/angiogenesis)** programmes that define E2 are the most
   reproducible across RNA and protein, and most samples receive the same ecotype from both layers.
-- The concordance is high but imperfect (ARI 0.50): post-transcriptional regulation and the much smaller
+- The concordance is high but imperfect (ARI 0.44): post-transcriptional regulation and the much smaller
   protein gene space (8,067 vs 13,481) both attenuate agreement.
+- Gene sets: `msigdbr` cannot fetch its release data offline on this host (`msigdbdf` is not on any
+  reachable mirror), so the Hallmark sets are mapped from the frozen discovery GMT through `org.Hs.eg.db`.
+  Programme-level correlations are unchanged by that substitution (IFN-α 0.861→0.867, EMT 0.705→0.706) and
+  the Cox fit is identical (C-index 0.596, HR 2.44, p 0.286); the agreement/ARI figures move because the
+  nearest-centroid argmax flips 2 of 96 borderline tumours (85.4 %/0.496 with msigdbr's symbol column).
 - The protein-level survival test is **underpowered** (8 events) and is reported as descriptive only.
   It is directionally consistent with discovery (HR > 1 for E2) but cannot confirm or refute the
   transcriptomic null result.

@@ -5,5 +5,5 @@ n_both	96
 n_programmes_scored	50
 ecotype_E1_protein	49
 ecotype_E2_protein	47
-agreement_mrna_vs_protein	0.8542
-ari_mrna_vs_protein	0.4965
+agreement_mrna_vs_protein	0.8333
+ari_mrna_vs_protein	0.4386

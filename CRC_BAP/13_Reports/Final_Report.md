@@ -32,7 +32,7 @@ The graded ledger is authoritative: `13_Reports/Findings_Ledger.csv` (F01–F10)
 | F03 | K=2 association did not replicate in GSE39582 / GSE17536 (meta HR 1.25, p = 0.081) | not_supported |
 | F04 | K=4 association did not replicate | not_supported |
 | F05 | Single-cell reference resolves six lineages; TCGA deconvolution is descriptive only | descriptive |
-| F06 | Ecotypes largely reproducible at the protein level (85.4 % agreement, ARI 0.496) | E3 |
+| F06 | Ecotypes largely reproducible at the protein level (83.3 % agreement, ARI 0.439) | E3 |
 | F07 | Ecotype does not reproduce at the DNA-methylation level (ARI 0.006) | not_supported |
 | F08 | Bulk classifier does not transfer to Visium spots; spatial data descriptive only | not_supported |
 | F09 | Ecotypes reproduce at the phosphoproteome level (87.5 % agreement, ARI 0.558, permutation p < 0.001) | E3 |

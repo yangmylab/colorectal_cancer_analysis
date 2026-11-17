@@ -15,6 +15,8 @@ suppressPackageStartupMessages({
   library(mclust)
 })
 
+source("06_Analysis/1_R/1_Rscripts/utils.R")
+
 PROC <- "04_Processed_Data"
 IN <- "03_Raw_Data/CPTAC_COAD"
 OUT <- "07_Validation"
@@ -32,8 +34,10 @@ save_plot <- function(plot_fun, file_base, width = 7, height = 5) {
 }
 
 ## 1. Hallmark gene sets (symbols) -------------------------------------------
-msig <- msigdbr::msigdbr(db_species = "HS", collection = "H")
-gene_sets <- split(msig$gene_symbol, msig$gs_name)
+# msigdbr cannot fetch offline here, so this falls back to the frozen discovery GMT mapped to symbols.
+hl <- hallmark_gene_sets("symbol")
+gene_sets <- hl$sets
+cat("programme set source:", hl$source, "\n")
 
 ## 2. Input matrices ---------------------------------------------------------
 read_cbio <- function(path, gene_col, value_transform = FALSE) {
@@ -228,3 +232,9 @@ if (!is.null(cox_tab)) {
 }
 print(res)
 cat("median programme correlation mRNA vs protein:", round(median(prog_cor$r_mrna_protein), 3), "\n")
+
+log_decision("17_proteomics", "PASS",
+             paste0("agreement ", round(100 * agreement, 1), "%; ARI ", round(ari, 3),
+                    "; median programme r ", round(median(prog_cor$r_mrna_protein), 3),
+                    "; gene-set source: ", hl$source,
+                    if (!is.null(cox_tab)) paste0("; OS HR ", round(cox_tab$hr, 2), " p ", signif(cox_tab$p_hr, 2)) else ""))

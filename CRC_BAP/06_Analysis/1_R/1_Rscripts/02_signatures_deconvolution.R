@@ -14,35 +14,24 @@ run_signatures <- function(cfg, synthetic = FALSE) {
   log_expr <- obj$log_expr
   clin <- obj$clinical
 
-  read_gmt <- function(path) {
-    lines <- readLines(path)
-    sets <- list()
-    for (l in lines) {
-      f <- strsplit(l, "\t")[[1]]
-      if (length(f) >= 3) sets[[f[1]]] <- unique(f[-c(1, 2)])
-    }
-    sets
-  }
-
   id_type <- if (all(grepl("^ENSG", head(rownames(log_expr), 100)))) "ensembl" else "symbol"
   sig_path <- cfg$inputs$signatures
   if (!is.null(sig_path) && length(sig_path) > 0 && !is.na(sig_path) && file.exists(sig_path)) {
-    gene_sets <- read_gmt(sig_path)
+    gene_sets <- read_gmt_sets(sig_path)
     first_gene <- unique(unlist(gene_sets))[1]
     custom_is_ensembl <- grepl("^ENSG", first_gene)
     if (id_type == "ensembl" && !custom_is_ensembl) {
-      msig <- msigdbr::msigdbr(db_species = "HS", collection = "H")
-      map <- unique(msig[, c("gene_symbol", "ensembl_gene")])
-      map <- map[!is.na(map$ensembl_gene) & map$ensembl_gene != "", , drop = FALSE]
-      mapv <- stats::setNames(map$ensembl_gene, map$gene_symbol)
+      mapv <- map_symbol_to_ensembl(unlist(gene_sets))
       gene_sets <- lapply(gene_sets, function(g) unique(unname(mapv[g[g %in% names(mapv)]])))
     }
     sig_source <- sig_path
   } else {
-    msig <- msigdbr::msigdbr(db_species = "HS", collection = "H")
-    key <- if (id_type == "ensembl" && "ensembl_gene" %in% colnames(msig)) "ensembl_gene" else "gene_symbol"
-    gene_sets <- split(msig[[key]], msig$gs_name)
-    sig_source <- paste0("MSigDB Hallmark (msigdbr; ", key, ")")
+    hl <- hallmark_gene_sets(id_type)
+    gene_sets <- hl$sets
+    sig_source <- hl$source
+    if (hl$fallback) {
+      log_decision("02_signatures", "FALLBACK", paste("msigdbr unavailable offline; using", hl$source))
+    }
   }
 
   gene_sets <- lapply(gene_sets, function(g) intersect(unique(g), rownames(log_expr)))

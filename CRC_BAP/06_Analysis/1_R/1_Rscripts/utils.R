@@ -72,3 +72,62 @@ require_file <- function(path, label) {
   if (!file.exists(path)) stop("Missing ", label, ": ", path, call. = FALSE)
   invisible(TRUE)
 }
+
+# Hallmark gene sets, offline-safe.
+# msigdbr 26.x needs the `msigdbdf` data package or an online release download; msigdbdf is on no
+# reachable mirror here and the zenodo release times out, so fall back to the frozen GMT exported from
+# the discovery run (`03_Raw_Data/hallmark_frozen.gmt`, 50 sets, Ensembl IDs).
+read_gmt_sets <- function(path) {
+  lines <- readLines(path)
+  sets <- list()
+  for (l in lines) {
+    f <- strsplit(l, "\t")[[1]]
+    if (length(f) >= 3) sets[[f[1]]] <- unique(f[-c(1, 2)])
+  }
+  sets
+}
+
+map_ensembl_to_symbol <- function(ens) {
+  map <- AnnotationDbi::select(org.Hs.eg.db::org.Hs.eg.db, keys = unique(ens),
+                               keytype = "ENSEMBL", columns = "SYMBOL")
+  map <- map[!is.na(map$SYMBOL) & map$SYMBOL != "", , drop = FALSE]
+  map <- map[!duplicated(map$ENSEMBL), , drop = FALSE]
+  stats::setNames(map$SYMBOL, map$ENSEMBL)
+}
+
+map_symbol_to_ensembl <- function(sym) {
+  map <- AnnotationDbi::select(org.Hs.eg.db::org.Hs.eg.db, keys = unique(sym),
+                               keytype = "SYMBOL", columns = "ENSEMBL")
+  map <- map[!is.na(map$ENSEMBL) & map$ENSEMBL != "", , drop = FALSE]
+  map <- map[!duplicated(map$SYMBOL), , drop = FALSE]
+  stats::setNames(map$ENSEMBL, map$SYMBOL)
+}
+
+hallmark_gene_sets <- function(id_type = c("ensembl", "symbol"),
+                               gmt = "Environment/hallmark_frozen.gmt") {
+  id_type <- match.arg(id_type)
+  # Only call msigdbr when its data are actually present locally (msigdbdf package or a populated cache);
+  # otherwise every call would sit in a 10 s network timeout before falling back.
+  cache_dir <- tryCatch(tools::R_user_dir("msigdbr", "cache"), error = function(e) NA_character_)
+  have_data <- requireNamespace("msigdbdf", quietly = TRUE) ||
+    (!is.na(cache_dir) && dir.exists(cache_dir) && length(list.files(cache_dir, recursive = TRUE)) > 0)
+  from_msigdbr <- if (have_data) tryCatch({
+    msig <- msigdbr::msigdbr(db_species = "HS", collection = "H")
+    key <- if (id_type == "ensembl" && "ensembl_gene" %in% colnames(msig)) "ensembl_gene" else "gene_symbol"
+    list(sets = split(msig[[key]], msig$gs_name),
+         source = paste0("MSigDB Hallmark (msigdbr; ", key, ")"), fallback = FALSE)
+  }, error = function(e) NULL) else NULL
+  if (!is.null(from_msigdbr)) return(from_msigdbr)
+  if (!file.exists(gmt)) {
+    stop("msigdbr is unavailable (no msigdbdf / no network) and no frozen GMT at ", gmt, call. = FALSE)
+  }
+  sets <- read_gmt_sets(gmt)
+  is_ens <- grepl("^ENSG", unique(unlist(sets))[1])
+  if (id_type == "symbol" && is_ens) {
+    m <- map_ensembl_to_symbol(unlist(sets))
+    sets <- lapply(sets, function(g) unique(unname(m[g[g %in% names(m)]])))
+  } else if (id_type == "ensembl" && !is_ens) {
+    stop("Frozen GMT holds symbols but Ensembl IDs are required", call. = FALSE)
+  }
+  list(sets = sets, source = paste0("frozen GMT (", gmt, "; ", id_type, ")"), fallback = TRUE)
+}
