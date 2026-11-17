@@ -1,0 +1,6 @@
+metric	value
+bootstrap_reps_used	500
+hr_median	2.32785113489549
+hr_lower_2.5	1.30368046869566
+hr_upper_97.5	4.63622358918347
+frac_boot_hr_gt_1	0.996

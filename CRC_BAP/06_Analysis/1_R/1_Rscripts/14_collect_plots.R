@@ -21,7 +21,11 @@ copy_pair <- function(src_base, n, desc) {
   for (ext in c("pdf", "jpg")) {
     src <- paste0(src_base, ".", ext)
     dst <- file.path(outdir, sprintf("plot_%d.%s", n, ext))
-    if (file.exists(src)) file.copy(src, dst, overwrite = TRUE)
+    if (!file.exists(src)) next
+    # the multi-omic layers are written directly to outdir, so src and dst can be the same file
+    if (normalizePath(src, mustWork = FALSE) != normalizePath(dst, mustWork = FALSE)) {
+      file.copy(src, dst, overwrite = TRUE)
+    }
   }
   add_plot(n, src_base, desc)
 }
@@ -94,7 +98,14 @@ layer_plots <- list(
   list(n = 24, src = "09_Figures/plots/plot_24", desc = "TCGA 450K: RNA ecotype vs methylation cluster"),
   list(n = 25, src = "09_Figures/plots/plot_25", desc = "Spatial: E2-defining programme score per Visium spot"),
   list(n = 26, src = "09_Figures/plots/plot_26", desc = "Spatial: within- vs between-section variation of the E2 programme"),
-  list(n = 27, src = "09_Figures/plots/plot_27", desc = "Spatial: covariate-shift diagnostic, spots vs bulk")
+  list(n = 27, src = "09_Figures/plots/plot_27", desc = "Spatial: covariate-shift diagnostic, spots vs bulk"),
+  list(n = 28, src = "09_Figures/plots/plot_28", desc = "CPTAC-COAD: phospho programme heatmap by ecotype"),
+  list(n = 29, src = "09_Figures/plots/plot_29", desc = "CPTAC-COAD: three-layer programme concordance (phospho/protein/mRNA)"),
+  list(n = 30, src = "09_Figures/plots/plot_30", desc = "CPTAC-COAD: differential phosphosite volcano (E2 vs E1)"),
+  list(n = 31, src = "09_Figures/plots/plot_31", desc = "CPTAC-COAD: ecotype agreement phospho vs protein"),
+  list(n = 32, src = "09_Figures/plots/plot_32", desc = "CPTAC-COAD: permutation null of the cross-layer ARI"),
+  list(n = 33, src = "09_Figures/plots/plot_33", desc = "GSE14333: disease-free survival by ecotype (secondary endpoint)"),
+  list(n = 34, src = "09_Figures/plots/plot_34", desc = "GSE14333: DFS hazard ratios, unadjusted/adjusted/stage II-III")
 )
 for (lp in layer_plots) {
   if (file.exists(paste0(lp$src, ".pdf"))) add_plot(lp$n, lp$src, lp$desc)

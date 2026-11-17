@@ -26,3 +26,10 @@ plot_24	09_Figures/plots/plot_24	TCGA 450K: RNA ecotype vs methylation cluster
 plot_25	09_Figures/plots/plot_25	Spatial: E2-defining programme score per Visium spot
 plot_26	09_Figures/plots/plot_26	Spatial: within- vs between-section variation of the E2 programme
 plot_27	09_Figures/plots/plot_27	Spatial: covariate-shift diagnostic, spots vs bulk
+plot_28	09_Figures/plots/plot_28	CPTAC-COAD: phospho programme heatmap by ecotype
+plot_29	09_Figures/plots/plot_29	CPTAC-COAD: three-layer programme concordance (phospho/protein/mRNA)
+plot_30	09_Figures/plots/plot_30	CPTAC-COAD: differential phosphosite volcano (E2 vs E1)
+plot_31	09_Figures/plots/plot_31	CPTAC-COAD: ecotype agreement phospho vs protein
+plot_32	09_Figures/plots/plot_32	CPTAC-COAD: permutation null of the cross-layer ARI
+plot_33	09_Figures/plots/plot_33	GSE14333: disease-free survival by ecotype (secondary endpoint)
+plot_34	09_Figures/plots/plot_34	GSE14333: DFS hazard ratios, unadjusted/adjusted/stage II-III
