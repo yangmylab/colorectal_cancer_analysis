@@ -257,33 +257,17 @@ log_decision("22b_gse14333", "PASS",
                     round(stats::quantile(boot, 0.975), 2), "; grade=", grade,
                     "; kept separate from OS"))
 
-## 9. Evidence ledger (F10, rewritten in place on every run) ------------------
+## 9. Evidence ledger ---------------------------------------------------------
+# The disease-free claim is a single merged finding (F11) written by 22d_dfs_replication.R, which reads the
+# estimate below and adds the independent replication. This script therefore must NOT create a standalone
+# discovery row; it only clears any legacy F10 row left by earlier runs.
 ledger_path <- file.path("13_Reports", "Findings_Ledger.csv")
 old <- if (file.exists(ledger_path)) data.table::fread(ledger_path, data.table = FALSE) else NULL
-if (!is.null(old) && nrow(old) > 0) old <- old[!old$finding_id %in% "F10", , drop = FALSE]
-f10 <- data.frame(
-  finding_id = "F10",
-  claim = "The frozen K=2 ecotypes are associated with disease-free survival in GSE14333 (secondary endpoint, exploratory)",
-  evidence_type = "External validation (DFS)",
-  dataset_s = "GSE14333",
-  statistic = paste0("adjusted HR E2 vs E1=", round(adj$hr_E2_vs_E1, 2), " (", round(adj$lower, 2), "-",
-                     round(adj$upper, 2), "), LRT p=", signif(adj$lrt_p, 3),
-                     "; unadjusted HR=", round(rows$hr_E2_vs_E1[1], 2), " (", round(rows$lower[1], 2), "-",
-                     round(rows$upper[1], 2), "); stage II-III HR=", round(rows$hr_E2_vs_E1[3], 2),
-                     "; bootstrap median ", round(stats::median(boot), 2), " (", round(stats::quantile(boot, 0.025), 2), "-",
-                     round(stats::quantile(boot, 0.975), 2), "), ", round(100 * mean(boot > 1)),
-                     "% of resamples above 1; C-index ", round(adj$c_index_base, 3), "->", round(adj$c_index_full, 3)),
-  n = nrow(ana),
-  grade = grade,
-  verb_used = if (grade == "not_supported") "not associated" else "associated with",
-  contradicting_evidence = "OS association null in discovery (F01) and in external OS validation (F03); DFS-only cohort restricted to stage I-III",
-  limitation = "secondary endpoint; single cohort; stage IV excluded by missing DFS; microarray platform; DFS never pooled with OS",
-  next_test = "independent DFS cohort (e.g. GSE38832) and prospective testing",
-  figure_table = "plot_33; plot_34",
-  stringsAsFactors = FALSE
-)
-rows <- if (is.null(old) || nrow(old) == 0) f10 else rbind(old, f10)
-data.table::fwrite(rows, ledger_path, sep = ",")
-cat("ledger rows:", nrow(rows), "\n")
+if (!is.null(old) && nrow(old) > 0 && any(old$finding_id == "F10")) {
+  old <- old[old$finding_id != "F10", , drop = FALSE]
+  data.table::fwrite(old, ledger_path, sep = ",")
+  cat("removed legacy F10 row; disease-free evidence is consolidated into F11 by 22d\n")
+}
+cat("ledger rows:", if (is.null(old)) 0 else nrow(old), "\n")
 cat("grade:", grade, "\n")
 cat("done\n")

@@ -2,7 +2,7 @@
 
 **Project:** CRC Track A — cross-platform ecotype taxonomy (colorectal cancer)
 **Root:** `/run/media/meng/Seqdata/colorectal_cancer` (pipeline in `CRC_BAP/`)
-**Updated:** 2026-11-17 (session that repaired the environment and added the RFS replication, F11)
+**Updated:** 2026-11-17 (session that repaired the environment, replicated the disease-free association, and added the kinase-activity and spatial-niche layers)
 
 ---
 
@@ -72,7 +72,18 @@ That dissociation — recurrence yes, death no — is the story the manuscript h
   protein call, ARI 0.558, 1000-permutation null 95th pct 0.033, p 0.000999; 3,095 sites FDR<0.05
   (538 with |log2FC|>0.5); 2,554-gene phospho/protein discordance screen (276 FDR<0.05).
   Survival reported as **not estimable** (Cox separation with 8 deaths).
-  Kinase-activity inference **deliberately not claimed** (no substrate library offline).
+- **Kinase activity (F12, E1) — NEW:** `23_kinase_activity.R`, prior = KSEAapp::KSData (PhosphoSitePlus,
+  19,739 pairs / 387 kinases, offline). 2,068 measured site-kinase pairs on 1,309 sites; 78 kinases with
+  ≥5 substrates tested. 9 at FDR<0.05, of which 5 have unchanged kinase abundance. CDK7 activity is lower
+  in E2 (d = −1.00, FDR 1.1e-4) without an abundance change; ROCK1/PRKG1 are higher but abundance-driven
+  (protein p 1.3e-8 / 3.3e-9). Activity-vs-abundance r = 0.31 across 54 kinases.
+- **Spatial niches (F13, descriptive) — NEW:** `24_spatial_niches.R`. 16 sections / 43,818 spots, NNLS
+  deconvolution against the GSE132465 lineages, Moran's I on a k=6 neighbour graph with 199 permutations.
+  E2 programmes are spatially structured (mean I 0.528) but **not more than other Hallmark programmes**
+  (0.587) — so spatial structure is not a distinguishing property of the axis; E2 scores do co-localise
+  with the stromal compartment (median ρ 0.49, myeloid 0.04). All 800 tests reach p<0.05 purely because
+  sections hold ~2,500 spots, so only effect sizes are interpreted. cell2location was attempted but its
+  torch wheel could not be downloaded, so no cell2location claim is made.
 
 ### 2.5 Environment repaired this session (was blocking everything)
 
@@ -83,19 +94,23 @@ That dissociation — recurrence yes, death no — is the story the manuscript h
 | `minfi`, 450K anno, `SNFtool`, `hgu133plus2cdf` absent | never installed on this box | installed via tuna Bioconductor/CRAN |
 | `msigdbr()` could not fetch | `msigdbdf` not on tuna CRAN, 404 in CRAN Archive, cran.r-project.org + r-universe unreachable | frozen GMT `Environment/hallmark_frozen.gmt` + `hallmark_gene_sets()` in `utils.R` |
 | conda env `sc-analysis` gone | deleted after the previous session | recreated with `--override-channels` (py3.11.18, numpy 2.4.6, pandas 2.3.3, scipy 1.17.1, sklearn 1.9.1, scanpy 1.11.5) |
+| no offline kinase prior | `decoupleRdata` not built for Bioc 3.23; OmniPath and r-universe unreachable | `decoupleR` 2.17.0 (unused, no network prior) + **`KSEAapp` 2.0**, whose `KSData` is a PhosphoSitePlus-derived offline prior |
+| `cell2location` for spot deconvolution | **install failed**: 539 MB torch wheel never downloaded (10.5 MB after 6 attempts on the aliyun mirror) | NNLS deconvolution used instead; no cell2location result claimed |
 
 Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
 `CRC_BAP/Scripts/export_frozen_hallmark_gmt.R`.
 
 ### 2.6 Outputs
 
-- **Figures:** `09_Figures/plots/plot_1` … `plot_36` (PDF + JPEG 300 dpi), `plot_manifest.tsv` (36 entries).
-  Numbering assigned in `14_collect_plots.R`; append at `plot_37+`.
-  plot_16–19 protein; 20–24 methylation; 25–27 spatial; **28–32 phospho; 33–34 GSE14333 DFS; 35–36 GSE39582 RFS**.
-- **Ledger:** `13_Reports/Findings_Ledger.csv` — F01–F11 (12 fields). F09/F10/F11 are written by their
-  scripts and rewritten in place; do not hand-edit them.
+- **Figures:** `09_Figures/plots/plot_1` … `plot_40` (PDF + JPEG 300 dpi), `plot_manifest.tsv` (40 entries).
+  Numbering assigned in `14_collect_plots.R`; append at `plot_41+`.
+  plot_16–19 protein; 20–24 methylation; 25–27 spatial transfer; **28–32 phospho; 33–34 GSE14333 DFS;
+  35–36 GSE39582 RFS; 37–38 kinase activity; 39–40 spatial niches**.
+- **Ledger:** `13_Reports/Findings_Ledger.csv` — F01–F13 (12 fields, always in id order). F09, F11, F12 and
+  F13 are written by their scripts and rewritten in place; do not hand-edit them.
 - **Reports:** `13_Reports/Final_Report.md`; `07_Validation/{Validation,K4_validation,Proteomics,
-  Methylation,Spatial}_Report.md`; `21_Phospho_Report.md`; `22b_DFS_Report.md`; `22d_DFS_Replication_Report.md`.
+  Methylation,Spatial}_Report.md`; `21_Phospho_Report.md`; `22b_DFS_Report.md`; `22d_DFS_Replication_Report.md`;
+  `23_kinase_activity_report.md`; `06_Analysis/11_SpatialNiches/24_Spatial_Niche_Report.md`.
 - **Decision log:** `Logs/DECISION_LOG.tsv` — now also records 17_proteomics, 21_phospho, 22a/22b_gse14333,
   22c_gse38832 (BLOCKED), 22d_replication.
 - **Git:** commits `15231d6` → `e64e9c8` → `5c1d04b` → (this session's final commit).
@@ -117,8 +132,9 @@ Install scripts kept: `CRC_BAP/Scripts/install_missing_packages.R`,
    descriptive (F08).
 5. **CPTAC-COAD survival is uninformative** (8 deaths) — protein/phospho layers test reproducibility only.
 6. **450K methylation covers promoters only** — EPIC/WGBS needed to exclude non-promoter regulation.
-7. **Kinase-activity inference needs a substrate library** (`decoupleR`/KSEAapp/PhosR or a KEA table).
-   Not installed, not downloadable → not claimed in F09.
+7. **`cell2location` is not installed** — the 539 MB torch wheel never downloaded (10.5 MB of it after six
+   attempts on the aliyun mirror), so spot deconvolution is NNLS. A retried install on a stable link, or a
+   GPU host, is needed for cell2location-scale deconvolution.
 8. **Manuscript not started** (`12_Manuscript/` empty). `Authors.xlsx` is still an unfilled template.
 9. **Optional packages still absent** (would need approval): MOFA2, ConsensusClusterPlus, decoupleR,
    iClusterBayes, SPOTlight, immunedeconv, EPIC, xCell, estimate, timeROC, survminer.
@@ -141,12 +157,12 @@ Drop `GSE38832_series_matrix.txt.gz` into `03_Raw_Data/GSE38832/`, then
 `Rscript 06_Analysis/1_R/1_Rscripts/22c_build_gse38832_dfs.R` (auto-detects endpoint keys/units, asserts no
 OS columns) and add a `22e_*` analysis mirroring `22d_dfs_replication.R` with the GSE38832 files.
 
-**P1 — kinase-substrate activity (needs approval)**
-Install `decoupleR` or place a KEA/PhosphoSitePlus table in `03_Raw_Data/CPTAC_COAD/`; re-run
-`21_phospho_analysis.R` and add the activity matrix as plot_37. Do not claim activity until then.
+**P1 — cell2location deconvolution (blocked by #7)** Retry `pip install cell2location` on a stable link or a
+GPU host, then re-run `24_spatial_niches.R` with cell2location fractions as a robustness check against the
+NNLS numbers behind F13. No new claim until that check is verified.
 
-**P1 — genuine spatial claim** (blocked by #4): deconvolve spots with GSE132465 (needs the Python env, now
-restored), train a spot-level classifier, test outcome.
+**P2 — strengthen F12** An independent phosphoproteome with matched protein abundance would let the kinase
+activity result leave E1; the PhosphoSitePlus prior is already in place (`KSEAapp::KSData`).
 
 **P2 — more OS/DFS cohorts:** GSE87211, GSE103479 (protocol) — NCBI unreachable, so manual download.
 **P2 — environment housekeeping:** `msigdbdf` via another route; optional packages above; refresh
@@ -186,7 +202,16 @@ restored), train a spot-level classifier, test outcome.
 19. **R matrix division is not column-broadcast** — `sum_z / cnt[rows, ]` fails; use `as.numeric(cnt[rows, 1])`.
 20. **NA in a matrix makes `sd()` NA and `if()` throw inside every forked worker** ("all scheduled cores
     encountered errors"). Guard with `is.finite()`.
-21. **Never hand-edit script-managed ledger rows** (F09/F10/F11) — they are delete-and-append on each run.
+21. **Never hand-edit script-managed ledger rows** (F09/F11/F12/F13) — they are delete-and-append on each run,
+    and every writer now sorts by finding id so re-running a layer cannot shuffle the order.
+22. **`cbind(mclapply(...))` silently drops failing elements.** In `23_kinase_activity.R` this turned 85 kinases
+    into 37 without an error. Use `vapply()` so a failure is loud.
+23. **Permutation p-values can hit a ceiling when n is large.** With ~2,500 spots per section, all 800 spatial
+    tests reach p<0.05 and the p-value carries no information — interpret effect sizes (Moran's I), and say so.
+24. **Never state that a tool was installed without importing it.** The spatial report initially claimed
+    cell2location was installed; it was not (torch wheel never downloaded). Verify, then write.
+25. **`pkill -f <pattern>` bit twice in one session** — it kills the calling shell when the pattern is in its own
+    command line. Always `pgrep -f` first, then `kill <pid>`.
 
 ---
 
@@ -198,9 +223,12 @@ restored), train a spot-level classifier, test outcome.
   hgu133plus2cdf 2.18.0, hgu133plus2.db 3.13.0, minfi 1.58.0, bumphunter 1.54.0,
   IlluminaHumanMethylation450kanno.ilmn12.hg19 0.6.1, SNFtool 2.3.1, org.Hs.eg.db 3.23.1, limma 3.68.5,
   survival 3.8.12, Seurat 6.0.0, NMF 0.28, mixOmics 6.36.0, ComplexHeatmap 2.28.0, mclust 6.1.3,
-  nnls 1.6, sva 3.60.0, preprocessCore 1.74.0, impute 1.86.0, msigdbr 26.1.1 (loads, but cannot fetch).
-- **Absent:** `msigdbdf`, `decoupleR`, `SPOTlight`, `immunedeconv`, `EPIC`, `xCell`, `estimate`,
+  nnls 1.6, sva 3.60.0, preprocessCore 1.74.0, impute 1.86.0, msigdbr 26.1.1 (loads, but cannot fetch),
+  **decoupleR 2.17.0** and **KSEAapp 2.0** (the latter supplies the offline kinase-substrate prior).
+- **Absent:** `msigdbdf`, `decoupleRdata`, `SPOTlight`, `immunedeconv`, `EPIC`, `xCell`, `estimate`,
   `timeROC`, `survminer`, `ReactomePA`, `MOFA2`, `ConsensusClusterPlus`, `iClusterBayes`.
+  On the Python side `cell2location`, `scvi-tools`, `pyro-ppl` and `torch` are **not** installed (torch wheel
+  download fails), so spot deconvolution is NNLS.
 - CRAN mirror `https://mirrors.tuna.tsinghua.edu.cn/CRAN`; BioC mirror
   `https://mirrors.tuna.tsinghua.edu.cn/bioconductor` (bioconductor.org itself is **blocked**).
 
@@ -227,7 +255,8 @@ restored), train a spot-level classifier, test outcome.
 - Protein: `17_proteomics_validation.R`; methylation: `19_methylation_analysis.R`;
   spatial: `20_spatial_analysis.R`; phospho: `21_phospho_analysis.R`;
   GSE14333 DFS: `22a_build_gse14333_dfs.R` + `22b_dfs_validation.R`;
-  **GSE38832 build: `22c_build_gse38832_dfs.R`**; **RFS replication: `22d_dfs_replication.R`**.
+  **GSE38832 build: `22c_build_gse38832_dfs.R`**; **RFS replication: `22d_dfs_replication.R`**;
+  **kinase activity: `23_kinase_activity.R`**; **spatial niches: `24_spatial_niches.R`**.
 - Environment: `Scripts/install_missing_packages.R`, `Scripts/export_frozen_hallmark_gmt.R`,
   `Environment/hallmark_frozen.gmt` (50 Hallmark sets, Ensembl).
 - Figure manifest: `14_collect_plots.R` (run last; idempotent; safe self-copy).
@@ -244,8 +273,8 @@ restored), train a spot-level classifier, test outcome.
 1. `Rscript Scripts/install_missing_packages.R` (needs <=6 cores, ~25 min).
 2. Recreate `sc-analysis` with `--override-channels` + tuna mirrors.
 3. Copy `03_Raw_Data/` (≈12 GB) or re-download manually (NCBI is blocked here).
-4. `./run_all.sh`; then layer scripts 17 → 19 → 20 → 21 → 22a → 22b → 22d → 14.
-5. Expect `plot_manifest.tsv` = 36 entries and `Findings_Ledger.csv` = F01–F11.
+4. `./run_all.sh`; then layer scripts 17 → 19 → 20 → 21 → 22a → 22b → 22d → 23 → 24 → 14.
+5. Expect `plot_manifest.tsv` = 40 entries and `Findings_Ledger.csv` = F01–F13 (in id order).
 
 ---
 

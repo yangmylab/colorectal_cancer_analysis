@@ -230,7 +230,7 @@ save_plot(function() {
 p_row <- ps[1, , drop = FALSE]
 g_row <- res[res$cohort == "GSE17536" & res$model == "stage I-III, adjusted (age, sex, stage)", , drop = FALSE]
 replicated <- !is.na(p_row$p_hr) && p_row$p_hr < 0.05 && p_row$hr > 1
-grade <- if (replicated) "E2" else "not_supported"
+grade <- if (replicated) "E2" else "E1"   # merged claim: E2 needs the replication; discovery alone is E1
 
 report <- c(
   "# DFS/RFS replication (independent cohorts already on disk)",
@@ -292,34 +292,35 @@ if (!is.null(old) && nrow(old) > 0) old <- old[!old$finding_id %in% "F11", , dro
 f11 <- data.frame(
   finding_id = "F11",
   claim = if (replicated) {
-    "The disease-free (DFS/RFS) association replicates in the independent GSE39582 cohort"
+    "The frozen K=2 ecotypes are associated with disease-free survival (DFS/RFS) in discovery and in independent cohorts"
   } else {
-    "The disease-free (DFS/RFS) association does not replicate in the independent GSE39582 cohort"
+    "The disease-free survival association observed in GSE14333 does not replicate in independent cohorts"
   },
-  evidence_type = "External validation (RFS)",
-  dataset_s = "GSE39582",
-  statistic = paste0("stage I-III adjusted HR E2 vs E1=", round(p_row$hr, 2), " (", round(p_row$lower, 2), "-",
-                     round(p_row$upper, 2), "), p=", signif(p_row$p_hr, 3), ", LRT p=", signif(p_row$lrt_p, 3),
-                     "; C-index ", round(p_row$c_index_base, 3), "->", round(p_row$c_index_full, 3),
-                     "; bootstrap median ", round(stats::median(boot), 2), " (", round(stats::quantile(boot, 0.025), 2),
-                     "-", round(stats::quantile(boot, 0.975), 2), "); all-stage HR=",
-                     round(res$hr[res$cohort == "GSE39582" & res$model == "all stages, adjusted (age, sex, stage)"], 2),
-                     "; GSE17536 stage I-III HR=", round(g_row$hr, 2), " p=", signif(g_row$p_hr, 3),
-                     if (!is.null(meta)) paste0("; fixed-effect with GSE14333 HR=", round(meta$hr, 2), " p=", signif(meta$p, 3)) else ""),
+  evidence_type = "Discovery + external validation (disease-free endpoints)",
+  dataset_s = "GSE14333 (discovery, DFS); GSE39582 and GSE17536 (RFS)",
+  statistic = paste0("discovery GSE14333 adjusted HR=", round(gse14333$hr, 2), " (", round(gse14333$lower, 2), "-",
+                     round(gse14333$upper, 2), ") p=", signif(gse14333$lrt_p, 3),
+                     "; replication GSE39582 stage I-III HR=", round(p_row$hr, 2), " (", round(p_row$lower, 2), "-",
+                     round(p_row$upper, 2), "), p=", signif(p_row$p_hr, 3),
+                     "; GSE17536 HR=", round(g_row$hr, 2), " p=", signif(g_row$p_hr, 3),
+                     if (!is.null(meta)) paste0("; fixed-effect HR=", round(meta$hr, 2), " (", round(meta$lower, 2),
+                                                "-", round(meta$upper, 2), ") p=", signif(meta$p, 3),
+                                                ", heterogeneity p=", round(meta$heterogeneity_Q_p, 2)) else ""),
   n = p_row$n,
   grade = grade,
-  verb_used = if (replicated) "replicated in" else "not replicated",
+  verb_used = if (replicated) "associated with (replicated)" else "not replicated",
   contradicting_evidence = if (replicated) {
-    "OS association remains null in discovery (F01) and OS validation (F03); DFS is a secondary endpoint"
+    "OS association remains null in discovery (F01) and in OS validation (F03): the ecotype predicts recurrence, not death"
   } else {
-    "GSE14333 DFS association (F10) not reproduced"
+    "the discovery estimate is not reproduced in GSE39582 or GSE17536"
   },
-  limitation = "RFS rather than DFS definition; cohort already used for OS validation; stage IV excluded from the primary model; observational, no treatment adjustment",
+  limitation = "disease-free endpoints only (DFS in GSE14333, RFS in GSE39582/GSE17536: related but not identical definitions); GSE14333 has no stage IV, GSE39582 stages I-III in the primary model; GSE39582 was already used for OS validation; observational, no treatment adjustment; never pooled with OS",
   next_test = "GSE38832 DFS once its series matrix is available; prospective evaluation",
-  figure_table = "plot_35; plot_36",
+  figure_table = "plot_33; plot_34; plot_35; plot_36",
   stringsAsFactors = FALSE
 )
 out <- if (is.null(old) || nrow(old) == 0) f11 else rbind(old, f11)
+out <- out[order(as.integer(sub("^F", "", out$finding_id))), , drop = FALSE]
 data.table::fwrite(out, ledger_path, sep = ",")
 cat("ledger rows:", nrow(out), "\n")
 

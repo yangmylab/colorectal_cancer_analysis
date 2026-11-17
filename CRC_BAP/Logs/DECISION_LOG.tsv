@@ -44,3 +44,11 @@ timestamp	step	decision	rationale
 2026-11-17T04:56:38Z	17_proteomics	PASS	agreement 83.3%; ARI 0.439; median programme r 0.403; gene-set source: frozen GMT (03_Raw_Data/hallmark_frozen.gmt; symbol); OS HR 2.44 p 0.29
 2026-11-17T04:57:58Z	22c_gse38832	BLOCKED	expression built (22167 symbols x 122 arrays); series matrix metadata missing
 2026-11-17T05:08:57Z	22d_replication	PASS	GSE39582 RFS stage I-III: n=483, events=137; adjusted HR=1.502 p=0.0181; bootstrap 1.06-2.13; GSE17536 HR=2.51 p=0.022; grade=E2
+2026-11-17T09:12:16Z	22b_gse14333	PASS	GSE14333 DFS (secondary endpoint): n=226, events=50; adjusted HR=2.365 p=0.00429; bootstrap CI 1.32-5.03; grade=E1; kept separate from OS
+2026-11-17T09:12:25Z	22d_replication	PASS	GSE39582 RFS stage I-III: n=483, events=137; adjusted HR=1.502 p=0.0181; bootstrap 1.05-2.18; GSE17536 HR=2.51 p=0.022; grade=E2
+2026-11-17T09:14:52Z	21_phospho	SITE_FILTER	kept sites quantified in >=50% of tumours (n=11334 of 31262); threshold fixed before ecotype labels were read
+2026-11-17T09:15:02Z	21_phospho	PASS	phospho ecotypes: 47 E1 / 50 E2; agreement vs protein: 87.5 %; ARI: 0.558 ; permutation p: 0.000999 ; grade: E3
+2026-11-17T09:16:21Z	23_kinase	PASS	kinases tested=78; FDR<0.05=9; activity-only=5; activity-vs-abundance r=0.31; grade=E1
+2026-11-17T09:20:18Z	24_spatial_niches	PASS	sections=16; tests=800; sig=800; meanI E2=0.528 other=0.587; rho stromal=0.49; grade=descriptive
+2026-11-17T09:23:26Z	24_spatial_niches	PASS	sections=16; tests=800; sig=800; meanI E2=0.528 other=0.587; rho stromal=0.49; grade=descriptive
+2026-11-17T09:24:29Z	24_spatial_niches	PASS	sections=16; tests=800; sig=800; meanI E2=0.528 other=0.587; rho stromal=0.49; grade=descriptive

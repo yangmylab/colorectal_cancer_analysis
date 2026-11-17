@@ -348,6 +348,13 @@ summ <- data.frame(
             n_fdr, n_sig, n_sig_m, sum(disc$fdr < 0.05, na.rm = TRUE))
 )
 fwrite(summ, file.path(OUT, "21_phospho_validation.tsv"), sep = "\t")
+# per-sample layer labels, so downstream layers (e.g. kinase activity) need not re-derive the classifier
+fwrite(data.frame(sample_id = names(phos_lab),
+                  ecotype_phospho = unname(phos_lab),
+                  ecotype_protein = unname(prot_lab[names(phos_lab)]),
+                  ecotype_mrna = unname(mrna_lab[names(phos_lab)]),
+                  stringsAsFactors = FALSE),
+       file.path(OUT, "21_phospho_ecotype_labels.tsv"), sep = "\t")
 print(summ)
 
 ## 13. Figures ----------------------------------------------------------------
@@ -506,6 +513,7 @@ f09 <- data.frame(
   stringsAsFactors = FALSE
 )
 rows <- if (is.null(old) || nrow(old) == 0) f09 else rbind(old, f09)
+rows <- rows[order(as.integer(sub("^F", "", rows$finding_id))), , drop = FALSE]
 data.table::fwrite(rows, ledger_path, sep = ",")
 cat("ledger rows:", nrow(rows), "\n")
 cat("grade:", grade, "\n")

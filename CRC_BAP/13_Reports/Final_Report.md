@@ -23,7 +23,7 @@ See `05_QC/QC_Report.md`.
 Scripts: `06_Analysis/1_R/1_Rscripts/` (`21_phospho_analysis.R` = phosphoproteome, `22a_/22b_` = GSE14333 DFS); logs: `Logs/`; environment: `Environment/`.
 
 ## 7. Main findings
-The graded ledger is authoritative: `13_Reports/Findings_Ledger.csv` (F01–F10).
+The graded ledger is authoritative: `13_Reports/Findings_Ledger.csv` (F01–F13).
 
 | ID | Claim (abbreviated) | Grade |
 |---|---|---|
@@ -36,8 +36,9 @@ The graded ledger is authoritative: `13_Reports/Findings_Ledger.csv` (F01–F10)
 | F07 | Ecotype does not reproduce at the DNA-methylation level (ARI 0.006) | not_supported |
 | F08 | Bulk classifier does not transfer to Visium spots; spatial data descriptive only | not_supported |
 | F09 | Ecotypes reproduce at the phosphoproteome level (87.5 % agreement, ARI 0.558, permutation p < 0.001) | E3 |
-| F10 | Ecotypes associated with DFS in GSE14333 (adjusted HR 2.37, p = 0.004) — secondary endpoint | E1 |
-| F11 | The disease-free association replicates in independent GSE39582 (RFS stage I-III, adjusted HR 1.50, p = 0.018) | E2 |
+| F11 | Ecotypes associated with disease-free survival: discovery GSE14333 (HR 2.37, p = 0.004) + replication GSE39582 (HR 1.50, p = 0.018) and GSE17536 (HR 2.51, p = 0.022) | E2 |
+| F12 | A subset of kinases shows ecotype-associated activity not explained by kinase abundance (9/78 at FDR<0.05, 5 abundance-independent; inferred) | E1 |
+| F13 | E2 programmes are spatially autocorrelated and co-localise with the stromal compartment, but are not more structured than other Hallmark programmes | descriptive |
 
 ## 8. Biological interpretation
 The stable axis is a two-way split between a Hedgehog / pancreas-beta / MYC-V2 programme (E1) and an
@@ -93,10 +94,12 @@ classifier; an independent DFS cohort (e.g. GSE38832) to test F10.
 **Verdict:** findings graded and reported within their evidence; manuscript drafting is the next gate (G3).
 
 ## 15. Evidence-grade distribution
-- E3 (cross-platform convergence): F06 (protein), F09 (phosphoproteome)
-- **E2 (replicated association): F11 (disease-free/RFS, GSE39582)**
-- E1 (exploratory / post hoc): F02 (K=4 discovery), F10 (DFS discovery, secondary endpoint)
-- descriptive: F05 (single-cell deconvolution)
+- E3 (cross-platform convergence): F06 (protein), F09 (phosphoproteome). **Caveat:** E3 here means
+  transcriptome + proteome (+ phosphoproteome) convergence; the spatial arm did not converge (F08), so the
+  spatial/clinical convergence that `Analysis_Plan.md` describes for E3 is **not** claimed.
+- **E2 (replicated association): F11 (disease-free survival — discovery GSE14333, replication GSE39582 and GSE17536)**
+- E1 (exploratory / post hoc): F02 (K=4 discovery), F12 (kinase activity, inferred, single cohort)
+- descriptive: F05 (single-cell deconvolution), F13 (spatial programme structure, no outcome)
 - not_supported: F01, F03, F04 (OS association), F07 (methylation), F08 (spatial transfer)
 - The dissociation is the message: the ecotype axis reproduces across assays and predicts disease-free
   survival, but no OS association replicates in any cohort tested.

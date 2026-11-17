@@ -35,3 +35,7 @@ plot_33	09_Figures/plots/plot_33	GSE14333: disease-free survival by ecotype (sec
 plot_34	09_Figures/plots/plot_34	GSE14333: DFS hazard ratios, unadjusted/adjusted/stage II-III
 plot_35	09_Figures/plots/plot_35	GSE39582: RFS replication hazard ratios (stage I-III and all stages)
 plot_36	09_Figures/plots/plot_36	GSE39582: RFS Kaplan-Meier by ecotype, stage I-III
+plot_37	09_Figures/plots/plot_37	CPTAC-COAD: kinase-substrate activity volcano (E2 vs E1)
+plot_38	09_Figures/plots/plot_38	CPTAC-COAD: kinase activity effect vs kinase abundance difference
+plot_39	09_Figures/plots/plot_39	Spatial: Moran's I of Hallmark programmes across sections
+plot_40	09_Figures/plots/plot_40	Spatial: per-section Moran's I for the E2-defining programmes
