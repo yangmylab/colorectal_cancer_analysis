@@ -2,15 +2,16 @@
 
 **Project:** CRC Track A — cross-platform ecotype taxonomy (colorectal cancer)
 **Root:** `/run/media/meng/Seqdata/colorectal_cancer` (pipeline and manuscript in `CRC_BAP/`)
-**Updated:** 2026-11-18, second checkpoint: the figure-typography pass (vector composer + per-panel type audit),
-the metadata corrections, and the F13 settlement (a trained cell2location reference replaces the under-trained
-100-epoch prior-only check). The previous checkpoint (2026-11-17) added the CMS incremental-value test (F14), the
-GSE38832 cohort (F15), the kinase and spatial layers, the 8 composite figures, the manuscript draft v0.2, and the
-QC panel fix.
-**Git:** history from `15231d6`; figure-typography pass `f271129`, metadata corrections `ac1df66`, F13 settlement
-`d9cefab`, pre-submission review `c8c80b0`; 270 tracked files. Working tree: the user's untracked `Authors.xlsx`,
-plus an uncommitted re-save of `12_Manuscript/manuscript.docx` (11:28, ~7 KB larger, same text and same section
-order — looks like a Word/LibreOffice open-and-save; verify before discarding).
+**Updated:** 2026-11-18, third checkpoint: the manuscript revision driven by the pre-submission review, plus the
+author's own manual edit of the docx. Since the second checkpoint: 30 of 44 panels re-authored at print width (four
+figures now clear the 7 pt floor), one shared ecotype palette, QC panel corrections, the review package and its
+13 closed findings, the author's structural edits ported into the markdown source, supplementary-panel
+interpretation blended into the main-figure passages, an AI-accent removal pass, a Discussion comparison with
+published classifications, and a Methods expansion from ~330 to 1,413 words.
+**Git:** history from `15231d6`. Key commits: `f271129` figure typography, `ac1df66` metadata, `d9cefab` F13,
+`c8c80b0` review, `cb62d25`/`60c43df` figure infrastructure, `c9d9462` wording + statements, `fb173bf` group sizes,
+`ea159c4` re-authored panels, `77dfcc9` blended supplements, `cd210e7` AI-accent removal, `781ebd0` Discussion
+comparison, `5d3cc27` expanded Methods. Working tree clean except the user's untracked `Authors.xlsx`.
 
 ---
 
@@ -172,6 +173,11 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
   verified by measurement and audits only, so overlapping labels in the 50-row heatmaps are not yet ruled out.
 
 - **Decision log:** `Logs/DECISION_LOG.tsv`, 61 rows covering every step from `00_validate` to `25_incremental`.
+- **Revision artefacts (2026-11-18):** `13_Reports/Review_2026-11-18/` holds `Review_Report.{md,docx}` (26 graded
+  findings), `review_findings.tsv`, `fix_status.md` (per-finding state) and `humaniser_changelog.md` (AI-accent
+  removal, then the Discussion comparison). `Scripts/rerender_panels.sh` re-authors the panels and restores the
+  data artefacts; `Scripts/check_figure_citations.py` now enforces "main panels in order, each supplementary panel
+  after its `supports_main` anchor".
 
 ### 2.6 Bugs found and fixed (do not reintroduce)
 
@@ -227,31 +233,42 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
    1,696 packages / "no installations" to the verified 6 physical cores, 1,754 packages and the real install
    history. `PILOT_PLAN.md` and `METHODS_TOOLBOX_2026.md` keep their 16-32 core *budgets* (they describe what each
    analysis needs, not this box) with a one-line caveat added.
-10. **Panels print below the legibility floor — the remaining figure blocker.** The composer is now vector and uses
-    one type scale per figure (lettered 8 pt, consistent gutters), but every panel was *authored* at 6–10 in with
-    ~11 pt type, so at the 180 mm submission width its text prints at **2.8–5.4 pt**; **all 44 panels are below the
-    7 pt floor** (Fig 1 3.10, Fig 2 3.24, Fig 3 2.76, Fig 4 3.10, Fig 5 4.76, Fig 6 4.76, S1 5.08, S2 5.44).
-    Measured, not estimated: `12_Manuscript/compose_figures_typography.tsv`. Heights are within budget
-    (127–185 mm ≤ 240 mm), so the fix is panel authoring, not layout: re-render each panel at ~3.4 in with
-    `base_size = 8`, which yields 7–8 pt through the same composer. `--mode=equal` does not help (it only
-    redistributes the same problem); `--width_mm`/`--height_mm` let the layout be re-tuned once a journal is chosen.
+10. **Panel legibility is part-fixed; four figures still miss the 7 pt floor.** After re-authoring 30 of 44 panels
+    at `CRC_PANEL_MAX_W=3.4`, the printed body type is Fig 2 7.33, Fig 4 7.33, Fig 5 11.25, Fig 6 7.34 (all
+    compliant), S2 6.35, Fig 3 4.01, Fig 1 3.10, S1 5.08. **21 of 44 panels meet the floor (was 0 of 44).**
+    Measured: `12_Manuscript/compose_figures_typography.tsv`. Two causes remain: (a) `20_spatial_analysis.R`
+    aborts on a curl download of gene sets, so plot_25–27 kept their 8–10 in width; (b) the discovery chain
+    (02–05) was deliberately not re-run because consensus clustering can move the K=2 labels, so Fig 1, S1 and the
+    04-derived panels keep their old size — see §5 pitfall 35.
+11. **The manuscript still has no citations.** `13_Reports/Review_2026-11-18/` records R01 as open; the Discussion
+    comparison added on 2026-11-18 names CMS/CRIS/PDS without bracketed references, so those paragraphs are where
+    a bibliography is most needed. Plan in §4 P0-1.
+12. **No visual pass over the regenerated panels.** The re-render was verified by measurement and by the two
+    audits only; overlapping labels in the 50-row heatmaps are not yet ruled out.
+13. **Legends still carry no n, test or interval definition**, and per-model n is missing beyond the group sizes now
+    in Methods (review R05/R04-remainder).
 
 ---
 
 ## 4. Next Steps (What to do next)
 
-**P0 — finish the submission package (owner: user for 1–2, agent for 3)**
-1. Fill `Authors.xlsx` (names, emails, affiliations, ORCIDs) — nothing can be invented here.
-2. Choose the target journal; it decides reference style, word limits and supplementary structure.
-3. ~~Harmonise panel typography inside each composite and, if required, rebuild the figures as vector montages~~
-   **DONE 2026-11-18**: `Scripts/compose_figures.R` now emits vector PDFs with one type scale per figure and uniform
-   8 pt letters, and writes `12_Manuscript/compose_figures_typography.{tsv,md,docx}`. What it cannot fix is panel
-   authoring width — see blocker 10 and the P2 item below.
-4. **Re-author the panels at print width** (the real fix for blocker 10): render each panel at ~3.4 in with a shared
-   theme (`base_size = 8`), then re-run the composer. This touches the layer scripts (14, 17, 19, 20, 21, 23, 24,
-   22*, 05 and the QC script), so verify afterwards that the underlying TSVs/ledger are unchanged
-   (`git diff --stat` on data files) and re-run both checkers. Cheapest first target: the panels that are far
-   outside the floor — Figures 1–4 (2.76–3.24 pt).
+**P0 — finish the submission package**
+
+**P0-1 (agent, next session, do it in one pass).** Build the bibliography (review R01). Inventory every citable
+claim, resolve each through OpenAlex/PubMed and keep only entries whose metadata returns, attach each to the single
+sentence it supports, then run `citation-audit`. Expect 45–60 entries. Start with the three Discussion paragraphs
+added on 2026-11-18 (`**Comparison with published classifications**`), which name CMS1–4, CRIS (A–D) and PDS
+without citations.
+
+**P0-2 (agent).** Finish the figure floor: fix the curl/gene-set loader in
+`06_Analysis/1_R/1_Rscripts/20_spatial_analysis.R` (the frozen `Environment/hallmark_frozen.gmt` path is not
+reached there), re-run 20 and 14 with `CRC_PANEL_MAX_W=3.4`, recompose, then look at all eight composites. Then
+decide with the user whether to re-run the discovery chain for Figure 1 and S1, which risks moving the K=2 labels.
+
+**P0-3 (agent).** Rewrite the twelve figure legends with n, test, interval and correction (review R05), and add
+per-model n (R04 remainder). Resume from `12_Manuscript/figures_plan.tsv` and the per-layer reports.
+
+**P0-4 (user).** Fill `Authors.xlsx` and choose the target journal; both gate formatting.
 
 **P1 — settle the one soft statement (F13 co-localisation)** — **DONE 2026-11-18**
 `Scripts/cell2location_reference.py` trains the reference on GSE132465 raw counts (2,007 genes, 10,187 cells, 250
@@ -263,12 +280,12 @@ What would remove the caveat entirely: agreement in absolute fractions, or a GPU
 show the gap is a sampling/training artefact rather than a property of unregularised NNLS.
 
 **P2 — optional strengthening**
-4. Fuller GSE38832 metadata (manual series-matrix download) to test F11 in a fourth cohort.
-5. A second cohort with CMS/MSI + a disease-free endpoint, to test whether F14 is cohort-specific.
-6. Refresh environment records: `Environment/packages_R.tsv` and a `conda env export` for `sc-analysis`.
+**P2-1.** Fuller GSE38832 metadata (manual series-matrix download) to test F11 in a fourth cohort.
+**P2-2.** A second cohort with CMS/MSI + a disease-free endpoint, to test whether F14 is cohort-specific.
+**P2-3.** Refresh environment records: `Environment/packages_R.tsv` and a `conda env export` for `sc-analysis`.
 
 **P2 — housekeeping**
-7. ~~Correct `n_workers` in `config/pipeline_config.yaml` and the "16 physical cores" line in `Analysis_Plan.md`.~~
+**P2-4.** ~~Correct `n_workers` in `config/pipeline_config.yaml` and the "16 physical cores" line in `Analysis_Plan.md`.~~
    **DONE 2026-11-18** (both configs, Analysis_Plan, Environment/README plus caveats in PILOT_PLAN and
    METHODS_TOOLBOX_2026).
 
@@ -341,6 +358,20 @@ show the gap is a sampling/training artefact rather than a property of unregular
 34. **Generated reports inherit their text from the writer script, not from reality.** `24_Spatial_Niche_Report.md`
     kept saying cell2location "was attempted but not installed" after it had been installed. Fix the template in
     the script (and re-run); hand-editing the generated file only lasts until the next run.
+35. **Do not re-run the discovery chain to change a figure.** `03_snf_ecotypes.R` derives the K=2 labels under
+    `mclapply`, whose forks share one RNG stream; a re-run can move the labels and invalidate every downstream
+    number. Re-author only the layer panels, or verify the labels are byte-identical afterwards.
+36. **Treat the figure-citation sequence as an invariant when editing prose.** A single added "Figure 1C" shifts
+    the first-citation order and fails `check_figure_citations.py`. Compare the extracted `(kind, number, panel)`
+    sequence before and after any manuscript edit; the checker now also requires each supplementary panel to be
+    cited after the main panel in its `supports_main` column.
+37. **Write Methods from the code, never from memory.** Drafting the expanded Methods, two remembered values were
+    wrong: the CIMP panel is **eight** genes (CACNA1G, CDKN2A, CRABP1, IGF2, MLH1, NEUROG1, RUNX3, SOCS1), not
+    five; and the 0.70 stability floor gates *confirmatory* status rather than filtering candidate K (K is
+    filtered by the 5% minimum group, then ordered by mean bootstrap ARI).
+38. **The docx is a build artefact; the markdown is the source.** The author's manual docx edit had to be ported
+    into `manuscript.md` before anything else, or the next `pandoc` rebuild would have discarded it. When the user
+    says "work in the revised docx", extract it, diff against the markdown, and port the differences first.
 
 ---
 
