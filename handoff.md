@@ -254,11 +254,33 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
 
 **P0 — finish the submission package**
 
-**P0-1 (agent, next session, do it in one pass).** Build the bibliography (review R01). Inventory every citable
-claim, resolve each through OpenAlex/PubMed and keep only entries whose metadata returns, attach each to the single
-sentence it supports, then run `citation-audit`. Expect 45–60 entries. Start with the three Discussion paragraphs
-added on 2026-11-18 (`**Comparison with published classifications**`), which name CMS1–4, CRIS (A–D) and PDS
-without citations.
+**P0-1 (agent, next session, do it as its own session).** Build the bibliography (review R01). Expect 45–60
+entries. Start with the three Discussion paragraphs that name CMS1–4, CRIS (A–D) and PDS without citations.
+
+*Access route (measured 2026-11-18).* OpenAlex times out; local `curl` reaches no bibliographic endpoint
+(`eutils.ncbi.nlm.nih.gov`, `pubmed.ncbi.nlm.nih.gov`, `api.crossref.org`, `www.ebi.ac.uk` all fail). The **host
+`web_fetch` tool does reach Europe PMC and Crossref**, so use `tool:web_fetch` with
+`https://www.ebi.ac.uk/europepmc/webservices/rest/search?...`.
+
+*Query recipe that works.* Restrict the topic to `TITLE_ABS`, not the whole record, or off-topic papers come back:
+`(TITLE_ABS:"colorectal cancer") AND (TITLE_ABS:"subtype" OR TITLE_ABS:"classification") AND
+(JOURNAL:"Nature medicine" OR JOURNAL:"Nature cancer" OR JOURNAL:"Cancer cell" OR JOURNAL:"Gut" OR
+JOURNAL:"Journal of clinical oncology" OR JOURNAL:"Annals of oncology" OR JOURNAL:"Gastroenterology") AND
+PUB_YEAR:[2023 TO 2026]&format=json&pageSize=15&sort=CITED desc&resultType=lite`. The JSON gives DOI, PMID,
+journal, year, volume, pages — everything a numbered reference needs. Crossref (`api.crossref.org/works/{DOI}`)
+confirms individual DOIs and supplies author lists.
+
+*Recency rule agreed with the author.* 2023–2026 for statements about the state of the field; the CMS (Guinney
+2015, doi:10.1038/nm.3967), CRIS (Isella 2017) and PDS (Phipps 2015) originals only where the sentence attributes
+the framework itself. Verified anchors already in hand: Guinney 2015; *Colorectal cancer statistics 2023*
+(doi:10.3322/caac.21772); de Visser & Joyce, *Cancer Cell* 2023 (doi:10.1016/j.ccell.2023.02.016).
+
+*Insertion method.* `manuscript.md` is currently deleted and the docx is the master. Either (a) restore the
+markdown at `5d3cc27` and use pandoc + `--citeproc` with a CSL style (numbering automatic, checkers re-armed), or
+(b) edit `word/document.xml` directly — body paragraphs are single `<w:t>` runs, so a superscript run
+(`<w:r><w:rPr><w:vertAlign w:val="superscript"/></w:rPr><w:t>N</w:t></w:r>`) can be appended after the target
+sentence. The References section goes after **Figure legends** and before **Statements**; number sequentially by
+first citation from Introduction through Discussion, and finish with `citation-audit`.
 
 **P0-2 (agent).** Finish the figure floor: fix the curl/gene-set loader in
 `06_Analysis/1_R/1_Rscripts/20_spatial_analysis.R` (the frozen `Environment/hallmark_frozen.gmt` path is not
