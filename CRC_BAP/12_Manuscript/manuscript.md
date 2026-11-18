@@ -61,6 +61,12 @@ association replicated in an independent cohort, **E1** exploratory or post hoc,
 the cBioPortal datahub). TCGA 450K methylation (393 tumours). Visium: GSE283052 (12 sections) and GSE267401 (4).
 Single-cell reference: GSE132465.
 
+**Cohort composition.** The discovery set comprised 355 E1 and 269 E2 tumours. In CPTAC-COAD the three
+layers were close to balanced (protein 49/48, phosphoproteome 47/50, mRNA 45/51 E1/E2 among the 97 tumours
+carrying each layer). The methylation subset held 184 E1 and 204 E2 of 393 tumours, and the GSE14333
+disease-free analysis 115 E1 and 111 E2 of 226. [TODO: E1/E2 counts for the GSE39582 and GSE17536 analysis
+sets; these are not persisted by the current scripts.]
+
 **Scoring.** Fifty Hallmark sets; discovery used GSVA, external layers the mean of within-set gene z-scores, with
 phosphosites averaged per gene. Sets are frozen in `Environment/hallmark_frozen.gmt` so scoring is offline and
 reproducible.
