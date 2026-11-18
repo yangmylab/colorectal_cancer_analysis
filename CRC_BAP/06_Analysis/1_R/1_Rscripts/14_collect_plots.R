@@ -65,7 +65,7 @@ if (!is.null(sig$deconv)) {
 ks <- fread("08_Robustness/K_sensitivity.tsv", data.table = FALSE)
 if (nrow(ks) > 0) {
   save_plot(function() {
-    print(ggplot(ks, aes(K, c_index_full)) + geom_line() + geom_point(size = 2) + geom_hline(yintercept = ks$c_index_base[1], linetype = 2) + geom_text(aes(label = paste0("p=", signif(lrt_p, 2))), vjust = -0.8, size = 3) + theme_bw() + labs(x = "K", y = "C-index (full model)", title = "K sensitivity"))
+    print(ggplot(ks, aes(K, c_index_full)) + geom_line() + geom_point(size = 2) + geom_hline(yintercept = ks$c_index_base[1], linetype = 2) + geom_text(aes(label = paste0("p=", signif(lrt_p, 2))), vjust = -1.3, size = 2.4) + theme_bw() + labs(x = "K", y = "C-index (full model)", title = "K sensitivity"))
   }, file.path(outdir, "plot_14"), 6, 4)
   add_plot(14, "08_Robustness/K_sensitivity.tsv", "K sensitivity of the survival model")
 }

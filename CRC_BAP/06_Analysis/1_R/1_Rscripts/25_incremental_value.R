@@ -169,14 +169,14 @@ fwrite(boot_tab, file.path(OUT, "25_incremental_value_bootstrap.tsv"), sep = "\t
 model_levels <- c("stage, age, sex", "+ MSI", "+ CMS", "+ MSI + CMS", "+ MSI + sidedness (F03-aligned)")
 res$model <- factor(res$model, levels = model_levels)
 save_plot(function() {
-  print(ggplot(res, aes(model, c_index_base, fill = analysis)) +
+  print(ggplot(res, aes(model, delta_c, fill = analysis)) +
     geom_col(position = position_dodge(width = 0.8), width = 0.7, alpha = 0.9) +
-    geom_point(aes(y = c_index_full), position = position_dodge(width = 0.8), size = 1.6, colour = "black") +
-    coord_cartesian(ylim = c(0.5, max(res$c_index_full) + 0.05)) +
+    geom_hline(yintercept = 0, colour = "grey30", linewidth = 0.3) +
+    coord_cartesian(ylim = c(0, max(res$delta_c) * 1.15)) +
     scale_fill_manual(values = c("RFS, stage I-III" = "#C0392B", "OS, all stages" = "#2E86C1")) +
     theme_bw(base_size = 9) +
-    labs(x = NULL, y = "C-index (bar = covariates only, dot = + ecotype)", fill = NULL,
-         title = "Does the ecotype add beyond stage/MSI/CMS? (GSE39582)") +
+    labs(x = NULL, y = "Delta C-index from adding the ecotype", fill = NULL,
+         title = "Increment from the ecotype beyond stage/MSI/CMS (GSE39582)") +
     theme(axis.text.x = element_text(angle = 25, hjust = 1, size = 7)))
 }, file.path(FIG, "plot_41"), 9, 5)
 
