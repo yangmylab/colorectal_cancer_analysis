@@ -2,9 +2,11 @@
 
 **Project:** CRC Track A — cross-platform ecotype taxonomy (colorectal cancer)
 **Root:** `/run/media/meng/Seqdata/colorectal_cancer` (pipeline and manuscript in `CRC_BAP/`)
-**Updated:** 2026-11-18, after the figure-typography pass (vector composer + per-panel type audit). The previous
-checkpoint (2026-11-17) added the CMS incremental-value test (F14), the GSE38832 cohort (F15), the kinase and
-spatial layers, the 8 composite figures, the manuscript draft v0.2, and the QC panel fix.
+**Updated:** 2026-11-18, second checkpoint: the figure-typography pass (vector composer + per-panel type audit),
+the metadata corrections, and the F13 settlement (a trained cell2location reference replaces the under-trained
+100-epoch prior-only check). The previous checkpoint (2026-11-17) added the CMS incremental-value test (F14), the
+GSE38832 cohort (F15), the kinase and spatial layers, the 8 composite figures, the manuscript draft v0.2, and the
+QC panel fix.
 **Git:** 14 commits from `15231d6`; the figure-typography pass is commit `f271129`; 261 tracked files. Working tree
 clean except the user's untracked `Authors.xlsx`.
 
@@ -63,7 +65,7 @@ added value is not. That dissociation is the paper.
 | F09 | E3 | Phosphoproteome reproduction: **87.5%, ARI 0.558, permutation p=0.000999** |
 | F11 | **E2** | Disease-free survival: GSE14333 HR 2.37; GSE39582 1.50 (p=0.018); GSE17536 2.51; meta **1.67 (1.24–2.24), p=0.0007** |
 | F12 | E1 | Kinase activity: 9/78 at FDR<0.05, 5 abundance-independent; **inferred, not measured** |
-| F13 | descriptive | E2 programmes spatially autocorrelated (I=0.528) but **not more than others (0.587)**; stromal co-localisation ρ=0.49 (**method-dependent**) |
+| F13 | descriptive | E2 programmes spatially autocorrelated (I=0.528) but **not more than others (0.587)**; stromal co-localisation ρ=0.49 — **pattern reproduced** by a trained-reference cell2location check (matrix r 0.93), **absolute fractions method-dependent** |
 | F14 | not_supported | **Not incremental over stage+MSI+CMS**: HR 1.42 (0.93–2.17), p=0.107; Cramér's V 0.52 |
 | F15 | not_supported | No association with cancer-specific death in GSE38832 (HR 1.00, p=0.997) |
 
@@ -132,8 +134,13 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
   Results cites all 44 panels with **first citations strictly in order** (1A→…→6E→S1A→…→S2D).
 - **Reports:** `13_Reports/Final_Report.md`; `07_Validation/{Validation,K4_validation,Proteomics,Methylation,
   Spatial}_Report.md`; `21_Phospho_Report.md`; `22b_DFS_Report.md`; `22d_DFS_Replication_Report.md`;
-  `22e_GSE38832_Report.md`; `25_Incremental_Value_Report.md`; `06_Analysis/11_SpatialNiches/24_Spatial_Niche_Report.md`
-  and `25_cell2location_check.md`.
+  `22e_GSE38832_Report.md`; `25_Incremental_Value_Report.md`; `06_Analysis/11_SpatialNiches/24_Spatial_Niche_Report.md`,
+  `25_cell2location_check.md` (the 100-epoch prior-only run, kept as a superseded record) and
+  `26_cell2location_reference.{md,tsv,_overall.tsv}` (the trained-reference verdict).
+- **cell2location reference:** `Scripts/cell2location_reference.py` → `06_Analysis/09_SingleCell/
+  cell2location_reference_signature.tsv` (2,007 genes x 6 lineages) + `cell2location_reference_summary.tsv`;
+  cache `04_Processed_Data/singlecell/c2l_reference.h5ad` (10,187 cells, gitignored). Re-run the comparison with
+  `Scripts/cell2location_check.py --prior reference --epochs 3000 --spots 1000`.
 - **Verification tooling:** `Scripts/audit_analysis.py` → `13_Reports/Consistency_Audit.md` (**22/22 pass**);
   `Scripts/check_figure_citations.py` (**44/44 panels, order enforced**).
 - **Decision log:** `Logs/DECISION_LOG.tsv`, 61 rows covering every step from `00_validate` to `25_incremental`.
@@ -171,9 +178,15 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
 3. **The bulk classifier cannot be projected onto Visium spots** (self-check ARI 0.042). This is a design
    constraint, not a bug: spot-level labels would require a spot-trained classifier (see §4).
 4. **CPTAC-COAD survival is uninformative** (8 deaths) — protein/phospho layers test reproducibility only.
-5. **F13's co-localisation statistic is method-dependent.** cell2location is now installed and trains, but with
-   the signature matrix as prior, 400 spots and 100 epochs it returns near-uniform fractions (median r=0.11 vs
-   NNLS). A verdict needs a properly trained GSE132465 reference (labels + TPM matrix are on disk) or a GPU host.
+5. ~~**F13's co-localisation statistic is method-dependent.**~~ **SETTLED 2026-11-18:** a reference trained on
+   GSE132465 (2,007 genes, 10,187 cells, 250 epochs in 3.3 min) was run at 3,000 epochs x 1,000 spots over three
+   sections. It reproduces the *spatial pattern* of the NNLS composition (matrix r 0.94/0.70/0.93, top-lineage
+   agreement 0.97/0.74/0.99) but not the *absolute composition* (epithelial 0.39 vs 0.97; stromal 0.17 vs 0.01).
+   So the earlier "did NOT corroborate (r 0.11)" reading is withdrawn as an under-training artefact, and F13's
+   caveat narrows from "direction uncertain" to "absolute magnitude method- and gene-panel-dependent". Note that
+   unregularised NNLS is itself degenerate here (~0.97 on one lineage, exactly 0 on several), which is why a
+   per-lineage correlation is undefined for 9 of 18 lineage-section pairs. Evidence:
+   `06_Analysis/11_SpatialNiches/26_cell2location_reference.{md,tsv,_overall.tsv}`.
 6. **GSE38832's GEO record is thin**: 9 recurrences (cannot test F11), no age/sex, DSS only for mortality. A
    fuller follow-up would require the genuine series-matrix download (blocked FTP; manual download only).
 7. **Only one cohort carries CMS/MSI** (GSE39582), so F14 (non-incrementality over CMS) is single-cohort by
@@ -212,11 +225,14 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
    (`git diff --stat` on data files) and re-run both checkers. Cheapest first target: the panels that are far
    outside the floor — Figures 1–4 (2.76–3.24 pt).
 
-**P1 — settle the one soft statement (F13 co-localisation)**
-Train a proper cell2location reference from `03_Raw_Data/GSE132465` (annotation + natural-log TPM), then re-run
-`Scripts/cell2location_check.py` on 2–3 sections with ≥3,000 epochs. If the NNLS and cell2location fractions
-agree, F13's co-localisation can be reported without the caveat; if not, keep the caveat. Resume from
-`06_Analysis/11_SpatialNiches/25_cell2location_check.{tsv,md}`.
+**P1 — settle the one soft statement (F13 co-localisation)** — **DONE 2026-11-18**
+`Scripts/cell2location_reference.py` trains the reference on GSE132465 raw counts (2,007 genes, 10,187 cells, 250
+epochs, 3.3 min); `Scripts/cell2location_check.py --prior reference --epochs 3000 --spots 1000` then runs three
+sections. Outcome: the spatial pattern is reproduced (matrix r 0.93 median) but the absolute composition is not
+(epithelial 0.39 vs 0.97), so F13's caveat was narrowed rather than removed, and the F13 ledger `limitation` field
+now derives its cell2location sentence from `26_cell2location_reference_overall.tsv` instead of hardcoding a result.
+What would remove the caveat entirely: agreement in absolute fractions, or a GPU-scale run over all 16 sections to
+show the gap is a sampling/training artefact rather than a property of unregularised NNLS.
 
 **P2 — optional strengthening**
 4. Fuller GSE38832 metadata (manual series-matrix download) to test F11 in a fourth cohort.
@@ -277,6 +293,26 @@ agree, F13's co-localisation can be reported without the caveat; if not, keep th
     content; a 4 mm strip above each panel keeps them legible and identical across figures.
 27. **`pdflatex` twice for the composite.** TikZ `remember picture`/`overlay` placement needs two passes; one pass
     silently produces mispositioned nodes.
+28. **`groupby(...).groups` returns index labels, not positions** — mapping them through `ann.iloc[...]` throws on
+    string ids. Build a `pd.Series(np.arange(n), index=...)` and map explicitly.
+29. **Never assume a matrix's cell order matches the annotation.** Read the matrix header and reindex it to the
+    annotation (`pd.Index(header).get_indexer(ann.index)`), asserting no `-1`, before attaching labels.
+30. **cell2location's export keys vary by version.** In 0.1.5 + scvi-tools 1.4.2 the per-lineage profile is
+    `varm['means_per_cluster_mu_fg']` (plus q05/q95), not `means_cell_abundance_w_sf`. Look the key up with a
+    fallback list and error out loudly if none is present.
+31. **A near-uniform cell2location fraction is a training-budget symptom, not a negative result.** 100 epochs with
+    a marker-matrix prior returns ~1/6 per lineage; the same data at 3,000 epochs with a trained reference moves
+    to r 0.93 composition agreement. Never quote the under-trained run as evidence against the NNLS fractions.
+32. **Per-lineage correlations are undefined when the comparator is exactly zero.** Unregularised NNLS collapses
+    onto one lineage (~0.97) and returns exactly 0 for several others, so `corr` on those is NaN, not 0. Report
+    `n/a`, exclude them from the median, and add a composition-level statistic (matrix r over spots x lineages)
+    that survives the degeneracy.
+33. **`mclapply` forks inherit one RNG stream**, so a `set.seed()`-ed permutation test still moves individual
+    p-values between runs (observed 0.02 → 0.005 for one section x programme) even though aggregates are stable.
+    Re-running to change *text* is safe; re-running to regenerate *statistics* is not, so check which one you need.
+34. **Generated reports inherit their text from the writer script, not from reality.** `24_Spatial_Niche_Report.md`
+    kept saying cell2location "was attempted but not installed" after it had been installed. Fix the template in
+    the script (and re-run); hand-editing the generated file only lasts until the next run.
 
 ---
 

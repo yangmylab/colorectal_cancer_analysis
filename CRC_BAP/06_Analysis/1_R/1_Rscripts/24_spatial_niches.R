@@ -283,9 +283,8 @@ report <- c(
   "## Deconvolution",
   sprintf("- NNLS against the GSE132465-derived signature matrix (%d marker genes, %d lineages: %s).",
           nrow(sig_mat), length(cell_types), paste(cell_types, collapse = ", ")),
-  "- Deconvolution is NNLS against that signature matrix. **cell2location was attempted but not installed**:",
-  "  `pip install cell2location` failed because the torch wheel (539 MB) could not be downloaded from the",
-  "  reachable mirror, so no cell2location result is reported or implied.",
+  "- Deconvolution is NNLS against that signature matrix. A trained-reference cell2location cross-check is reported",
+  "  separately (`26_cell2location_reference.md`); it is a robustness check, not a second labelling of these sections.",
   "",
   "## Spatial autocorrelation",
   "- **Effect-size caution:** with a median of ~2,570 spots per section, the permutation test rejects the null",
@@ -313,7 +312,7 @@ report <- c(
   "",
   "## Limitations",
   "- No outcome data in these sections: this is not a prognostic claim and cannot be one.",
-  "- NNLS deconvolution is linear and unregularised; cell2location would be more accurate but was not runnable at this scale.",
+  "- NNLS deconvolution is linear and unregularised; the trained-reference cell2location cross-check reproduces the spatial pattern of the fractions but not their absolute composition, so absolute fractions are method-dependent.",
   "- 55 um spots mix cell types, so 'niche' means spot-level co-localisation, not single-cell neighbourhoods.",
   "- Hallmark scores at spot level have far less dynamic range than bulk (this is the F08 distribution shift).",
   "- One platform (Visium), 16 sections, one tissue type.",
@@ -322,6 +321,31 @@ report <- c(
   "- plot_39 Moran's I per programme across sections; plot_40 per-section Moran's I for the E2 programmes."
 )
 writeLines(report, file.path(OUT, "24_Spatial_Niche_Report.md"))
+
+# The deconvolution caveat is derived from the newest cell2location cross-check, so the ledger text cannot
+# outlive the evidence behind it (the 2026-11-17 wording quoted a 100-epoch run that proved under-trained).
+c2l_caveat <- function() {
+  ref <- file.path(OUT, "26_cell2location_reference_overall.tsv")
+  prior <- file.path(OUT, "25_cell2location_check.tsv")
+  if (file.exists(ref)) {
+    ov <- data.table::fread(ref, data.table = FALSE)
+    return(sprintf(paste0("a trained-reference cell2location rerun (%d sections, %d-%d spots per section, ",
+                          "3,000 epochs) reproduces the spatial pattern of the NNLS composition (matrix r %.2f, ",
+                          "top-lineage agreement %.2f) but not its absolute scale, so the E2-stromal ",
+                          "co-localisation is directionally supported while absolute fractions stay method- and ",
+                          "gene-panel-dependent"),
+                   nrow(ov), min(ov$spots), max(ov$spots),
+                   stats::median(ov$matrix_pearson), stats::median(ov$top_lineage_agreement)))
+  }
+  if (file.exists(prior)) {
+    pr <- data.table::fread(prior, data.table = FALSE)
+    return(sprintf(paste0("a %d-spot, 100-epoch cell2location cross-check with a marker-matrix prior did not ",
+                          "corroborate the NNLS fractions (median r %.2f), so the E2-stromal co-localisation is ",
+                          "method-dependent"),
+                   max(pr$spots), stats::median(pr$pearson_r, na.rm = TRUE)))
+  }
+  "no cell2location cross-check has been run on these sections"
+}
 
 ledger_path <- file.path("13_Reports", "Findings_Ledger.csv")
 old <- if (file.exists(ledger_path)) data.table::fread(ledger_path, data.table = FALSE) else NULL
@@ -339,7 +363,8 @@ f13 <- data.frame(
   grade = grade,
   verb_used = if (grade == "E1") "co-localises with" else "described",
   contradicting_evidence = "bulk classifier still does not transfer to spots (F08) - no spot-level ecotype label is claimed; E2 programmes are no more autocorrelated than other Hallmark programmes",
-  limitation = "no outcome data; NNLS deconvolution unregularised; 55 um spots mix cells; single platform; per-section scaling used only for spatial statistics; permutation p-values at the ceiling because of spot counts; a 400-spot cell2location cross-check (Scripts/cell2location_check.py) did NOT corroborate the NNLS fractions (median r 0.11), so the E2-stromal co-localisation is method-dependent while the Moran's I results are not",
+  limitation = paste0("no outcome data; NNLS deconvolution unregularised; 55 um spots mix cells; single platform; per-section scaling used only for spatial statistics; permutation p-values at the ceiling because of spot counts; ",
+                      c2l_caveat(), "; the Moran's I results do not depend on deconvolution"),
   next_test = "cell2location deconvolution at GPU scale; spatial cohort with matched outcome",
   figure_table = "plot_39; plot_40",
   stringsAsFactors = FALSE

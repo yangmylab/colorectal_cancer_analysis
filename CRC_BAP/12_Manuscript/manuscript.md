@@ -120,9 +120,11 @@ structured: mean Moran's I 0.528 on a k=6 neighbour graph (**Figure 4E**). They 
 than Hallmark programmes in general (0.587), and the per-section view (**Figure 4F**) confirms that this holds
 across sections rather than in one or two. E2 scores co-localise with the stromal compartment (median ρ=0.49) but
 not the myeloid (0.04). We report this descriptively, with two caveats: with ~2,570 spots per section the
-permutation test rejects the null for every programme, so only effect sizes are interpreted; and a 400-spot
-cell2location cross-check did not corroborate the NNLS fractions used for the co-localisation statistic
-(median r=0.11), so that co-localisation is method-dependent whereas the autocorrelation results are not (F13).
+permutation test rejects the null for every programme, so only effect sizes are interpreted; and a
+trained-reference cell2location rerun (three sections, 3,000 epochs, 1,000 spots each) reproduces the spatial
+pattern of the NNLS fractions used for the co-localisation statistic (matrix r 0.93, top-lineage agreement
+0.74–0.99) but not their absolute scale (epithelial fraction 0.39 by cell2location vs 0.97 by NNLS), so the
+co-localisation is directionally supported while its magnitude remains method- and gene-panel-dependent (F13).
 
 ### 5. Disease-free survival replicates; cancer-specific death does not (Figure 5)
 
@@ -220,7 +222,7 @@ independent by construction. Endpoint definitions differ slightly across cohorts
 in GSE39582 and GSE17536), and disease-free endpoints are never pooled with mortality endpoints. Classifier
 agreement is sensitive to how programme scores are built: a different gene-set mapping moved protein-layer agreement
 from 85.4% to 83.3% by flipping 2 of 96 borderline tumours — a sensitivity we report rather than hide. One spatial
-co-localisation statistic is method-dependent, as noted in Results.
+co-localisation statistic is directionally reproducible but its magnitude is method-dependent, as noted in Results.
 
 **What we do not claim.** No new prognostic classifier; no clinically actionable subtype; no causal role for any
 programme; no refinement beyond CMS; no measured kinase activity; no spatial ecotype assignment.
@@ -299,5 +301,9 @@ utility claim). (C) Survival by protein-assigned ecotype, 8 deaths, underpowered
 
 1. **Author list and affiliations** — `Authors.xlsx` is still an empty template.
 2. **Journal choice** — reference style, word limits, supplementary structure.
-3. **Optional strengthening** — a properly trained cell2location reference (GSE132465 labels and TPM matrix are on
-   disk) would settle whether the F13 co-localisation survives a second deconvolution method.
+3. ~~**Optional strengthening** — a properly trained cell2location reference (GSE132465 labels and TPM matrix are on
+   disk) would settle whether the F13 co-localisation survives a second deconvolution method.~~ **Done
+   2026-11-18:** a reference trained on GSE132465 (2,007 genes, 250 epochs) run at 3,000 epochs over three sections
+   reproduces the spatial pattern of the NNLS fractions (matrix r 0.93) but not their absolute scale; see
+   `06_Analysis/11_SpatialNiches/26_cell2location_reference.md`. Remaining strengthening: the same check at GPU
+   scale on all 16 sections.

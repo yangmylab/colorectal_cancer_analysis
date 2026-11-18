@@ -1,0 +1,2 @@
+cells	genes	lineages	epochs	batch_size	threads	train_minutes	mean_prior	per_lineage_mean
+10187	2007	B cells|Epithelial cells|Mast cells|Myeloids|Stromal cells|T cells	250	2500	6	3.3	2.115616798400879	B cells:3.44|Epithelial cells:3.90|Mast cells:0.59|Myeloids:1.65|Stromal cells:2.48|T cells:0.63
