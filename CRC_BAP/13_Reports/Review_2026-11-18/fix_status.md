@@ -5,7 +5,7 @@
 | R01 | P0 | **OPEN** | No bibliography yet; needs a verified reference list (~40 entries) |
 | R02 | P0 | **DRAFTED** | Statements section added; Funding, Author contributions, ethics approvals and code DOI are `[TODO]` |
 | R03 | P0 | **PARTIAL** | Rendered at CRC_PANEL_MAX_W=3.4: Figures 2/4/5/6 now 7.33/7.33/11.25/7.34 pt. Still below floor: Fig 1 3.10 (discovery chain not re-run, label risk), Fig 3 4.01 (20_spatial_analysis aborted on a curl download), S1 5.08, S2 6.35 |
-| R04 | P0 | **OPEN** | Group sizes and per-model n still missing |
+| R04 | P0 | **PARTIAL** | Group sizes added (355/269 discovery; CPTAC 49/48, 47/50, 45/51; methylation 184/204; GSE14333 115/111); per-model n and the two GSE splits still missing (scripts do not persist them) |
 | R05 | P0 | **OPEN** | Legends still carry no n/test/interval definition |
 | R06 | P1 | **FIXED** | Title and Abstract Conclusions now say "associated with" and "no detectable incremental value" |
 | R07 | P1 | **FIXED** | Abstract names the three cohorts and GSE14333 explicitly |
@@ -30,3 +30,6 @@
 | R26 | P2 | **FIXED** | "947-4,757 spots per section (median 2,670)" |
 
 Next three actions, in order: (1) run the panel re-render and recompose; (2) build the reference list; (3) expand Methods and rewrite the legends with n and tests.
+
+
+Commits in this revision: `cb62d25` figure infrastructure, `60c43df` 6D/K-labels + render driver, `c9d9462` wording + statements, `fb173bf` group sizes, `ea159c4` re-authored panels and recomposition, `7ae0c66` handoff scope, `198a05f` rebuilt docx.
