@@ -5,8 +5,8 @@
 **Updated:** 2026-11-18, after the figure-typography pass (vector composer + per-panel type audit). The previous
 checkpoint (2026-11-17) added the CMS incremental-value test (F14), the GSE38832 cohort (F15), the kinase and
 spatial layers, the 8 composite figures, the manuscript draft v0.2, and the QC panel fix.
-**Git:** 13 commits, `15231d6` … `634830d` (HEAD), 261 tracked files. Working tree clean except the user's
-untracked `Authors.xlsx`.
+**Git:** 14 commits from `15231d6`; the figure-typography pass is commit `f271129`; 261 tracked files. Working tree
+clean except the user's untracked `Authors.xlsx`.
 
 ---
 
