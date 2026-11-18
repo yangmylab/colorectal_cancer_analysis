@@ -7,8 +7,8 @@ the metadata corrections, and the F13 settlement (a trained cell2location refere
 100-epoch prior-only check). The previous checkpoint (2026-11-17) added the CMS incremental-value test (F14), the
 GSE38832 cohort (F15), the kinase and spatial layers, the 8 composite figures, the manuscript draft v0.2, and the
 QC panel fix.
-**Git:** 14 commits from `15231d6`; the figure-typography pass is commit `f271129`; 261 tracked files. Working tree
-clean except the user's untracked `Authors.xlsx`.
+**Git:** history from `15231d6`; figure-typography pass `f271129`, metadata corrections `ac1df66`, F13 settlement
+`d9cefab`; 267 tracked files. Working tree clean except the user's untracked `Authors.xlsx`.
 
 ---
 
