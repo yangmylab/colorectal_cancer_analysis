@@ -1,0 +1,27 @@
+id	severity	area	location	issue	evidence	fix
+R01	P0	references	whole document	No reference list and no in-text citations anywhere; CMS/CRIS/PDS and the source cohorts are uncited	no "## References" heading; rg for citation markers returns nothing	Add 45-60 references and run citation-audit
+R02	P0	completeness	end of document	Data Availability, Code Availability, Ethics, Funding, Author Contributions, Competing Interests all absent	none of the six headings or statements exist	Add all six with accessions, repository DOI and approvals
+R03	P0	figures	all 8 composites (44 panels)	Every panel prints at 2.76-5.44 pt at 180 mm; floor is 7 pt	compose_figures_typography.tsv (44/44 below floor)	Re-author panels at ~3.4 in with base_size 8, then recompose
+R04	P0	statistics	Abstract, Results, legends	No E1/E2 group sizes and no model denominators; Methods promises counts that are absent	no group counts anywhere in manuscript.md	Add cohort/analysis table with n, events, E1/E2 counts per model
+R05	P0	figures	Figure legends 260-296	Legends give no n, test, error-bar or correction definition	one-line panel descriptions only	Rewrite legends per figure-statistics checklist
+R06	P1	framing	title line 1; Abstract 28-34	"Adds nothing to CMS" and "predicts recurrence" overstate a null (HR 1.42, CI 0.93-2.17, p=0.107) and an association	25_incremental_value.tsv row +MSI+CMS	Use "no detectable incremental value" and "associated with recurrence"
+R07	P1	framing	Abstract 19-21	"three cohorts with disease-free endpoints and three with mortality" double-counts three cohorts	22d/22e reports	Rewrite as three cohorts plus GSE14333
+R08	P1	accuracy	Results 1, 90-92	"separates the two groups without overlap" contradicted by Figure 1C	Figure 1C shows overlapping clouds	Say "substantial but incomplete separation" or quantify it
+R09	P1	statistics	Results 3, 118-119	74.5% vs 84.3% described as "equally common" with no test	Methylation_Report.md gives only the global beta p=0.113	Report the proportion test and CI, or reword
+R10	P1	accuracy	Methods Grading, 76	"Fifteen findings (F01-F15)" but the ledger has 14 rows and no F10	Findings_Ledger.csv ids F01-F09,F11-F15	Correct the count or restore F10
+R11	P1	methods	Methods 56-80	Not reproducible from text: missing SNF/consensus parameters, K-selection rule, CV scheme, normalisation, FDR policy, software versions, seeds	values exist in DECISION_LOG.tsv and scripts but not the manuscript	Expand Methods and add a parameters table
+R12	P1	figures	Results 7, 203-204; Supp Fig 1C	Panel 1C is a single-group boxplot yet cited for "library sizes were comparable between groups"	01_bulk_qc.R:122 plots group, and group is "tumour" for all samples	Re-colour by project and test, or drop panel and sentence
+R13	P1	figures	Supp Fig 1D	Heatmap annotation named "batch" for COAD/READ, contradicting "no technical batch exists"	01_bulk_qc.R:126 ann_col batch = clin$batch	Rename annotation to project/cohort and regenerate
+R14	P1	figures	Figs 1C,2A,2D,3A,3B,5A,5D,5F,6A,6E,S2D	Same two ecotypes encoded in four+ colour schemes, with roles swapped between figures	figure JPEGs	One shared E1/E2 palette across all figures
+R15	P1	figures	Figs 5A,5D,5F,6A,S2C,S2D	KM panels lack numbers at risk and log-rank p; S2C mixes log-rank (0.27) and Cox (0.286)	figure JPEGs; proteomics report	Add at-risk tables and log-rank p; state which test
+R16	P1	figures	Figs 5B,5C,5E,6C	Forest plots print no per-row HR/CI values	figure JPEGs	Annotate HR (95% CI) per row with n and events
+R17	P1	statistics	Results 2, 106-107	"Far above the chance level" asserted but never quantified, and chance is not 50% with unequal groups	no null computed in text	Report a permutation null for label agreement
+R18	P2	figures	Figure 6D	y-axis truncated at 0.50-0.65 exaggerates 0.01-0.03 differences	plot_41 code coord_cartesian ylim	Plot delta C-index or show the full range
+R19	P2	figures	Supp Fig 2B	Decision curve lacks treat-all/treat-none references	panel image	Add references or drop the panel
+R20	P2	figures	Figs 2C vs 2E	Denominators differ (96 vs 97) with no panel-specific n	Proteomics_Report.md; 21_Phospho_Report.md	State per-panel n
+R21	P2	statistics	Results 2, 4	Precision inconsistent: ARI 0.558 vs 0.56, p 0.997 vs 1	21_Phospho_Report.md; 22e report	Adopt one precision policy
+R22	P2	accuracy	Results 4	F12 records 5 of 9 kinases abundance-independent; Results states only 9	23_kinase_activity_report.md	Add "5 of which were abundance-independent"
+R23	P2	methods	Methods Classifier	"recoverable features are reported for each layer" but they are in reports, not the manuscript	layer reports	Add a supplementary table or reword
+R24	P2	figures	Figure 6B	p-value labels overlap the K=4 point	panel image	Offset labels
+R25	P2	framing	title/abstract vs Results	Grades used in Abstract but never shown in Results	claims_to_evidence.tsv	Tag Results subsections with grades
+R26	P2	statistics	Results 4	"~2,570 spots per section" where exact counts exist	24_section_summary.tsv	Quote range or median

@@ -143,6 +143,12 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
   `Scripts/cell2location_check.py --prior reference --epochs 3000 --spots 1000`.
 - **Verification tooling:** `Scripts/audit_analysis.py` → `13_Reports/Consistency_Audit.md` (**22/22 pass**);
   `Scripts/check_figure_citations.py` (**44/44 panels, order enforced**).
+- **Pre-submission review (2026-11-18):** `13_Reports/Review_2026-11-18/Review_Report.{md,docx}` +
+  `review_findings.tsv` — 26 severity-graded findings (5 P0, 13 P1, 8 P2) from the `peer-review`,
+  `nature-statistics` and `paper-claim-audit` playbooks. Every number was checked against its source file: no
+  fabricated value and no Results sentence exceeding its grade. The P0s are infrastructural — no references
+  (R01), no availability/ethics/funding/contribution statements (R02), all 44 panels below the 7 pt floor (R03),
+  no group sizes or model denominators (R04), no statistics in the legends (R05).
 - **Decision log:** `Logs/DECISION_LOG.tsv`, 61 rows covering every step from `00_validate` to `25_incremental`.
 
 ### 2.6 Bugs found and fixed (do not reintroduce)
