@@ -2,10 +2,10 @@
 
 **Project:** CRC Track A — cross-platform ecotype taxonomy (colorectal cancer)
 **Root:** `/run/media/meng/Seqdata/colorectal_cancer` (pipeline and manuscript in `CRC_BAP/`)
-**Updated:** 2026-11-17, end of the session that added the CMS incremental-value test (F14), the GSE38832
-cohort (F15), the kinase and spatial layers, the 8 composite figures, the manuscript draft v0.2, and the QC
-panel fix.
-**Git:** 11 commits, `15231d6` … `eb3c38a` (HEAD), 258 tracked files. Working tree clean except the user's
+**Updated:** 2026-11-18, after the figure-typography pass (vector composer + per-panel type audit). The previous
+checkpoint (2026-11-17) added the CMS incremental-value test (F14), the GSE38832 cohort (F15), the kinase and
+spatial layers, the 8 composite figures, the manuscript draft v0.2, and the QC panel fix.
+**Git:** 13 commits, `15231d6` … `634830d` (HEAD), 261 tracked files. Working tree clean except the user's
 untracked `Authors.xlsx`.
 
 ---
@@ -104,8 +104,16 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
 - **Figures — 44 panels:** `09_Figures/plots/plot_1` … `plot_44` (PDF + JPEG 300 dpi) with
   `plot_manifest.tsv`.
 - **Composed figures — 8:** `12_Manuscript/Figures/` → `Figure_1` … `Figure_6`,
-  `Supplementary_Figure_1`, `Supplementary_Figure_2` (PDF + JPEG), panel letters A/B/C…, built from
-  `12_Manuscript/figures_plan.tsv` by `Scripts/compose_figures.R`.
+  `Supplementary_Figure_1`, `Supplementary_Figure_2` (vector PDF + 300 dpi JPEG), panel letters A/B/C…, built from
+  `12_Manuscript/figures_plan.tsv` by `Scripts/compose_figures.R`. Since 2026-11-18 the composer places the panel
+  **PDF pages** with `pdflatex` + TikZ (true vector, selectable text; verified with `pdftotext`/`pdfimages`), uses
+  **one scale factor per figure** so panel type size no longer varies within a composite, and sets panel letters at
+  a fixed **8 pt Helvetica bold** in a reserved 4 mm strip above each panel. Options: `--mode=uniform|equal`,
+  `--width_mm` (180), `--height_mm` (240), `--floor_pt` (7), `--gutter_mm`, `--letter_strip_mm`, `--letter_pt`.
+  Requires `pdflatex` (TikZ) + `pdftoppm`.
+- **Typography audit:** `12_Manuscript/compose_figures_typography.{tsv,md,docx}` — per panel: authored vs printed
+  size, scale factor, printed body/title pt, floor pass/fail. Current state: **all 44 panels print at 2.8–5.4 pt,
+  i.e. below the 7 pt floor** (full breakdown under §3 blocker 10).
 
 | Figure | Panels | Plots | Role |
 |---|---|---|---|
@@ -174,8 +182,14 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
    submission.
 9. **Stale project metadata:** `config/pipeline_config.yaml` still says `n_workers: 8` and `Analysis_Plan.md` says
    "16 physical cores"; this box has **6 physical / 12 SMT**. Fix before quoting methods.
-10. **Composed figures are montages of 300 dpi rasters.** Panel titles/fonts are not harmonised across panels, and
-    a vector re-assembly may be required by some journals.
+10. **Panels print below the legibility floor — the remaining figure blocker.** The composer is now vector and uses
+    one type scale per figure (lettered 8 pt, consistent gutters), but every panel was *authored* at 6–10 in with
+    ~11 pt type, so at the 180 mm submission width its text prints at **2.8–5.4 pt**; **all 44 panels are below the
+    7 pt floor** (Fig 1 3.10, Fig 2 3.24, Fig 3 2.76, Fig 4 3.10, Fig 5 4.76, Fig 6 4.76, S1 5.08, S2 5.44).
+    Measured, not estimated: `12_Manuscript/compose_figures_typography.tsv`. Heights are within budget
+    (127–185 mm ≤ 240 mm), so the fix is panel authoring, not layout: re-render each panel at ~3.4 in with
+    `base_size = 8`, which yields 7–8 pt through the same composer. `--mode=equal` does not help (it only
+    redistributes the same problem); `--width_mm`/`--height_mm` let the layout be re-tuned once a journal is chosen.
 
 ---
 
@@ -184,8 +198,15 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
 **P0 — finish the submission package (owner: user for 1–2, agent for 3)**
 1. Fill `Authors.xlsx` (names, emails, affiliations, ORCIDs) — nothing can be invented here.
 2. Choose the target journal; it decides reference style, word limits and supplementary structure.
-3. Harmonise panel typography inside each composite and, if required, rebuild the figures as vector montages
-   (`Scripts/compose_figures.R` is the single place to change). Resume from `12_Manuscript/figures_plan.tsv`.
+3. ~~Harmonise panel typography inside each composite and, if required, rebuild the figures as vector montages~~
+   **DONE 2026-11-18**: `Scripts/compose_figures.R` now emits vector PDFs with one type scale per figure and uniform
+   8 pt letters, and writes `12_Manuscript/compose_figures_typography.{tsv,md,docx}`. What it cannot fix is panel
+   authoring width — see blocker 10 and the P2 item below.
+4. **Re-author the panels at print width** (the real fix for blocker 10): render each panel at ~3.4 in with a shared
+   theme (`base_size = 8`), then re-run the composer. This touches the layer scripts (14, 17, 19, 20, 21, 23, 24,
+   22*, 05 and the QC script), so verify afterwards that the underlying TSVs/ledger are unchanged
+   (`git diff --stat` on data files) and re-run both checkers. Cheapest first target: the panels that are far
+   outside the floor — Figures 1–4 (2.76–3.24 pt).
 
 **P1 — settle the one soft statement (F13 co-localisation)**
 Train a proper cell2location reference from `03_Raw_Data/GSE132465` (annotation + natural-log TPM), then re-run
@@ -239,6 +260,17 @@ agree, F13's co-localisation can be reported without the caveat; if not, keep th
 23. **Check cross-artefact consistency by script, not by eye**: run
     `python3 Scripts/audit_analysis.py` and `python3 Scripts/check_figure_citations.py` before any commit that
     touches figures or the ledger.
+24. **Never rescale panels independently inside a composite.** The old composer scaled every panel to a fixed
+    900 px width, which made one figure's type size vary by 1.14×–1.67×; use one scale factor per figure
+    (`--mode=uniform`).
+25. **Printed type size is set by the panel's authored width, not by the montage.** A 9-in panel printed into a
+    60 mm column is ~3 pt no matter how the composite is assembled. Check
+    `12_Manuscript/compose_figures_typography.tsv` before calling any figure submission-ready — do not assume
+    "it was drawn at 300 dpi, so it is fine".
+26. **Reserve space for panel letters instead of overlaying them.** The old letter boxes sat on top of panel
+    content; a 4 mm strip above each panel keeps them legible and identical across figures.
+27. **`pdflatex` twice for the composite.** TikZ `remember picture`/`overlay` placement needs two passes; one pass
+    silently produces mispositioned nodes.
 
 ---
 
@@ -283,7 +315,8 @@ agree, F13's co-localisation can be reported without the caveat; if not, keep th
   `21_phospho_analysis.R`, `23_kinase_activity.R`, `24_spatial_niches.R`.
 - Outcomes: `22a_build_gse14333_dfs.R` + `22b_dfs_validation.R`, `22c_build_gse38832_dfs.R` +
   `22e_gse38832_endpoints.R`, `22d_dfs_replication.R`, `25_incremental_value.R`.
-- Manuscript: `Scripts/build_claims_map.py`, `Scripts/compose_figures.R`,
+- Manuscript: `Scripts/build_claims_map.py`, `Scripts/compose_figures.R` (vector montage; needs `pdflatex` with
+  `tikz` + `pdftoppm`; options `--mode=uniform|equal`, `--width_mm=180`, `--height_mm=240`, `--floor_pt=7`),
   `Scripts/check_figure_citations.py`, `Scripts/audit_analysis.py`, `Scripts/fix_qc_project_effect.R`,
   `Scripts/fetch_gse38832_metadata.py`, `Scripts/cell2location_check.py`,
   `Scripts/install_missing_packages.R`, `Scripts/export_frozen_hallmark_gmt.R`,
@@ -300,6 +333,8 @@ agree, F13's co-localisation can be reported without the caveat; if not, keep th
 1. `Rscript Scripts/install_missing_packages.R` (~25 min; needs ≤6 cores).
 2. Recreate `sc-analysis` with `--override-channels`; then pin `pyro-ppl==1.8.6` if cell2location is needed.
 3. Copy `03_Raw_Data/` (≈12 GB) or re-download manually.
+4. Install the figure toolchain: `texlive-latex-recommended` (TikZ) + `poppler-utils` (`pdftoppm`, `pdfinfo`);
+   `Scripts/compose_figures.R` stops with an explicit message if either is missing.
 4. `./run_all.sh`; then layers 17 → 19 → 20 → 21 → 22a → 22b → 22d → 22e → 23 → 24 → 25 → 14.
 5. Expect `plot_manifest.tsv` = 44 entries, `Findings_Ledger.csv` = F01–F15, and
    `12_Manuscript/Figures/` = 16 files.

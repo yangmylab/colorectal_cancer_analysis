@@ -10,7 +10,8 @@ Draft **v0.2** (2026-11-17): figure set composed, Results rewritten so every pan
 | `manuscript.docx` | Word rendering built with the reference template `MN/Paper_1/reference/tnr_fangsong_redcode.docx` (Times New Roman + FangSong) |
 | `figures_plan.tsv` | **Single source of truth** for panel composition: 44 panels → 6 main + 2 supplementary figures, with a `supports_main` column recording which main panel each supplementary panel backs |
 | `claims_to_evidence.tsv` | Every claim → finding id, grade, datasets, figures, ledger statistic, citation caveat |
-| `Figures/` | The composed figures: `Figure_1` … `Figure_6`, `Supplementary_Figure_1`, `_2` (PDF + JPEG), generated directly here by `Scripts/compose_figures.R` |
+| `Figures/` | The composed figures: `Figure_1` … `Figure_6`, `Supplementary_Figure_1`, `_2` (vector PDF + 300 dpi JPEG), generated here by `Scripts/compose_figures.R` |
+| `compose_figures_typography.tsv` / `.md` / `.docx` | Per-panel typography audit written by the composer: authored vs printed size, scale factor, resulting body/title type in pt, and whether each panel meets the legibility floor |
 
 ## The rule this manuscript follows
 
@@ -60,11 +61,31 @@ pandoc manuscript.md --reference-doc=/run/media/meng/Seqdata/MN/Paper_1/referenc
        -o manuscript.docx --toc --toc-depth=2
 ```
 
+### How the composer sets typography
+
+`Scripts/compose_figures.R` places the panel **PDF pages** (not rasters) with `pdflatex` + TikZ and writes a
+true vector PDF plus a 300 dpi JPEG. Its defaults:
+
+| Flag | Default | Meaning |
+|---|---|---|
+| `--mode` | `uniform` | one scale factor for every panel, so a given font size prints the same in every panel. `equal` keeps equal-width cells (fills the page, but type size then varies with each panel's authored width) |
+| `--width_mm` | `180` | printed width of the composite (double-column page) |
+| `--height_mm` | `240` | height budget; the layout picks the fewest columns that fit |
+| `--floor_pt` | `7` | legibility floor used by the audit |
+| `--gutter_mm` / `--letter_strip_mm` / `--letter_pt` | `4` / `4` / `8` | panel spacing, reserved strip above each panel, panel-letter size |
+
+Every run rewrites `compose_figures_typography.{tsv,md,docx}`. **Read it before quoting figure legibility:** the
+panels were authored at 6–10 in with ~11 pt type, so at 180 mm they print at 2.8–5.4 pt and *all 44* currently sit
+below the 7 pt floor. Reaching it requires re-authoring the panels at print width (~3.4 in, `base_size = 8`), which
+means re-running the layer scripts — not a montage change (see P2 in the project `handoff.md`).
+
 ## Pending before submission
 
 1. **Author list** — `Authors.xlsx` (project root) is still an empty template: names, emails, affiliations, ORCIDs.
 2. **Journal choice** — drives reference style, word limits and supplementary structure.
-3. **Final figure polishing** — e.g. harmonising panel titles/fonts within each composite, and vector assembly if
-   the journal requires it.
+3. **Panel re-authoring for print legibility** — the montage is now a true vector assembly with one type scale per
+   figure and uniform letters, but the panels themselves were drawn at 6–10 in, so their text prints at 2.8–5.4 pt
+   (`compose_figures_typography.tsv` lists every panel against the 7 pt floor). Compliant figures need the panels
+   re-rendered at ~3.4 in with `base_size = 8`.
 4. Optional scientific strengthening: a properly trained cell2location reference (GSE132465 labels and TPM matrix
    are on disk) to test whether F13's E2–stromal co-localisation survives a second deconvolution method.

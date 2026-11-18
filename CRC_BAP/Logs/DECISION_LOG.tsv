@@ -59,3 +59,5 @@ timestamp	step	decision	rationale
 2026-11-17T09:46:56Z	22c_gse38832	BUILD	GSE38832 DFS cohort built: 22167 symbols x 122 arrays (RMA); DFS available for 92 (9 events); unit=months; OS columns absent by assertion
 2026-11-17T09:49:00Z	22e_gse38832	PASS	GSE38832: 28 cancer deaths, 9 recurrences; DSS adjusted HR=1.002 p=0.997; DFS treated as underpowered; grade=not_supported
 2026-11-17T10:04:00Z	24_spatial_niches	PASS	sections=16; tests=800; sig=800; meanI E2=0.528 other=0.587; rho stromal=0.49; grade=descriptive
+2026-11-18T01:51:08Z	compose_figures	PASS	mode=uniform; width=180mm; floor=7.0pt; figures=8; panels=44; below_floor=44
+2026-11-18T01:51:46Z	compose_figures	PASS	mode=uniform; width=180mm; floor=7.0pt; figures=8; panels=44; below_floor=44
