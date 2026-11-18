@@ -220,6 +220,36 @@ tested without refitting, and reproducibility does not imply incremental clinica
 demonstrated, and they can dissociate. Studies proposing new subtypes would do well to report the second test as
 routinely as the first.
 
+**Comparison with published classifications.** The CMS consensus remains the reference taxonomy for colorectal
+cancer. Its four groups separate an immune-infiltrated, a canonical epithelial, a metabolic and a
+mesenchymal/stromal phenotype, and the stromal group (CMS4) is the one usually associated with the worse
+outcome. Our E2 pole sits closest to that group: it is defined by EMT, angiogenesis and IL6–JAK–STAT3 programmes,
+the biology that gives the mesenchymal phenotype its stromal character. E1, defined by Hedgehog, pancreas-β-cell
+and MYC-V2 programmes, has no direct counterpart in the CMS scheme, so the K=2 partition describes a coarser
+contrast than CMS1–4 rather than a re-derivation of it. CRIS (subtypes A–D) and the PDS colon/rectal subtypes
+differ in construction and in the number of groups. That divergence is the instability our design addresses:
+labels learned under one algorithm and one cohort do not necessarily survive a change of assay, and a taxonomy
+built from Hallmark programme scores is deliberately less granular than CMS in exchange for being more portable.
+
+**What the cross-assay design adds.** Validation of expression subtypes commonly takes the form of another
+expression cohort, often with the classifier retrained there or the labels re-derived. Here nothing was refitted after
+discovery: the same 50-programme nearest-centroid rule was applied to protein, phosphoprotein, methylation,
+Visium spots and four outcome cohorts. That design is what makes the failures informative. Agreement at the
+protein (83.3%, ARI 0.439) and phosphoproteome level (87.5%, ARI 0.558, permutation p=0.000999) shows the
+partition is not an artefact of transcript quantification, while its disappearance at the methylome (ARI 0.006)
+and its inability to label 55 µm spots (self-check ARI 0.042) bound what the axis can mean. Reporting those
+negatives beside the positives is, in our reading, more informative than another expression-only replication.
+
+**Contribution.** The study contributes three things. First, a reproducibility standard for subtype claims: a
+classifier frozen at discovery and applied without refitting across assays, with each layer's evidence grade
+fixed in advance. Second, an incremental-value test posed as a primary question rather than a discussion point
+and quantified as the change in C-index once CMS and MSI enter the model; here the answer is null, and the null
+is reported with its interval (HR 1.42, 0.93–2.17). Third, evidence that reproducibility and clinical added value
+dissociate: the axis survives three assays and is associated with recurrence in three cohorts, yet adds no
+detectable information over the published taxonomy in the one cohort able to test it. For a field that keeps
+producing new partitions, that pair of results is the contribution: it shows what a subtype must demonstrate, and
+what it can still fail to demonstrate while remaining biologically real.
+
 **Limitations.** All data are retrospective and public: no wet-lab validation, no prospective cohort. Cross-platform
 layers come from small cohorts (CPTAC-COAD 96 tumours and 8 deaths; GSE14333 226 tumours and 50 events), so protein
 and phospho analyses test reproducibility rather than prognosis. The phosphoproteome is 59.8% missing before

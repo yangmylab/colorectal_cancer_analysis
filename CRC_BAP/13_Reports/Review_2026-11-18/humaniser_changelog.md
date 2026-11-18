@@ -53,3 +53,29 @@ protein-assignment result.
 33 sentences remain above 30 words and 12 uses of "rather than", because where they survive they carry a real
 contrast (e.g. "anatomical rather than technical") rather than padding. Trimming those further trades precision
 for rhythm, so it is left for the author to judge.
+
+---
+
+## 2026-11-18 (later): Discussion comparison and contribution
+
+Added 434 words to the Discussion, before **Limitations**, in three passages:
+
+1. **Comparison with published classifications.** Places the E1/E2 axis against CMS1--4 (E2 maps onto the
+   mesenchymal/stromal pole; E1 has no direct CMS counterpart), and notes that CRIS (A--D) and the PDS
+   colon/rectal subtypes differ in construction and granularity. The point drawn is that this divergence is the
+   instability the design addresses, not a defect of the axis.
+2. **What the cross-assay design adds.** Contrasts the usual expression-cohort validation with a classifier frozen
+   at discovery and applied to protein, phosphoprotein, methylation, spots and four outcome cohorts, and explains
+   why the failures (methylome ARI 0.006; spot self-check ARI 0.042) bound the meaning of the axis.
+3. **Contribution.** Three explicit contributions: a frozen cross-assay reproducibility standard with grades fixed
+   in advance; an incremental-value test posed as a primary question and quantified as a change in C-index against
+   CMS/MSI (null, HR 1.42, 0.93--2.17); and evidence that reproducibility and clinical added value dissociate.
+
+**Citation caveat.** These passages name the CMS, CRIS and PDS frameworks but carry no bracketed citations, because
+the manuscript still has no bibliography (review R01). The claims made about them are limited to widely established
+descriptions of the schemes (group count, the stromal/mesenchymal group and its outcome association) and are hedged
+("usually associated with"). No quantitative claim is attributed to a published study. Adding the citations is the
+first task of the R01 pass, and these three paragraphs are where they are most needed.
+
+**Invariants.** No figure or supplementary citation added or reordered; `check_figure_citations.py` PASS with the
+same first-citation order; `audit_analysis.py` 22/22.
