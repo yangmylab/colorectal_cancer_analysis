@@ -1,0 +1,138 @@
+{
+ "plan": [
+  [
+   29,
+   [
+    "10.1038/nm.3967",
+    "10.1038/ncomms15107",
+    "10.1158/1078-0432.ccr-23-3964"
+   ]
+  ],
+  [
+   30,
+   [
+    "10.1186/s13073-023-01176-5"
+   ]
+  ],
+  [
+   34,
+   [
+    "10.1038/nature11252",
+    "10.1016/j.cell.2019.03.030"
+   ]
+  ],
+  [
+   40,
+   [
+    "10.1016/j.cels.2015.12.004",
+    "10.1186/1471-2105-14-7"
+   ]
+  ],
+  [
+   42,
+   [
+    "10.1038/nmeth.2810"
+   ]
+  ],
+  [
+   48,
+   [
+    "10.1093/nar/gkv007"
+   ]
+  ],
+  [
+   56,
+   [
+    "10.1038/s41587-021-01139-4"
+   ]
+  ],
+  [
+   73,
+   [
+    "10.1158/0008-5472.can-22-2794"
+   ]
+  ],
+  [
+   76,
+   [
+    "10.1038/s41416-024-02650-6"
+   ]
+  ],
+  [
+   78,
+   [
+    "10.1038/s41588-025-02193-3"
+   ]
+  ],
+  [
+   80,
+   [
+    "10.1038/s41586-024-07769-3"
+   ]
+  ],
+  [
+   84,
+   [
+    "10.1200/jco.22.02582"
+   ]
+  ],
+  [
+   88,
+   [
+    "10.1016/j.ccell.2023.02.016",
+    "10.1038/s41467-023-39953-w"
+   ]
+  ],
+  [
+   89,
+   [
+    "10.1038/s41591-023-02324-5",
+    "10.1038/s41586-024-07747-9"
+   ]
+  ]
+ ],
+ "numbers": {
+  "10.1038/nm.3967": 1,
+  "10.1038/ncomms15107": 2,
+  "10.1158/1078-0432.ccr-23-3964": 3,
+  "10.1186/s13073-023-01176-5": 4,
+  "10.1038/nature11252": 5,
+  "10.1016/j.cell.2019.03.030": 6,
+  "10.1016/j.cels.2015.12.004": 7,
+  "10.1186/1471-2105-14-7": 8,
+  "10.1038/nmeth.2810": 9,
+  "10.1093/nar/gkv007": 10,
+  "10.1038/s41587-021-01139-4": 11,
+  "10.1158/0008-5472.can-22-2794": 12,
+  "10.1038/s41416-024-02650-6": 13,
+  "10.1038/s41588-025-02193-3": 14,
+  "10.1038/s41586-024-07769-3": 15,
+  "10.1200/jco.22.02582": 16,
+  "10.1016/j.ccell.2023.02.016": 17,
+  "10.1038/s41467-023-39953-w": 18,
+  "10.1038/s41591-023-02324-5": 19,
+  "10.1038/s41586-024-07747-9": 20
+ },
+ "entries": {
+  "10.1038/nm.3967": "Guinney J, Dienstmann R, Wang X, de Reyni\u00e8s A, Schlicker A, Soneson C, et al. The consensus molecular subtypes of colorectal cancer. Nat Med. 2015;21:1350-1356. doi:10.1038/nm.3967",
+  "10.1038/ncomms15107": "Isella C, Brundu F, Bellomo SE, Galimi F, Zanella E, Porporato R, et al. Selective analysis of cancer-cell intrinsic transcriptional traits defines novel clinically relevant subtypes of colorectal cancer. Nat Commun. 2017;8:15107. doi:10.1038/ncomms15107",
+  "10.1158/1078-0432.ccr-23-3964": "Mouillet-Richard S, Cazelles A, Sroussi M, Gallois C, Taieb J, Laurent-Puig P. Clinical Challenges of Consensus Molecular Subtype CMS4 Colon Cancer in the Era of Precision Medicine. Clin Cancer Res. 2024;30:2351-2358. doi:10.1158/1078-0432.ccr-23-3964",
+  "10.1186/s13073-023-01176-5": "Cascianelli S, Barbera C, Ulla AA, Grassi E, Lupo B, Pasini D, et al. Multi-label transcriptional classification of colorectal cancer reflects tumor cell population heterogeneity. Genome Med. 2023;15:37. doi:10.1186/s13073-023-01176-5",
+  "10.1038/nature11252": "Cancer Genome Atlas Network. Comprehensive molecular characterization of human colon and rectal cancer. Nature. 2012;487:330-337. doi:10.1038/nature11252",
+  "10.1016/j.cell.2019.03.030": "Vasaikar S, Huang C, Wang X, Petyuk VA, Savage SR, Wen B, et al. Proteogenomic Analysis of Human Colon Cancer Reveals New Therapeutic Opportunities. Cell. 2019;177:1035-1049.e19. doi:10.1016/j.cell.2019.03.030",
+  "10.1016/j.cels.2015.12.004": "Liberzon A, Birger C, Thorvaldsd\u00f3ttir H, Ghandi M, Mesirov JP, Tamayo P. The Molecular Signatures Database (MSigDB) hallmark gene set collection. Cell Syst. 2015;1:417-425. doi:10.1016/j.cels.2015.12.004",
+  "10.1186/1471-2105-14-7": "H\u00e4nzelmann S, Castelo R, Guinney J. GSVA: gene set variation analysis for microarray and RNA-seq data. BMC Bioinformatics. 2013;14:7. doi:10.1186/1471-2105-14-7",
+  "10.1038/nmeth.2810": "Wang B, Mezlini AM, Demir F, Fiume M, Tu Z, Brudno M, et al. Similarity network fusion for aggregating data types on a genomic scale. Nat Methods. 2014;11:333-337. doi:10.1038/nmeth.2810",
+  "10.1093/nar/gkv007": "Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, et al. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res. 2015;43:e47. doi:10.1093/nar/gkv007",
+  "10.1038/s41587-021-01139-4": "Kleshchevnikov V, Shmatko A, Dann E, Aivazidis A, King HW, Li T, et al. Cell2location maps fine-grained cell types in spatial transcriptomics. Nat Biotechnol. 2022;40:661-671. doi:10.1038/s41587-021-01139-4",
+  "10.1158/0008-5472.can-22-2794": "Wood CS, Pennel KAF, Leslie H, Legrini A, Cameron AJ, Melissourgou-Syka L, et al. Spatially Resolved Transcriptomics Deconvolutes Prognostic Histological Subgroups in Patients with Colorectal Cancer and Synchronous Liver Metastases. Cancer Res. 2023;83:1329-1344. doi:10.1158/0008-5472.can-22-2794",
+  "10.1038/s41416-024-02650-6": "Feliu J, G\u00e1mez-Pozo A, Mart\u00ednez-P\u00e9rez D, P\u00e9rez-Wert P, Matamala-Luengo D, Vi\u00f1al D, et al. Functional proteomics of colon cancer Consensus Molecular Subtypes. Br J Cancer. 2024;130:1670-1678. doi:10.1038/s41416-024-02650-6",
+  "10.1038/s41588-025-02193-3": "Oliveira MF, Romero JP, Chung M, Williams SR, Gottscho AD, Gupta A, et al. High-definition spatial transcriptomic profiling of immune cell populations in colorectal cancer. Nat Genet. 2025;57:1512-1523. doi:10.1038/s41588-025-02193-3",
+  "10.1038/s41586-024-07769-3": "Nunes L, Li F, Wu M, Luo T, Hammarstr\u00f6m K, Torell E, et al. Prognostic genome and transcriptome signatures in colorectal cancers. Nature. 2024;633:137-146. doi:10.1038/s41586-024-07769-3",
+  "10.1200/jco.22.02582": "Stahler A, Hoppe B, Na IK, Keilholz L, M\u00fcller L, Karthaus M, et al. Consensus Molecular Subtypes as Biomarkers of Fluorouracil and Folinic Acid Maintenance Therapy With or Without Panitumumab in <i>RAS</i> Wild-Type Metastatic Colorectal Cancer (PanaMa, AIO KRK 0212). J Clin Oncol. 2023;41:2975-2987. doi:10.1200/jco.22.02582",
+  "10.1016/j.ccell.2023.02.016": "de Visser KE, Joyce JA. The evolving tumor microenvironment: From cancer initiation to metastatic outgrowth. Cancer Cell. 2023;41:374-403. doi:10.1016/j.ccell.2023.02.016",
+  "10.1038/s41467-023-39953-w": "Koncina E, Nurmik M, Pozdeev VI, Gilson C, Tsenkova M, Begaj R, et al. IL1R1<sup>+</sup> cancer-associated fibroblasts drive tumor development and immunosuppression in colorectal cancer. Nat Commun. 2023;14:4251. doi:10.1038/s41467-023-39953-w",
+  "10.1038/s41591-023-02324-5": "Roelands J, Kuppen PJK, Ahmed EI, Mall R, Masoodi T, Singh P, et al. An integrated tumor, immune and microbiome atlas of colon cancer. Nat Med. 2023;29:1273-1286. doi:10.1038/s41591-023-02324-5",
+  "10.1038/s41586-024-07747-9": "Cornish AJ, Gruber AJ, Kinnersley B, Chubb D, Frangou A, Caravagna G, et al. The genomic landscape of 2,023 colorectal cancers. Nature. 2024;633:127-136. doi:10.1038/s41586-024-07747-9"
+ }
+}

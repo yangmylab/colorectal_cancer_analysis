@@ -1,0 +1,108 @@
+  0 [      ]      A two-ecotype transcriptomic axis in colorectal cancer reproduces across assays and is associated with re
+  2 [     4] Jian Qin1,2,#, Mingyue Yang3,4,# and Tonghua Wang5,6,*
+  4 [     3] Affiliations
+  5 [     3] 1School of Chemistry and Chemical Engineering, Guangxi Minzu University, Nanning, China.
+  6 [     3] 2Department of Radiotherapy Ⅲ. Clinical Oncology Center, The People’s Hospital of Guangxi Zhuang Autonomous Re
+  7 [     3] 3Research Center for Medical Big Data and Artificial Intelligence, The People's Hospital of Guangxi Zhuang Aut
+  8 [     3] 4Guangxi Key Laboratory for Polysaccharide Materials and Modifications, Guangxi Marine Microbial Resources Ind
+  9 [     3] 5Department of Digestive Diseases, Affiliated Hospital of Youjiang Medical University for Nationalities, Baise
+ 10 [     3] 6ey Laboratory of Medical Research Basic Guarantee for Immune-Related Diseases Research of Guangxi (Cultivatio
+ 11 [     3] #These authors contributed equally to this study.
+ 12 [     3] *Correspondence should be addressed to Tonghua Wang (wangtonghua420@163.com)
+ 18 [     4] Abstract
+ 19 [    23] Background. Molecular taxonomies of colorectal cancer have repeatedly failed to reach clinical use. Their repr
+ 20 [     3] Methods. Hallmark programme scores from 624 TCGA-COAD/READ tumours were clustered by similarity network fusion
+ 21 [     3] Results. The K=2 partition was stable (bootstrap ARI 0.975; cross-validated classifier accuracy 0.979) and rep
+ 22 [     3] Conclusions. Expression-based ecotypes can be made reproducible from transcriptome to phosphoproteome, but rep
+ 24 [     3] Keywords  
+ 25 [     3] Colorectal cancer; Colorectal cancer; Cross-platform reproducibility; Disease-free survival; Consensus molecul
+ 28 [     3] Introduction
+ 29 [    23] Colorectal cancer has no shortage of molecular classifications. CMS1–4 are the most widely used; CRIS and PDS1
+ 30 [     3] We therefore made reproducibility the object of study rather than a footnote, and we made incremental value a 
+ 32 [     3] Methods
+ 33 [    23] Data sources
+ 34 [    23] Discovery used TCGA-COAD/READ RNA-seq (624 tumours; GDC Data Release 46.0, STAR counts harmonised through the 
+ 35 [     3] Cohort composition
+ 36 [     3] The discovery set comprised 355 E1 and 269 E2 tumours. In CPTAC-COAD the three layers were close to balanced (
+ 37 [     3] Preprocessing
+ 38 [     3] Discovery expression was filtered with edgeR, log2-transformed and quantile-normalised; no batch correction wa
+ 39 [     3] Programme scoring
+ 40 [     3] Fifty Hallmark gene sets (MSigDB) were scored in discovery with GSVA; external layers used the mean of within-
+ 41 [     3] Discovery clustering
+ 42 [     3] Views were z-scored and fused by similarity network fusion (affinity matrices with 20 nearest neighbours and s
+ 43 [     3] Classifier
+ 44 [     3] A nearest-centroid rule on the 50 programme scores was fitted in discovery and frozen. Tumours left out of eac
+ 45 [     3] Protein layer
+ 46 [     3] CPTAC-COAD protein abundances were log2-transformed, mapped from SYMBOL identifiers to gene symbols, and score
+ 47 [     3] Phosphoproteome
+ 48 [     3] Sites quantified in at least 50% of tumours were kept (11,334 of 31,262; the threshold was fixed before the ec
+ 49 [     3] Methylation
+ 50 [     3] 450K probes were mapped to gene promoters by annotation, yielding 19,269 genes; genes were selected by annotat
+ 51 [     3] Single-cell reference and deconvolution
+ 52 [     3] GSE132465 (63,689 cells, six lineages) was reduced to 83 marker genes, and bulk tumours were deconvolved by no
+ 53 [     3] Spatial analysis. Each section’s spots were deconvolved by NNLS against the same single-cell signature matrix.
+ 54 [     3] Kinase inference. Kinase activity was inferred with the KSEAapp substrate prior (PhosphoSitePlus-derived; 19,7
+ 55 [     3] Outcomes and survival models
+ 56 [     3] Endpoints were analysed separately and never pooled across families. Disease-free survival (DFS in GSE14333 an
+ 57 [     3] Incremental value
+ 58 [     3] In GSE39582, which carries CMS and MSI calls, nested Cox models were compared for RFS in stage I-III tumours (
+ 59 [     3] Multiple testing and grading
+ 60 [     3] Benjamini-Hochberg control was applied within each analysis family (differential phosphosites, differentially 
+ 61 [     3] Software and reproducibility. Analyses used R 4.6.1 with GSVA 2.6.6, limma 3.68.5, edgeR, survival 3.8.12, SNF
+ 62 [     3] Results
+ 63 [     5] A stable two-ecotype axis in discovery
+ 64 [    23] Fifty Hallmark programmes were scored in 624 TCGA-COAD/READ tumours and clustered after similarity network fus
+ 65 [     3] To interpret the composition of these tumours we used a single-cell reference of 63,689 cells from six lineage
+ 66 [     3] Supplementary Figure 1A shows the PCA of all 624 quantified tumours coloured and shaped by TCGA project: COAD 
+ 67 [     5] The axis reproduces at the protein and phosphoproteome level
+ 68 [    23] In CPTAC-COAD the frozen classifier was applied to Hallmark scores computed from protein abundance. Figure 2A 
+ 69 [     3] The phosphoproteome behaved the same way, and more strongly. Figure 2D shows the same programme blocks compute
+ 70 [     3] The protein assignment is too small to test prognosis, but it points the same way. Supplementary Figure 2C giv
+ 71 [     5] The axis does not reproduce in methylation, and does not transfer to spots 
+ 72 [    23] We tested the same partition against promoter methylation, selecting genes by annotation (19,269 genes) rather
+ 73 [     3] We then asked whether the same classifier could label Visium spots. It cannot. Figure 3E maps the E2 programme
+ 74 [     3] A methylation-cluster control addresses the opposite explanation. Supplementary Figure 2D shows that survival 
+ 75 [     5] What the phosphoproteome and the sections do say about mechanism 
+ 76 [    23] Between ecotypes, 3,095 phosphosites reached FDR<0.05, of which 538 exceeded |log2FC|>0.5 (Figure 4A). Because
+ 77 [     3] Kinase–substrate inference (PhosphoSitePlus prior; 78 kinases with at least five measured substrates) identifi
+ 78 [     3] Spatial data, analysed on their own terms rather than by projection, show that the E2 programmes are spatially
+ 79 [     5] Disease-free survival replicates; cancer-specific death does not
+ 80 [    23] The one outcome association that replicates concerns recurrence. In GSE14333 (226 tumours, 50 disease-free eve
+ 81 [     3] The same cohort that made this test possible also shows its limit. GSE38832 records only 9 recurrences (too fe
+ 82 [     5] No overall-survival association, and no incremental value over CMS
+ 83 [    23] In discovery (476 tumours, 79 events, adjusted for age, sex, stage and sidedness) the survival curves by ecoty
+ 84 [     3] The clinical question is whether any of this adds value. In GSE39582, which carries CMS calls, nested models w
+ 85 [     3] Two diagnostics check that the null reflects the data rather than a mis-specified model. Supplementary Figure 
+ 87 [     3] Discussion
+ 88 [    23] The axis we describe is unusual less in what it predicts than in where it survives. It persists from mRNA to p
+ 89 [     3] The prognostic picture is deflationary, and that is the paper’s point. Three independent cohorts, each analyse
+ 90 [     3] Our conclusion is narrower: a two-group axis can be made reproducible across assays if it is frozen early and 
+ 91 [     3] Comparison with published classifications. The CMS consensus remains the reference taxonomy for colorectal can
+ 92 [     3] What the cross-assay design adds. Validation of expression subtypes commonly takes the form of another express
+ 93 [     3] Contribution. The study contributes three things. First, a reproducibility standard for subtype claims: a clas
+ 94 [     3] The incremental-value test rests on one cohort, because the others carry no CMS calls, and CMS itself is expre
+ 95 [    23] Conclusion
+ 97 [     3] We show that a two-ecotype partition of Hallmark programme scores can be derived in colorectal cancer and froz
+ 98 [    23] Data availability
+ 99 [    23] All data analysed here are already public. TCGA-COAD/READ RNA-seq and 450K methylation were obtained from the 
+100 [     3] Code availability
+101 [     3] The full pipeline (discovery, external layers, outcomes, figure composition) is under version control, with a 
+102 [     3] Ethics
+103 [     3] The research proposal was reviewed and approved by the Medical Ethics Committee of the Guangxi Zhuang Autonomo
+104 [     3] Funding
+105 [     3] This study was supported by the grant acquired from National Natural Science Foundation of China (#    )
+107 [     3] Author contributions
+108 [     3] Jian Qin: Conceptualization, Methodology, Formal analysis, Investigation, Visualization, Writing – original dr
+109 [     3] Competing interests
+110 [     3] The authors declare no competing interests.
+111 [     3] Acknowledgements. 
+112 [     3] The authors thank Prof. Dr. rer. nat. Lingzhang Meng from The People’s Hospital of Guangxi Zhuang Autonomous R
+115 [     4] Figure legends
+116 [    23] Figure 1. A stable two-ecotype axis in TCGA-COAD/READ. (A) Hallmark programme scores ordered by ecotype. (B) C
+117 [     3] Figure 2. The axis reproduces at the protein and phosphoproteome level. (A) Protein programme scores by ecotyp
+118 [     3] Figure 3. The axis does not reproduce in methylation and does not transfer to spots. (A) CIMP score by ecotype
+119 [     3] Figure 4. Signalling and tissue architecture. (A) Differential phosphosite volcano. (B) Permutation null of th
+120 [     3] Figure 5. Disease-free survival replicates; cancer-specific death does not. (A) GSE14333 disease-free survival
+121 [     3] Figure 6. No overall-survival association and no incremental value over CMS. (A) Discovery overall survival by
+122 [     3] Supplementary Figure 1. Quality control underpinning Figure 1. (A) PCA of all 624 quantified tumours, coloured
+123 [     3] Supplementary Figure 2. Diagnostics and negative controls underpinning Figures 2, 3 and 6. (A) Five-year calib
