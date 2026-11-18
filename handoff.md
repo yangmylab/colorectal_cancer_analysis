@@ -160,6 +160,17 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
   (run the figure scripts with `CRC_PANEL_MAX_W=3.4`, then `git checkout --` the data dirs 05_QC
   06_Analysis 07_Validation 08_Robustness 10_Tables 13_Reports and `Logs/DECISION_LOG.tsv` so only figures
   change, then recompose), R04 group sizes, R05 legends, R11 Methods, R15-R19 and R23-R25.
+
+- **Next session, R01 (bibliography) — do this first, in one pass.** The manuscript still has no citations. Plan:
+  (1) inventory every citable claim (CMS1-4, CRIS, PDS1-3, TCGA-COAD/READ, CPTAC-COAD, the six GEO cohorts,
+  MSI/CIMP, and the methods: SNF, GSVA, limma, nnls, cell2location, KSEA/PhosphoSitePlus, MSigDB); (2) resolve each
+  through OpenAlex/PubMed and keep only entries whose metadata returns — never write a reference from memory;
+  (3) attach each to the single sentence it supports; (4) run `citation-audit`. Expect 45-60 entries.
+- **Figure leftovers.** `20_spatial_analysis.R` aborts on a curl download of gene sets (the frozen GMT path is not
+  reached in that script), so plot_25-27 keep their old 8-10 in width; fix the loader, re-run 20 and 14 with
+  `CRC_PANEL_MAX_W=3.4`, recompose. A VISUAL pass over the regenerated composites is still owed — the re-render was
+  verified by measurement and audits only, so overlapping labels in the 50-row heatmaps are not yet ruled out.
+
 - **Decision log:** `Logs/DECISION_LOG.tsv`, 61 rows covering every step from `00_validate` to `25_incremental`.
 
 ### 2.6 Bugs found and fixed (do not reintroduce)
