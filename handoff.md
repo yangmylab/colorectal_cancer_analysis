@@ -180,8 +180,12 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
    necessity — the main limitation on the clinical-value conclusion.
 8. **`Authors.xlsx` is an empty template** (untracked) and no target journal has been chosen; both block
    submission.
-9. **Stale project metadata:** `config/pipeline_config.yaml` still says `n_workers: 8` and `Analysis_Plan.md` says
-   "16 physical cores"; this box has **6 physical / 12 SMT**. Fix before quoting methods.
+9. ~~**Stale project metadata:** `config/pipeline_config.yaml` says `n_workers: 8` and `Analysis_Plan.md` says
+   "16 physical cores".~~ **FIXED 2026-11-18:** both configs (real + synthetic) now set `n_workers: 6`,
+   `Analysis_Plan.md` states 6 physical / 12 SMT, and `Environment/README.md` was corrected from "16 cores" /
+   1,696 packages / "no installations" to the verified 6 physical cores, 1,754 packages and the real install
+   history. `PILOT_PLAN.md` and `METHODS_TOOLBOX_2026.md` keep their 16-32 core *budgets* (they describe what each
+   analysis needs, not this box) with a one-line caveat added.
 10. **Panels print below the legibility floor — the remaining figure blocker.** The composer is now vector and uses
     one type scale per figure (lettered 8 pt, consistent gutters), but every panel was *authored* at 6–10 in with
     ~11 pt type, so at the 180 mm submission width its text prints at **2.8–5.4 pt**; **all 44 panels are below the
@@ -220,7 +224,9 @@ agree, F13's co-localisation can be reported without the caveat; if not, keep th
 6. Refresh environment records: `Environment/packages_R.tsv` and a `conda env export` for `sc-analysis`.
 
 **P2 — housekeeping**
-7. Correct `n_workers` in `config/pipeline_config.yaml` and the "16 physical cores" line in `Analysis_Plan.md`.
+7. ~~Correct `n_workers` in `config/pipeline_config.yaml` and the "16 physical cores" line in `Analysis_Plan.md`.~~
+   **DONE 2026-11-18** (both configs, Analysis_Plan, Environment/README plus caveats in PILOT_PLAN and
+   METHODS_TOOLBOX_2026).
 
 ---
 

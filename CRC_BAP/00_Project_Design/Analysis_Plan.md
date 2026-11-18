@@ -133,7 +133,7 @@ With ~600 discovery tumours and â‰¥150 CSS events, the design can estimate a 3â€
 | 05 | figures and report | `05_figures_report.R` | all results | `09_Figures/`, `10_Tables/`, `13_Reports/` | PDF + JPEG; tables; decision log |
 | 99 | synthetic dry run | `99_synthetic_dryrun.R` | synthetic data | `99_Synthetic_DryRun/` | validates code only; not biological evidence |
 
-Parallelisation: 8 workers by default (16 physical cores; one level only; BLAS pinned to 1 per worker), configurable in `config/pipeline_config.yaml`.
+Parallelisation: 6 workers by default (6 physical cores; `nproc` reports 12 SMT threads and must not be used for heavy work; one level only; BLAS pinned to 1 per worker), configurable in `config/pipeline_config.yaml`.
 
 ---
 

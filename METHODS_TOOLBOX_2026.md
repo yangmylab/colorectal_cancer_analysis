@@ -233,6 +233,10 @@
 
 **Storage:** 2-4 TB (raw + processed + containers); processed matrices only for most atlases.
 
+*These are budgets for a dedicated node or cluster, not the local machine: the workstation is a HUAWEI i5-10400
+with **6 physical cores / 12 SMT threads** and 61 GiB RAM, so the 16-32 core estimates above exceed it and would
+run proportionally longer at 6 workers.*
+
 ---
 
 ## 14. Validation rules by tool class

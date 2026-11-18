@@ -100,6 +100,10 @@ If yes, the full protocol is feasible. If no, we adjust the views/K or pivot to 
 
 If GPU is unavailable, scVI still runs on CPU; subsample cells or use Harmony for the pilot.
 
+*The resource column states what each step needs, not what this workstation has: the local box is a HUAWEI
+i5-10400 with **6 physical cores / 12 SMT threads** and 61 GiB RAM, so the pilot runs at 6 workers and the 8-16
+core steps take longer than listed here.*
+
 ---
 
 ## 5. Go / adjust / pivot criteria
