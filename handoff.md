@@ -8,7 +8,9 @@ the metadata corrections, and the F13 settlement (a trained cell2location refere
 GSE38832 cohort (F15), the kinase and spatial layers, the 8 composite figures, the manuscript draft v0.2, and the
 QC panel fix.
 **Git:** history from `15231d6`; figure-typography pass `f271129`, metadata corrections `ac1df66`, F13 settlement
-`d9cefab`; 267 tracked files. Working tree clean except the user's untracked `Authors.xlsx`.
+`d9cefab`, pre-submission review `c8c80b0`; 270 tracked files. Working tree: the user's untracked `Authors.xlsx`,
+plus an uncommitted re-save of `12_Manuscript/manuscript.docx` (11:28, ~7 KB larger, same text and same section
+order — looks like a Word/LibreOffice open-and-save; verify before discarding).
 
 ---
 
