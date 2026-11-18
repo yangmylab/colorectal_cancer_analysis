@@ -24,7 +24,22 @@ FIG <- "09_Figures/plots"
 dir.create(WORK, recursive = TRUE, showWarnings = FALSE)
 dir.create(OUT, recursive = TRUE, showWarnings = FALSE)
 
+source("06_Analysis/1_R/1_Rscripts/utils.R")
+
 save_plot <- function(plot_fun, file_base, width = 7, height = 5) {
+  # The composites are laid out at a fixed printed width, so a panel's authored size decides its printed
+  # type size: a panel authored at 3.4 in prints its 11 pt text at >=7 pt in a two-column figure.
+  # CRC_PANEL_MAX_W caps the authored width (inches; 0 = off) and CRC_PANEL_SCALE multiplies both
+  # dimensions, so a re-authored panel set needs no edits to the individual plot calls.
+  scale <- as.numeric(Sys.getenv("CRC_PANEL_SCALE", "1"))
+  max_w <- as.numeric(Sys.getenv("CRC_PANEL_MAX_W", "0"))
+  width <- width * scale
+  height <- height * scale
+  if (max_w > 0 && width > max_w) {
+    shrink <- max_w / width
+    width <- width * shrink
+    height <- height * shrink
+  }
   grDevices::pdf(paste0(file_base, ".pdf"), width = width, height = height)
   plot_fun()
   grDevices::dev.off()
@@ -294,8 +309,8 @@ dens <- rbind(
 save_plot(function() {
   print(ggplot(dens, aes(value, fill = group, colour = group)) +
     geom_density(alpha = 0.35, adjust = 1.2) + theme_bw() +
-    scale_fill_manual(values = c(E1 = "grey60", E2 = "#C0392B", `Visium spots` = "#2E86C1")) +
-    scale_colour_manual(values = c(E1 = "grey40", E2 = "#922B21", `Visium spots` = "#1B4F72")) +
+    scale_fill_manual(values = c(ECOTYPE_COL, `Visium spots` = "#7F7F7F")) +
+    scale_colour_manual(values = c(ECOTYPE_COL, `Visium spots` = "#4D4D4D")) +
     labs(x = "E2 programme score (bulk z-scale)", y = "Density", fill = NULL, colour = NULL,
          title = sprintf("Covariate shift: spots sit %.1f SD below bulk samples", -shift)))
 }, file.path(FIG, "plot_27"), 8, 5)

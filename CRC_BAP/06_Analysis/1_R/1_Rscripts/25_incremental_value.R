@@ -185,7 +185,7 @@ names(cms_frac) <- c("ecotype", "cms", "fraction")
 save_plot(function() {
   print(ggplot(cms_frac, aes(cms, fraction, fill = ecotype)) +
     geom_col(position = position_dodge(width = 0.8), width = 0.7) +
-    scale_fill_manual(values = c(E1 = "grey40", E2 = "#C0392B")) +
+    scale_fill_manual(values = ECOTYPE_COL) +
     theme_bw(base_size = 10) +
     labs(x = "CMS subtype", y = "Fraction of ecotype", fill = NULL,
          title = sprintf("Ecotype vs CMS in GSE39582 (Cramer's V = %.2f)", cramers_v)))

@@ -117,13 +117,21 @@ run_bulk_qc <- function(cfg, synthetic = FALSE) {
            subtitle = "grey bars = variance explained by each PC; red = share of that PC attributable to project"))
   }, file.path(fig_dir, "01_project_variance"), 7, 5)
 
-  qc_df <- data.frame(sample_id = qc$sample_id, group = qc$group, library_size = qc$library_size, detected = qc$detected_features)
+  # Library size is compared between the two TCGA projects (the only grouping in this single-pipeline cohort).
+  qc_df <- data.frame(sample_id = qc$sample_id, project = qc$batch, library_size = qc$library_size,
+                      detected = qc$detected_features)
+  lib_test <- stats::wilcox.test(library_size ~ project, data = qc_df)
+  cat("library size by project: Wilcoxon p =", signif(lib_test$p.value, 3), "\n")
   save_plot(function() {
-    print(ggplot(qc_df, aes(group, library_size, fill = group)) + geom_boxplot(outlier.shape = NA) + geom_jitter(width = 0.15, size = 0.8, alpha = 0.6) + theme_bw() + labs(title = "Library size by group", y = "Library size"))
+    print(ggplot(qc_df, aes(project, library_size, fill = project)) + geom_boxplot(outlier.shape = NA) +
+      geom_jitter(width = 0.12, size = 0.8, alpha = 0.6) + theme_bw() +
+      labs(title = "Library size by TCGA project", y = "Library size", x = NULL,
+           subtitle = sprintf("Wilcoxon p = %.3g", lib_test$p.value)))
   }, file.path(fig_dir, "01_library_size"), 7, 5)
 
   hv <- top_variable(log_expr, 500)
-  ann_col <- data.frame(group = clin$group, batch = clin$batch, row.names = clin$sample_id)
+  # Named "project", not "batch": COAD vs READ is anatomical, not a technical batch (see the QC decision).
+  ann_col <- data.frame(project = clin$batch, group = clin$group, row.names = clin$sample_id)
   save_plot(function() {
     pheatmap::pheatmap(hv, show_rownames = FALSE, show_colnames = FALSE, annotation_col = ann_col, main = "Top 500 variable features")
   }, file.path(fig_dir, "01_top_variable_heatmap"), 8, 7)

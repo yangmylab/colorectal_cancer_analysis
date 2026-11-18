@@ -170,10 +170,10 @@ lr <- survival::survdiff(survival::Surv(DFS_days, DFS_event) ~ ecotype, data = a
 lr_p <- 1 - stats::pchisq(lr$chisq, length(lr$n) - 1)
 
 save_plot(function() {
-  plot(km, col = c("black", "#C0392B"), lwd = 2, xlab = "Days", mark.time = TRUE,
+  plot(km, col = unname(ECOTYPE_COL), lwd = 2, xlab = "Days", mark.time = TRUE,
        ylab = "Disease-free survival probability",
        main = sprintf("GSE14333: DFS by ecotype (log-rank p=%s)", format.pval(lr_p, digits = 2, eps = 0.001)))
-  legend("topright", legend = c("E1", "E2"), col = c("black", "#C0392B"), lwd = 2, bty = "n")
+  legend("topright", legend = c("E1", "E2"), col = unname(ECOTYPE_COL), lwd = 2, bty = "n")
   legend("bottomleft", bty = "n", legend = sprintf("n=%d, %d DFS events (endpoint: DFS, not OS)", nrow(ana), sum(ana$DFS_event)))
 }, file.path(FIG, "plot_33"), 7, 5)
 

@@ -1,6 +1,9 @@
 # Shared helpers for the CRC Track A pipeline.
 # Worker count is set by run_pipeline.R from config$params$n_workers (one level of parallelism).
 
+# One palette for the two ecotypes in every figure (Okabe-Ito blue / vermillion: colour-blind safe).
+ECOTYPE_COL <- c(E1 = "#0072B2", E2 = "#D55E00")
+
 read_matrix_any <- function(path) {
   if (grepl("\\.rds$", path, ignore.case = TRUE)) {
     obj <- readRDS(path)
@@ -28,6 +31,19 @@ read_matrix_any <- function(path) {
 }
 
 save_plot <- function(plot_fun, file_base, width = 7, height = 5) {
+  # The composites are laid out at a fixed printed width, so a panel's authored size decides its printed
+  # type size: a panel authored at 3.4 in prints its 11 pt text at >=7 pt in a two-column figure.
+  # CRC_PANEL_MAX_W caps the authored width (inches; 0 = off) and CRC_PANEL_SCALE multiplies both
+  # dimensions, so a re-authored panel set needs no edits to the individual plot calls.
+  scale <- as.numeric(Sys.getenv("CRC_PANEL_SCALE", "1"))
+  max_w <- as.numeric(Sys.getenv("CRC_PANEL_MAX_W", "0"))
+  width <- width * scale
+  height <- height * scale
+  if (max_w > 0 && width > max_w) {
+    shrink <- max_w / width
+    width <- width * shrink
+    height <- height * shrink
+  }
   grDevices::pdf(paste0(file_base, ".pdf"), width = width, height = height)
   plot_fun()
   grDevices::dev.off()

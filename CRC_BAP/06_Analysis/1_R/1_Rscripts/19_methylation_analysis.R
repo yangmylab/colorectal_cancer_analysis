@@ -23,7 +23,22 @@ OUT <- "06_Analysis/08_Methylation"
 FIG <- "09_Figures/plots"
 dir.create(OUT, recursive = TRUE, showWarnings = FALSE)
 
+source("06_Analysis/1_R/1_Rscripts/utils.R")
+
 save_plot <- function(plot_fun, file_base, width = 7, height = 5) {
+  # The composites are laid out at a fixed printed width, so a panel's authored size decides its printed
+  # type size: a panel authored at 3.4 in prints its 11 pt text at >=7 pt in a two-column figure.
+  # CRC_PANEL_MAX_W caps the authored width (inches; 0 = off) and CRC_PANEL_SCALE multiplies both
+  # dimensions, so a re-authored panel set needs no edits to the individual plot calls.
+  scale <- as.numeric(Sys.getenv("CRC_PANEL_SCALE", "1"))
+  max_w <- as.numeric(Sys.getenv("CRC_PANEL_MAX_W", "0"))
+  width <- width * scale
+  height <- height * scale
+  if (max_w > 0 && width > max_w) {
+    shrink <- max_w / width
+    width <- width * shrink
+    height <- height * shrink
+  }
   grDevices::pdf(paste0(file_base, ".pdf"), width = width, height = height)
   plot_fun()
   grDevices::dev.off()
@@ -138,7 +153,7 @@ print(cimp_frac)
 save_plot(function() {
   print(ggplot(meta_plot, aes(ecotype, cimp_genes_methylated, fill = ecotype)) +
     geom_boxplot(outlier.size = 0.8) + geom_jitter(width = 0.15, size = 0.6, alpha = 0.4) +
-    scale_fill_manual(values = c(E1 = "grey40", E2 = "#C0392B")) +
+    scale_fill_manual(values = ECOTYPE_COL) +
     theme_bw() +
     labs(x = "RNA ecotype", y = "CIMP panel genes methylated (of 8)",
          title = "CIMP score by ecotype (TCGA-COAD/READ 450K)"))
@@ -147,7 +162,7 @@ save_plot(function() {
 save_plot(function() {
   print(ggplot(meta_plot, aes(ecotype, global_beta, fill = ecotype)) +
     geom_boxplot(outlier.size = 0.8) +
-    scale_fill_manual(values = c(E1 = "grey40", E2 = "#C0392B")) +
+    scale_fill_manual(values = ECOTYPE_COL) +
     theme_bw() +
     labs(x = "RNA ecotype", y = "Mean beta over all probes",
          title = sprintf("Global methylation by ecotype (Wilcoxon p=%.2f)", wilcox_global)))
@@ -170,10 +185,10 @@ save_plot(function() {
 
 if (!is.null(km)) {
   save_plot(function() {
-    plot(km, col = c("black", "#C0392B"), lwd = 2, xlab = "Days",
+    plot(km, col = unname(ECOTYPE_COL), lwd = 2, xlab = "Days",
          ylab = "Overall survival probability", mark.time = TRUE,
          main = "Methylation cluster and OS")
-    legend("topright", legend = levels(surv_dat$methylation_cluster), col = c("black", "#C0392B"), lwd = 2, bty = "n")
+    legend("topright", legend = levels(surv_dat$methylation_cluster), col = unname(ECOTYPE_COL), lwd = 2, bty = "n")
   }, file.path(FIG, "plot_23"), 7, 5)
 }
 

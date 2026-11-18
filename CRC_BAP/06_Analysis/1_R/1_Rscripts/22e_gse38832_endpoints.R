@@ -182,10 +182,10 @@ km <- survfit(Surv(time, event) ~ ecotype, data = dss_cc)
 lr <- survdiff(Surv(time, event) ~ ecotype, data = dss_cc)
 lr_p <- 1 - stats::pchisq(lr$chisq, length(lr$n) - 1)
 save_plot(function() {
-  plot(km, col = c("black", "#C0392B"), lwd = 2, xlab = "Days", mark.time = TRUE,
+  plot(km, col = unname(ECOTYPE_COL), lwd = 2, xlab = "Days", mark.time = TRUE,
        ylab = "Cancer-specific survival probability",
        main = sprintf("GSE38832: DSS by ecotype (log-rank p=%s)", format.pval(lr_p, digits = 2, eps = 0.001)))
-  legend("topright", legend = c("E1", "E2"), col = c("black", "#C0392B"), lwd = 2, bty = "n")
+  legend("topright", legend = c("E1", "E2"), col = unname(ECOTYPE_COL), lwd = 2, bty = "n")
   legend("bottomleft", bty = "n", legend = sprintf("n=%d, %d cancer deaths", nrow(dss_cc), sum(dss_cc$event)))
 }, file.path(FIG, "plot_44"), 7, 5)
 

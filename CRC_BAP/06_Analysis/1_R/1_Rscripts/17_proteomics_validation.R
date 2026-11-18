@@ -25,6 +25,19 @@ dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 dir.create(FIG, showWarnings = FALSE, recursive = TRUE)
 
 save_plot <- function(plot_fun, file_base, width = 7, height = 5) {
+  # The composites are laid out at a fixed printed width, so a panel's authored size decides its printed
+  # type size: a panel authored at 3.4 in prints its 11 pt text at >=7 pt in a two-column figure.
+  # CRC_PANEL_MAX_W caps the authored width (inches; 0 = off) and CRC_PANEL_SCALE multiplies both
+  # dimensions, so a re-authored panel set needs no edits to the individual plot calls.
+  scale <- as.numeric(Sys.getenv("CRC_PANEL_SCALE", "1"))
+  max_w <- as.numeric(Sys.getenv("CRC_PANEL_MAX_W", "0"))
+  width <- width * scale
+  height <- height * scale
+  if (max_w > 0 && width > max_w) {
+    shrink <- max_w / width
+    width <- width * shrink
+    height <- height * shrink
+  }
   grDevices::pdf(paste0(file_base, ".pdf"), width = width, height = height)
   plot_fun()
   grDevices::dev.off()
@@ -196,10 +209,10 @@ save_plot(function() {
 # plot_18 — KM by protein-assigned ecotype
 if (!is.null(km)) {
   save_plot(function() {
-    plot(km, col = c("black", "#C0392B"), lwd = 2, xlab = "Days",
+    plot(km, col = unname(ECOTYPE_COL), lwd = 2, xlab = "Days",
          ylab = "Overall survival probability", mark.time = TRUE,
          main = "CPTAC-COAD: protein-assigned ecotypes")
-    legend("topright", legend = c("E1", "E2"), col = c("black", "#C0392B"), lwd = 2, bty = "n")
+    legend("topright", legend = c("E1", "E2"), col = unname(ECOTYPE_COL), lwd = 2, bty = "n")
     legend("bottomleft", bty = "n",
            legend = paste0("log-rank p=", signif(cox_tab$logrank_p, 2), "; HR=",
                            round(cox_tab$hr, 2), " (", round(cox_tab$lower, 2), "-", round(cox_tab$upper, 2), ")"))
