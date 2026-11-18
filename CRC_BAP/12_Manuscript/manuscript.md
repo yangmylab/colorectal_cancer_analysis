@@ -1,4 +1,4 @@
-# Reproducibility without incremental value: a two-ecotype transcriptomic axis in colorectal cancer predicts recurrence but not death, and adds nothing to CMS
+# Reproducibility without incremental value: a two-ecotype transcriptomic axis in colorectal cancer is associated with recurrence but not with death, and shows no detectable incremental value over CMS
 
 **Draft v0.2 — figures composed 2026-11-17.** Six main figures (36 panels) and two supplementary figures
 (8 panels) cover all 44 published panels. Every panel is cited in order in Results. Every quantitative claim is
@@ -17,7 +17,8 @@ reproducible across clinically relevant platforms and (ii) prognostic beyond CMS
 **Methods.** Hallmark programme scores from 624 TCGA-COAD/READ tumours were clustered by similarity network fusion
 and consensus k-means; K=2 was selected on stability and frozen as a nearest-centroid classifier. The classifier
 was then applied without refitting to CPTAC-COAD proteome and phosphoproteome, TCGA 450K methylation, 16 Visium
-sections, and three independent cohorts with disease-free endpoints and three with mortality endpoints. Each
+sections, and three independent cohorts (GSE39582, GSE17536, GSE38832) analysed on the endpoint each can support, plus
+GSE14333 for disease-free survival. Each
 analysis was pre-assigned an evidence grade.
 
 **Results.** The K=2 partition was stable (bootstrap ARI 0.975; cross-validated classifier accuracy 0.979) and
@@ -29,8 +30,8 @@ nor cancer-specific death (HR 1.00, p=0.997). Adjusting for CMS removed the dise
 p=0.107; ecotype–CMS Cramér's V=0.52).
 
 **Conclusions.** Expression-based ecotypes can be made reproducible from transcriptome to phosphoproteome, but
-reproducibility does not imply incremental clinical value: in the one cohort able to test it, the axis added
-nothing over CMS, and it was unassociated with death in every cohort tested. Taxonomy studies should report both
+reproducibility does not imply incremental clinical value: in the one cohort able to test it, the axis showed no
+detectable incremental value over CMS, and it was unassociated with death in every cohort tested. Taxonomy studies should report both
 properties.
 
 ---
@@ -73,7 +74,7 @@ autocorrelation). Endpoints analysed separately and never pooled across families
 Complete-case analysis for covariates, with counts reported.
 
 **Grading.** E3 cross-platform convergence; E2 replicated association; E1 exploratory/post hoc; descriptive;
-not_supported. Fifteen findings (F01–F15) were graded and are the sole licence for claims.
+not_supported. Fourteen findings (F01–F15; there is no F10) were graded and are the sole licence for claims.
 
 **Reproducibility.** All analyses scripted (`06_Analysis/1_R/1_Rscripts/`), logged (`Logs/DECISION_LOG.tsv`) and
 version-controlled. One level of parallelism (6 workers) with BLAS pinned to one thread per worker. Figures are
@@ -89,7 +90,7 @@ Fifty Hallmark programmes were scored in 624 TCGA-COAD/READ tumours and clustere
 fusion. **Figure 1A** shows the two programme blocks that define the partition: E1 is characterised by Hedgehog,
 pancreas-β-cell and MYC-V2 programmes, E2 by EMT, angiogenesis and IL6–JAK–STAT3. The consensus matrix
 (**Figure 1B**) is essentially block-diagonal at K=2, and the fused-view embedding (**Figure 1C**) separates the
-two groups without overlap. Stability across candidate K (**Figure 1D**) peaked at K=2 (bootstrap ARI 0.975) and
+two groups with substantial but incomplete separation. Stability across candidate K (**Figure 1D**) peaked at K=2 (bootstrap ARI 0.975) and
 degraded at higher K, which is why K=2 — not the K=4 solution explored later — was frozen for external testing.
 
 To interpret the composition of these tumours we used a single-cell reference of 63,689 cells from six lineages,
@@ -115,8 +116,8 @@ the assignment itself agrees with the protein call in 87.5% of tumours (**Figure
 ### 3. The axis does not reproduce in methylation, and does not transfer to spots (Figure 3)
 
 We tested the same partition against promoter methylation, selecting genes by annotation (19,269 genes) rather than
-by variance, so that the test was not circular. CIMP-high status was equally common in both ecotypes (74.5% E1
-versus 84.3% E2; **Figure 3A**) and global methylation did not differ (p=0.113; **Figure 3B**). Differential
+by variance, so that the test was not circular. CIMP-high status was similar in both ecotypes (74.5% E1 versus
+84.3% E2, no formal test reported; **Figure 3A**) and global methylation did not differ (p=0.113; **Figure 3B**). Differential
 methylation between ecotypes was essentially absent: only 5 of 19,269 genes reached FDR<0.05 with |logFC|>0.5
 (**Figure 3C**), and an unsupervised methylation partition bore no relationship to the ecotype (ARI 0.006;
 **Figure 3D**). The axis is not a methylation phenotype (F07).
@@ -137,8 +138,8 @@ cross-layer agreement could in principle arise by chance, we compared the observ
 permutations: the null's 95th percentile is 0.033 and the observed value is far outside it (p=0.000999;
 **Figure 4B**). The phosphoproteome reproduces the partition, and does so beyond chance.
 
-Kinase–substrate inference (PhosphoSitePlus prior; 78 kinases with at least five measured substrates) identified
-9 kinases at FDR<0.05 (**Figure 4C**), and comparing kinase activity with the kinase's own protein abundance
+Kinase–substrate inference (PhosphoSitePlus prior; 78 kinases with at least five measured substrates) identified 9 kinases at FDR<0.05, five of them with unchanged kinase abundance
+(**Figure 4C**), and comparing kinase activity with the kinase's own protein abundance
 (**Figure 4D**) separated activity from quantity: CDK7 activity is lower in E2 (d=−1.00) without any change in CDK7
 protein, whereas ROCK1 and PRKG1 differ largely because their abundance differs. Across kinases the two measures
 correlate only r=0.31. This is exploratory — activity is inferred, not measured, in one cohort (F12).
@@ -147,7 +148,7 @@ Spatial data, analysed on their own terms rather than by projection, show that t
 structured: mean Moran's I 0.528 on a k=6 neighbour graph (**Figure 4E**). They are, however, no more structured
 than Hallmark programmes in general (0.587), and the per-section view (**Figure 4F**) confirms that this holds
 across sections rather than in one or two. E2 scores co-localise with the stromal compartment (median ρ=0.49) but
-not the myeloid (0.04). We report this descriptively, with two caveats: with ~2,570 spots per section the
+not the myeloid (0.04). We report this descriptively, with two caveats: with 947–4,757 spots per section (median 2,670) the
 permutation test rejects the null for every programme, so only effect sizes are interpreted; and a
 trained-reference cell2location rerun (three sections, 3,000 epochs, 1,000 spots each) reproduces the spatial
 pattern of the NNLS fractions used for the co-localisation statistic (matrix r 0.93, top-lineage agreement
@@ -294,6 +295,34 @@ features. Each panel supports the reading of Figure 1A–1D as biological separa
 calibration of the null OS model (supports Figure 6A). (B) Five-year decision curve (supports Figure 6D; no
 utility claim). (C) Survival by protein-assigned ecotype, 8 deaths, underpowered (supports Figure 2A–2C).
 (D) Survival by methylation cluster, negative control (supports Figure 3A–3D).
+
+---
+
+---
+
+## Statements
+
+**Data availability.** All data analysed here are already public. TCGA-COAD/READ RNA-seq and 450K methylation
+were obtained from the GDC (Data Release 46.0) under the corresponding data-use certification; gene-expression
+cohorts from GEO (GSE39582, GSE17536, GSE14333, GSE38832, GSE283052, GSE267401, GSE132465); and CPTAC-COAD
+proteome and phosphoproteome (PDC000116) via the cBioPortal datahub. Derived tables — the findings ledger, the
+claims-to-evidence map, per-layer validation outputs and the figure source tables — are released with the code.
+
+**Code availability.** The full pipeline (discovery, external layers, outcomes, figure composition) is under
+version control, with a decision log and two automated consistency checks. Archived release and DOI:
+[TODO: repository URL and Zenodo DOI].
+
+**Ethics.** This is a secondary analysis of de-identified, publicly available data; no new human-subject
+research was performed. Data-use certifications and any institutional determination:
+[TODO: name the certifications/approvals].
+
+**Funding.** [TODO: funding bodies and grant numbers, or "This work received no specific grant."]
+
+**Author contributions.** [TODO: CRediT roles per author.]
+
+**Competing interests.** The authors declare no competing interests.
+
+**Acknowledgements.** [TODO: cohorts, consortia and reviewers to thank.]
 
 ---
 

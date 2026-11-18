@@ -151,6 +151,15 @@ Ledger: 14 rows, 12 fields, ids in order, no duplicates; grades 7 not_supported 
   fabricated value and no Results sentence exceeding its grade. The P0s are infrastructural — no references
   (R01), no availability/ethics/funding/contribution statements (R02), all 44 panels below the 7 pt floor (R03),
   no group sizes or model denominators (R04), no statistics in the legends (R05).
+- **Revision pass 1 (2026-11-18, commits `cb62d25` + next):** figures infrastructure done — `save_plot`
+  honours `CRC_PANEL_MAX_W`/`CRC_PANEL_SCALE` (tested: 9x7 in -> 3.4x2.64 in), one Okabe-Ito E1/E2 palette
+  across 7 scripts, S1C re-coloured by project with a Wilcoxon subtitle, S1D annotation renamed `project`.
+  Text: R06-R10, R22, R26 fixed; R09 reworded without inventing a test; `## Statements` added with TODO
+  placeholders for funding, contributions, approvals and the code DOI.
+  **Still open (see `13_Reports/Review_2026-11-18/fix_status.md`):** R01 bibliography, R03 re-render
+  (run the figure scripts with `CRC_PANEL_MAX_W=3.4`, then `git checkout --` the data dirs 05_QC
+  06_Analysis 07_Validation 08_Robustness 10_Tables 13_Reports and `Logs/DECISION_LOG.tsv` so only figures
+  change, then recompose), R04 group sizes, R05 legends, R11 Methods, R15-R19 and R23-R25.
 - **Decision log:** `Logs/DECISION_LOG.tsv`, 61 rows covering every step from `00_validate` to `25_incremental`.
 
 ### 2.6 Bugs found and fixed (do not reintroduce)
