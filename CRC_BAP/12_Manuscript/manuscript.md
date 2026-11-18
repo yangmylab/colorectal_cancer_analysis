@@ -55,37 +55,116 @@ association replicated in an independent cohort, **E1** exploratory or post hoc,
 
 ## Methods
 
-**Data.** TCGA-COAD/READ RNA-seq (624 tumours; GDC Data Release 46.0). External cohorts: GSE39582 (585), GSE17536
-(177), GSE14333 (290, DFS only), GSE38832 (122, CEL files). CPTAC-COAD proteome and phosphoproteome (PDC000116, via
-the cBioPortal datahub). TCGA 450K methylation (393 tumours). Visium: GSE283052 (12 sections) and GSE267401 (4).
-Single-cell reference: GSE132465.
+**Data sources.** Discovery used TCGA-COAD/READ RNA-seq (624 tumours; GDC Data Release 46.0, STAR counts
+harmonised through the GDC pipeline) and TCGA 450K methylation (393 tumours with matched RNA). Four expression
+cohorts were analysed as received from GEO: GSE39582 (585 tumours, Affymetrix HG-U133 Plus 2.0), GSE17536 (177),
+GSE14333 (290, DFS only) and GSE38832 (122 CEL files, processed here by RMA). CPTAC-COAD supplied protein
+(8,067 proteins) and phosphoprotein (31,262 sites) quantification for 97 tumours (PDC000116, via the cBioPortal
+datahub; protein identifiers of the form `SYMBOL|SYMBOL` were split on `|`). Spatial transcriptomics comprised 16
+Visium sections (GSE283052, 12 sections; GSE267401, 4), and the single-cell reference was GSE132465.
 
-**Cohort composition.** The discovery set comprised 355 E1 and 269 E2 tumours. In CPTAC-COAD the three
-layers were close to balanced (protein 49/48, phosphoproteome 47/50, mRNA 45/51 E1/E2 among the 97 tumours
-carrying each layer). The methylation subset held 184 E1 and 204 E2 of 393 tumours, and the GSE14333
-disease-free analysis 115 E1 and 111 E2 of 226. [TODO: E1/E2 counts for the GSE39582 and GSE17536 analysis
-sets; these are not persisted by the current scripts.]
+**Cohort composition.** The discovery set comprised 355 E1 and 269 E2 tumours. In CPTAC-COAD the three layers were
+close to balanced (protein 49/48, phosphoproteome 47/50, mRNA 45/51 E1/E2 among the 97 tumours carrying each
+layer). The methylation subset held 184 E1 and 204 E2 of 393 tumours, and the GSE14333 disease-free analysis 115
+E1 and 111 E2 of 226. [TODO: E1/E2 counts for the GSE39582 and GSE17536 analysis sets; these are not persisted by
+the current scripts.]
 
-**Scoring.** Fifty Hallmark sets; discovery used GSVA, external layers the mean of within-set gene z-scores, with
-phosphosites averaged per gene. Sets are frozen in `Environment/hallmark_frozen.gmt` so scoring is offline and
-reproducible.
+**Preprocessing.** Discovery expression was filtered with `edgeR::filterByExpr`, log2-transformed and
+quantile-normalised; no batch correction was applied, because the only available grouping (COAD versus READ) is
+anatomical rather than technical and explains at most 2.8% of the variance of any of the first ten components.
+Samples were flagged as outliers when the Mahalanobis distance in the first principal components exceeded the
+99.9% chi-square quantile; 14 of 624 were flagged and all were retained, with sensitivity to their removal
+reported separately. External cohorts kept their deposited normalised matrices; probe-level data were mapped to
+gene symbols and, where a symbol had several probes, the probe with the highest mean expression was kept. GSE38832
+was read from CEL files and summarised by RMA before symbol mapping.
 
-**Classifier.** Nearest centroid on 50 programme scores, computed in discovery and frozen. Applied to every external
-layer without refitting; recoverable features are reported for each layer.
+**Programme scoring.** Fifty Hallmark gene sets (MSigDB) were scored in discovery with GSVA; external layers used
+the mean of within-set gene z-scores, a simpler rule that does not assume a common dynamic range across assays.
+Phosphosite values were averaged per gene before scoring, so that proteins with many measured sites (SRRM2 alone
+carries 284) do not dominate a programme. The gene sets are frozen in `Environment/hallmark_frozen.gmt`, so scoring
+is offline and identical across layers and reruns.
 
-**Statistics.** Cox models with likelihood-ratio tests; C-index; fixed-effect inverse-variance meta-analysis;
-bootstrap (500 resamples) for stability; permutation nulls (1,000 for cross-layer ARI; 199 for spatial
-autocorrelation). Endpoints analysed separately and never pooled across families (OS/CSS/DSS versus DFS/RFS).
-Complete-case analysis for covariates, with counts reported.
+**Discovery clustering.** Views were z-scored and fused by similarity network fusion (affinity matrices with 20
+nearest neighbours and sigma 0.5, three fusion iterations), and the fused matrix was clustered by consensus
+k-means over 200 bootstrap resamples (`nstart` 10, `iter.max` 100). Candidate solutions ranged from K=2 to K=6. For
+each K, stability was the mean bootstrap adjusted Rand index between the full-data solution and the resampled
+solutions, and the proportion of ambiguous clustering was recorded. K was chosen as the largest mean bootstrap ARI
+among solutions whose smallest group held at least 5% of tumours. The pre-specified stability floor of 0.70
+decided whether the chosen solution counted as confirmatory or only exploratory.
+K=2 met both criteria (bootstrap ARI 0.975) and was frozen; K=4 and K=5 were retained only as exploratory analyses.
 
-**Grading.** E3 cross-platform convergence; E2 replicated association; E1 exploratory/post hoc; descriptive;
-not_supported. Fourteen findings (F01–F15; there is no F10) were graded and are the sole licence for claims.
+**Classifier.** A nearest-centroid rule on the 50 programme scores was fitted in discovery and frozen. Tumours left
+out of each consensus bootstrap were assigned to the nearest centroid, giving an out-of-bag accuracy of 0.979.
+Every external layer was scored with the same rule and no refitting; the number of recoverable features is
+reported for each layer so that the reader can see how much of the classifier each assay actually tests.
 
-**Reproducibility.** All analyses scripted (`06_Analysis/1_R/1_Rscripts/`), logged (`Logs/DECISION_LOG.tsv`) and
-version-controlled. One level of parallelism (6 workers) with BLAS pinned to one thread per worker. Figures are
-composed from a machine-readable plan (`12_Manuscript/figures_plan.tsv`) by `Scripts/compose_figures.R`.
+**Protein layer.** CPTAC-COAD protein abundances were log2-transformed, mapped from `SYMBOL|SYMBOL` identifiers to
+gene symbols, and scored with the 50 frozen sets. The comparison was restricted to the 96 tumours with both mRNA
+and protein, and agreement between the two assignments was measured as raw concordance and as the adjusted Rand
+index.
 
----
+**Phosphoproteome.** Sites quantified in at least 50% of tumours were kept (11,334 of 31,262; the threshold was
+fixed before the ecotype labels were read, and the full sensitivity ladder from 20% to 70% missingness is
+reported). Missing values were imputed by k-nearest neighbours (k=10, row maximum missingness 0.5, column maximum
+0.9, seed 20261117), sites were averaged within gene (3,414 genes), and programmes were scored as above.
+Differential phosphorylation used limma with an explicit `E2 - E1` contrast, because `topTable()` on a
+`~0 + group` design tests the group mean rather than the contrast. Cross-layer agreement was tested against 1,000
+permutations of the sample labels.
+
+**Methylation.** 450K probes were mapped to gene promoters by annotation, yielding 19,269 genes; genes were
+selected by annotation rather than by variance, so that the differential test was not circular. CIMP status was
+defined as at least three of the eight panel genes (CACNA1G, CDKN2A, CRABP1, IGF2, MLH1, NEUROG1,
+RUNX3, SOCS1) exceeding a beta of 0.30, using those present on the array. Ecotypes were compared by limma with an explicit
+contrast, and by Wilcoxon tests for global beta and CIMP status. An unsupervised methylation partition was derived
+by Ward.D2 hierarchical clustering of the top variable genes, and its agreement with the ecotype was measured by
+the adjusted Rand index.
+
+**Single-cell reference and deconvolution.** GSE132465 (63,689 cells, six lineages) was reduced to 83 marker genes,
+and bulk tumours were deconvolved by non-negative least squares against that matrix. Fractions are reported as
+descriptive context only; no spot-level ecotype label is assigned anywhere in the paper.
+
+**Spatial analysis.** Each section's spots were deconvolved by NNLS against the same single-cell signature matrix.
+Spatial autocorrelation of programme scores used Moran's I on a k=6 nearest-neighbour graph with 199 permutations
+(one-sided, `(1 + exceedances) / (1 + permutations)`). Co-localisation between programme score and cell-type
+fraction was measured by Spearman correlation within section, then summarised across sections. As a
+method-robustness check, a cell2location reference was trained on GSE132465 raw counts (2,007 genes, 10,187 cells
+sampled at most 2,000 per lineage, 250 epochs) and applied to three sections at 3,000 epochs and 1,000 spots; its
+fractions were compared with NNLS on the same genes and spots.
+
+**Kinase inference.** Kinase activity was inferred with the KSEAapp substrate prior (PhosphoSitePlus-derived;
+19,739 kinase-substrate pairs, 387 kinases). Kinases required at least five measured substrates, leaving 78
+testable (median 10 substrates), and activity effects were compared with the kinase's own protein abundance so
+that abundance-driven and activity-driven changes could be separated. Activity is inferred, never measured.
+
+**Outcomes and survival models.** Endpoints were analysed separately and never pooled across families. Disease-free
+survival (DFS in GSE14333 and GSE38832) and recurrence-free survival (RFS in GSE39582 and GSE17536) formed the
+disease-free family; overall survival (OS) and cancer-specific or disease-specific survival (CSS, DSS) formed the
+mortality family. The primary disease-free model used stage I-III tumours adjusted for age, sex and stage;
+all-stage and unadjusted models were reported as sensitivity analyses. Cox models were compared by likelihood-ratio
+tests, discrimination by Harrell's C-index, and stability by 500-resample bootstraps of the ecotype hazard ratio.
+Across cohorts, hazard ratios were combined by fixed-effect inverse-variance meta-analysis with a heterogeneity
+statistic. Models with fewer than 30 events were flagged, and a fit whose coefficient exceeded |4| or whose
+standard error exceeded 5 was reported as not estimable rather than as an effect size.
+
+**Incremental value.** In GSE39582, which carries CMS and MSI calls, nested Cox models were compared for RFS in
+stage I-III tumours (n=483, 137 events): stage, age and sex alone; adding MSI; adding CMS; and adding both. The
+ecotype term's hazard ratio and the change in C-index were recorded at each step, and the overlap between ecotype
+and CMS was summarised by Cramér's V. OS in all stages was analysed in the same nested structure as a secondary
+endpoint.
+
+**Multiple testing and grading.** Benjamini-Hochberg control was applied within each analysis family (differential
+phosphosites, differentially methylated genes, kinase activities, programme-level spatial tests) and the family is
+stated with each result. Findings were graded before writing: **E3** cross-platform convergence, **E2** association
+replicated in an independent cohort, **E1** exploratory or post hoc, **descriptive**, and **not_supported**.
+Fourteen findings (F01–F15; there is no F10) were graded and are the sole licence for claims.
+
+**Software and reproducibility.** Analyses used R 4.6.1 with GSVA 2.6.6, limma 3.68.5, edgeR, survival 3.8.12,
+SNFtool 2.3.1, nnls 1.6, mclust 6.1.3, impute 1.86.0, preprocessCore 1.74.0, pheatmap and KSEAapp 2.0; the
+single-cell and spatial work used Python 3.11.18 with scanpy 1.11.5 and cell2location 0.1.5 (pyro-ppl 1.8.6). All
+scripts, the decision log (`Logs/DECISION_LOG.tsv`), the consumed parameters (`config/pipeline_config.yaml`) and
+the seed (20261117) are under version control. Parallel work used one level of parallelism with six workers and
+BLAS pinned to one thread per worker. Two automated checks run on every figure or ledger change: a consistency
+audit over the cross-artefact claims and a citation check that every panel is cited in order.
 
 ## Results
 

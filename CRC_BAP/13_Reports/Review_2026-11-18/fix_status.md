@@ -12,7 +12,7 @@
 | R08 | P1 | **FIXED** | "without overlap" -> "substantial but incomplete separation" |
 | R09 | P1 | **REWORDED** | "equally common" -> "similar ... no formal test reported" (no test invented) |
 | R10 | P1 | **FIXED** | "Fourteen findings (F01-F15; there is no F10)" |
-| R11 | P1 | **OPEN** | Methods expansion (parameters, CV scheme, software versions) still to write |
+| R11 | P1 | **FIXED** | Methods expanded from ~330 to 1,413 words: preprocessing, SNF/consensus parameters, K rule, out-of-bag classifier, per-layer detail, outcome models, incremental design, FDR families, software versions, seeds |
 | R12 | P1 | **CODE FIXED** | Library-size panel now by TCGA project with a Wilcoxon subtitle; takes effect on re-render |
 | R13 | P1 | **CODE FIXED** | Heatmap annotation renamed "project"; takes effect on re-render |
 | R14 | P1 | **CODE FIXED** | Shared ECOTYPE_COL palette applied to 7 scripts; takes effect on re-render |
