@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Check that the manuscript cites every figure panel in strict sequential order.
+"""Check that the manuscript cites every figure panel, in an order that matches the argument.
 
-Rule (user requirement): every panel of every main and supplementary figure must be cited or interpreted in
-Results, and panels must first be cited in order — Figure 1A before 1B, ... 6E, then Supplementary Figure 1A ...
-2D. Panels may be referred back to later (that is normal prose); what must be sequential is the order in which
-each panel is FIRST cited.
+Rule (revised 2026-11-18 at the author's request): supplementary panels are no longer cited in a block after the
+main figures. Each one is cited inside the Results passage for the main figure it supports, so the rule is now:
+
+  1. every panel in figures_plan.tsv is cited at least once in Results;
+  2. main-figure panels are *first* cited in strict order (1A, 1B, ... 6E);
+  3. each supplementary panel is first cited after the main panel it supports
+     (the `supports_main` column of figures_plan.tsv, e.g. "Figure 1A-1D" -> anchor 1A);
+  4. no panel is cited that is absent from the plan.
+
+Later references back to a panel are normal prose and are not constrained.
 
 Usage: python3 Scripts/check_figure_citations.py
 """
@@ -19,7 +25,6 @@ PLAN = ROOT / "12_Manuscript" / "figures_plan.tsv"
 text = MS.read_text(encoding="utf-8")
 results = text.split("## Results", 1)[1].split("## Discussion", 1)[0]
 
-# normalise "Supplementary Figure 2C" and "Figure 1A"
 pattern = re.compile(r"(Supplementary\s+)?Figure\s+(\d+)([A-Z])")
 cites = []
 for m in pattern.finditer(results):
@@ -27,11 +32,16 @@ for m in pattern.finditer(results):
     cites.append((kind, int(m.group(2)), m.group(3)))
 
 expected = []
+anchors = {}
 for line in PLAN.read_text(encoding="utf-8").splitlines()[1:]:
-    fig, panel, *_ = line.split("\t")
+    fig, panel, source, desc, supports, supports_main = (line.split("\t") + [""] * 6)[:6]
     kind = "S" if fig.lower().startswith("supplementary") else "M"
     num = int(re.findall(r"\d+", fig)[0])
     expected.append((kind, num, panel))
+    if kind == "S" and supports_main.strip() not in ("", "--"):
+        m = re.search(r"Figure\s+(\d+)([A-Z])", supports_main)
+        if m:
+            anchors[(kind, num, panel)] = ("M", int(m.group(1)), m.group(2))
 
 print(f"panels expected in plan: {len(expected)}")
 print(f"citations found in Results: {len(cites)}")
@@ -50,23 +60,32 @@ extra = [c for c in cites if c not in expected]
 if extra:
     problems.append("CITED BUT NOT IN PLAN: " + ", ".join(f"{k}{n}{p}" for k, n, p in extra))
 
-# order: main figures 1..N with panels A.., then supplementary 1..N — checked on FIRST citations only
-def sort_key(c):
-    kind, num, panel = c
-    return (0 if kind == "M" else 1, num, panel)
+first = {}
+for i, c in enumerate(cites):
+    first.setdefault(c, i)
 
-first_seen = []
-for c in cites:
-    if c not in first_seen:
-        first_seen.append(c)
-if first_seen != sorted(first_seen, key=sort_key):
-    problems.append("OUT OF ORDER (first citations): " + " -> ".join(f"{k}{n}{p}" for k, n, p in first_seen))
+mains = [(k, n, p) for k, n, p in expected if k == "M"]
+main_order = [first[c] for c in mains if c in first]
+if main_order != sorted(main_order):
+    problems.append("MAIN PANELS OUT OF ORDER: " + " ".join(f"{k}{n}{p}" for k, n, p in mains))
+
+for supp in [c for c in expected if c[0] == "S"]:
+    if supp not in first:
+        continue
+    anchor = anchors.get(supp)
+    if anchor is None:
+        problems.append(f"{supp[0]}{supp[1]}{supp[2]}: no parsable supports_main anchor")
+    elif anchor not in first:
+        problems.append(f"{supp[0]}{supp[1]}{supp[2]}: anchor {anchor[0]}{anchor[1]}{anchor[2]} never cited")
+    elif first[supp] < first[anchor]:
+        problems.append(
+            f"{supp[0]}{supp[1]}{supp[2]} cited before the main panel it supports "
+            f"({anchor[0]}{anchor[1]}{anchor[2]})")
 
 if problems:
-    print("\nFAIL")
-    for p in problems:
-        print("  -", p)
+    print("\n".join(problems))
     sys.exit(1)
 
-print("\nPASS: every panel cited, and first citations follow strict figure/panel order")
-print("order:", " ".join(f"{k}{n}{p}" for k, n, p in first_seen))
+print("PASS: every panel cited; main panels first-cited in order; every supplementary panel cited after the")
+print("      main panel it supports (supports_main column).")
+print("first-citation order:", " ".join(f"{k}{n}{p}" for k, n, p in sorted(first, key=first.get)))

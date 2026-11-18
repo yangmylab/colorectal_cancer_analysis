@@ -90,7 +90,7 @@ composed from a machine-readable plan (`12_Manuscript/figures_plan.tsv`) by `Scr
 
 ## Results
 
-### 1. A stable two-ecotype axis in discovery (Figure 1)
+### A stable two-ecotype axis in discovery (Figure 1)
 
 Fifty Hallmark programmes were scored in 624 TCGA-COAD/READ tumours and clustered after similarity network
 fusion. **Figure 1A** shows the two programme blocks that define the partition: E1 is characterised by Hedgehog,
@@ -104,7 +104,9 @@ whose marker genes are shown in **Figure 1E**, and deconvolved the bulk tumours 
 stromal 0.267, myeloid 0.123, B 0.044, T 0.015, mast 0.006 (**Figure 1F**). This is descriptive context
 (F05), and it matters only because it shows the axis is not a crude epithelial-versus-stroma ratio.
 
-### 2. The axis reproduces at the protein and phosphoproteome level (Figure 2)
+Quality control supports that reading. **Supplementary Figure 1A** shows the PCA of all 624 quantified tumours coloured and shaped by TCGA project: COAD and READ intermix across the principal plane, and the only grouping available is anatomical rather than technical, because the discovery data come from one platform and one processing pipeline. **Supplementary Figure 1B** quantifies that structure component by component — the project term accounts for at most 2.8% of the variance of any of the first ten components (0.5% of PC1) — which is why no correction was applied and why the analyses use the quantile-normalised matrix as it stands. Library sizes are comparable between projects (**Supplementary Figure 1C**), and the top 500 variable features that drive the embedding are shown in **Supplementary Figure 1D**, so the separation in Figure 1C cannot be attributed to sequencing depth or to a handful of features.
+
+### The axis reproduces at the protein and phosphoproteome level (Figure 2)
 
 In CPTAC-COAD the frozen classifier was applied to Hallmark scores computed from protein abundance. **Figure 2A**
 orders tumours by protein-assigned ecotype and shows the same E1/E2 programme blocks as the transcriptome.
@@ -119,7 +121,9 @@ proteins with many measured sites do not dominate). Concordance across all three
 phospho–protein correlation (median r=0.22) below protein–mRNA (0.42), as expected for a signalling layer, while
 the assignment itself agrees with the protein call in 87.5% of tumours (**Figure 2F**; ARI 0.558).
 
-### 3. The axis does not reproduce in methylation, and does not transfer to spots (Figure 3)
+The protein assignment is underpowered for prognosis but points the same way. **Supplementary Figure 2C** gives survival by protein-assigned ecotype in CPTAC-COAD, the cohort behind Figure 2A–2C: with 8 deaths it is uninformative (HR 2.44, p=0.286) and serves only as a direction check on the protein assignment, not as a prognostic test.
+
+### The axis does not reproduce in methylation, and does not transfer to spots (Figure 3)
 
 We tested the same partition against promoter methylation, selecting genes by annotation (19,269 genes) rather than
 by variance, so that the test was not circular. CIMP-high status was similar in both ecotypes (74.5% E1 versus
@@ -137,7 +141,9 @@ every spot fell on one side of the decision boundary and spot scores sat about 5
 A 55 µm spot has no compartment structure comparable to a bulk tumour, so the bulk classifier is simply the wrong
 instrument (F08).
 
-### 4. What the phosphoproteome and the sections do say about mechanism (Figure 4)
+A negative control closes the alternative reading. **Supplementary Figure 2D** shows that survival by methylation cluster does not differ (HR 0.74, p=0.398), so the null methylation result is not hiding a methylation cluster with better outcome.
+
+### What the phosphoproteome and the sections do say about mechanism (Figure 4)
 
 Between ecotypes, 3,095 phosphosites reached FDR<0.05, of which 538 exceeded |log2FC|>0.5 (**Figure 4A**). Because
 cross-layer agreement could in principle arise by chance, we compared the observed ARI of 0.558 against 1,000 label
@@ -161,7 +167,7 @@ pattern of the NNLS fractions used for the co-localisation statistic (matrix r 0
 0.74–0.99) but not their absolute scale (epithelial fraction 0.39 by cell2location vs 0.97 by NNLS), so the
 co-localisation is directionally supported while its magnitude remains method- and gene-panel-dependent (F13).
 
-### 5. Disease-free survival replicates; cancer-specific death does not (Figure 5)
+### Disease-free survival replicates; cancer-specific death does not (Figure 5)
 
 The one outcome association that replicates concerns recurrence. In GSE14333 (226 tumours, 50 disease-free events,
 stage I–III) E2 tumours recurred sooner (**Figure 5A**; adjusted HR 2.37, LRT p=0.0043), and the effect was stable
@@ -179,7 +185,7 @@ uninformative (HR 0.92, dashed with 9 events), while cancer-specific death shows
 0.46–2.17, p=0.997). The corresponding survival curves are superimposable (**Figure 5F**). The axis predicts
 recurrence, not death (F15).
 
-### 6. No overall-survival association, and no incremental value over CMS (Figure 6)
+### No overall-survival association, and no incremental value over CMS (Figure 6)
 
 In discovery (476 tumours, 79 events, adjusted for age, sex, stage and sidedness) the survival curves by ecotype
 overlap (**Figure 6A**) and adding the ecotype to the model moved the C-index from 0.763 to 0.772 with LRT p=0.107
@@ -196,34 +202,7 @@ overlapping classifications (Cramér's V=0.52), with E2 enriched in CMS4 and dep
 association is therefore replicated and directionally consistent, but not demonstrable incremental over the
 published taxonomy (F14).
 
-### 7. Evidence supporting Figures 1–6 (Supplementary Figures 1 and 2)
-
-Every supplementary panel underpins a specific main-figure claim. They are cited here in order, after the main
-figures, and each is explicitly tied to the panel(s) it supports.
-
-**Supplementary Figure 1A** shows the PCA of all 624 quantified tumours, with points coloured and shaped by TCGA
-project. COAD and READ intermix across the principal plane, and the only grouping available here is anatomical
-(colon versus rectum) rather than technical: the discovery data come from one platform and one processing pipeline,
-so there is no batch term to remove. **Supplementary Figure 1B** quantifies that group structure component by
-component — the project term accounts for at most 2.8% of the variance of any of the first ten components (0.5% of
-PC1) — which is why no correction was applied and why the downstream analyses use the quantile-normalised matrix
-as it stands. Library sizes were comparable between groups (**Supplementary Figure 1C**) and the top 500 variable
-features that drive the embedding are shown in **Supplementary Figure 1D**, so the separation in Figure 1C cannot
-be attributed to uneven sequencing depth or to a handful of features.
-
-**Supplementary Figure 2A** (five-year calibration) and **Supplementary Figure 2B** (decision curve) characterise
-the discovery overall-survival model of Figure 6A and the covariate comparison of Figure 6D. Because that model
-carries no significant ecotype term, no net-benefit advantage is interpreted: both panels are reported for
-completeness, not as a claim of clinical utility.
-
-**Supplementary Figure 2C** gives survival by protein-assigned ecotype in CPTAC-COAD, the cohort behind
-Figure 2A–2C. With 8 deaths it is uninformative (HR 2.44, p=0.286) and serves only as a direction check on the
-protein assignment; it cannot test prognosis.
-
-**Supplementary Figure 2D** is the methylation counterpart of Figure 3A–3D: survival by methylation cluster does
-not differ (HR 0.74, p=0.398). That null is what would be expected if the ecotype carried no methylation signal,
-and it rules out the possibility that the negative methylation result reflects a methylation cluster with better
-outcome.
+Two diagnostics support reading this null as a null rather than a mis-specified model. **Supplementary Figure 2A** (five-year calibration) and **Supplementary Figure 2B** (decision curve) characterise the discovery overall-survival model of Figure 6A and the covariate comparison of Figure 6D; because that model carries no significant ecotype term, no net-benefit advantage is interpreted and both panels are reported for completeness, not as a claim of clinical utility.
 
 ---
 
