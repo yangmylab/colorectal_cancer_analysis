@@ -4,42 +4,42 @@ Figure 1	B	plot_7	uniform	3	8.00 x 7.00	2.26 x 1.98	0.282	3.1	3.72	7	FALSE	180 x
 Figure 1	C	plot_8	uniform	3	7.00 x 5.00	1.98 x 1.41	0.282	3.1	3.72	7	FALSE	180 x 134	TRUE
 Figure 1	D	plot_9	uniform	3	6.00 x 4.00	1.69 x 1.13	0.282	3.1	3.72	7	FALSE	180 x 134	TRUE
 Figure 1	E	plot_1	uniform	3	7.00 x 10.00	1.98 x 2.82	0.282	3.1	3.72	7	FALSE	180 x 134	TRUE
-Figure 1	F	plot_13	uniform	3	7.00 x 4.00	1.98 x 1.13	0.282	3.1	3.72	7	FALSE	180 x 134	TRUE
-Figure 2	A	plot_16	uniform	3	9.00 x 7.00	2.65 x 2.06	0.294	3.24	3.89	7	FALSE	180 x 154	TRUE
-Figure 2	B	plot_17	uniform	3	8.00 x 9.00	2.36 x 2.65	0.294	3.24	3.89	7	FALSE	180 x 154	TRUE
-Figure 2	C	plot_19	uniform	3	6.00 x 5.00	1.77 x 1.47	0.294	3.24	3.89	7	FALSE	180 x 154	TRUE
-Figure 2	D	plot_28	uniform	3	9.00 x 7.00	2.65 x 2.06	0.294	3.24	3.89	7	FALSE	180 x 154	TRUE
-Figure 2	E	plot_29	uniform	3	8.00 x 10.00	2.36 x 2.94	0.294	3.24	3.89	7	FALSE	180 x 154	TRUE
-Figure 2	F	plot_31	uniform	3	6.00 x 5.00	1.77 x 1.47	0.294	3.24	3.89	7	FALSE	180 x 154	TRUE
-Figure 3	A	plot_20	uniform	3	6.00 x 5.00	1.50 x 1.25	0.251	2.76	3.31	7	FALSE	180 x 147	TRUE
-Figure 3	B	plot_21	uniform	3	6.00 x 5.00	1.50 x 1.25	0.251	2.76	3.31	7	FALSE	180 x 147	TRUE
-Figure 3	C	plot_22	uniform	3	9.00 x 8.00	2.26 x 2.01	0.251	2.76	3.31	7	FALSE	180 x 147	TRUE
-Figure 3	D	plot_24	uniform	3	6.00 x 5.00	1.50 x 1.25	0.251	2.76	3.31	7	FALSE	180 x 147	TRUE
-Figure 3	E	plot_25	uniform	3	10.00 x 7.00	2.51 x 1.76	0.251	2.76	3.31	7	FALSE	180 x 147	TRUE
-Figure 3	F	plot_26	uniform	3	9.00 x 5.00	2.26 x 1.25	0.251	2.76	3.31	7	FALSE	180 x 147	TRUE
-Figure 3	G	plot_27	uniform	3	8.00 x 5.00	2.01 x 1.25	0.251	2.76	3.31	7	FALSE	180 x 147	TRUE
-Figure 4	A	plot_30	uniform	3	8.00 x 6.00	2.26 x 1.69	0.282	3.1	3.72	7	FALSE	180 x 127	TRUE
-Figure 4	B	plot_32	uniform	3	6.00 x 4.00	1.69 x 1.13	0.282	3.1	3.72	7	FALSE	180 x 127	TRUE
-Figure 4	C	plot_37	uniform	3	8.00 x 6.00	2.26 x 1.69	0.282	3.1	3.72	7	FALSE	180 x 127	TRUE
-Figure 4	D	plot_38	uniform	3	8.00 x 6.00	2.26 x 1.69	0.282	3.1	3.72	7	FALSE	180 x 127	TRUE
-Figure 4	E	plot_39	uniform	3	8.00 x 10.00	2.26 x 2.82	0.282	3.1	3.72	7	FALSE	180 x 127	TRUE
-Figure 4	F	plot_40	uniform	3	8.00 x 8.00	2.26 x 2.26	0.282	3.1	3.72	7	FALSE	180 x 127	TRUE
-Figure 5	A	plot_33	uniform	2	7.00 x 5.00	3.03 x 2.17	0.433	4.76	5.72	7	FALSE	180 x 185	TRUE
-Figure 5	B	plot_34	uniform	2	8.00 x 4.50	3.46 x 1.95	0.433	4.76	5.72	7	FALSE	180 x 185	TRUE
-Figure 5	C	plot_35	uniform	2	8.00 x 4.50	3.46 x 1.95	0.433	4.76	5.72	7	FALSE	180 x 185	TRUE
-Figure 5	D	plot_36	uniform	2	7.00 x 5.00	3.03 x 2.17	0.433	4.76	5.72	7	FALSE	180 x 185	TRUE
-Figure 5	E	plot_43	uniform	2	8.00 x 3.79	3.46 x 1.64	0.433	4.76	5.72	7	FALSE	180 x 185	TRUE
-Figure 5	F	plot_44	uniform	2	7.00 x 5.00	3.03 x 2.17	0.433	4.76	5.72	7	FALSE	180 x 185	TRUE
-Figure 6	A	plot_10	uniform	2	7.00 x 5.00	3.03 x 2.17	0.433	4.76	5.72	7	FALSE	180 x 180	TRUE
-Figure 6	B	plot_14	uniform	2	6.00 x 4.00	2.60 x 1.73	0.433	4.76	5.72	7	FALSE	180 x 180	TRUE
-Figure 6	C	plot_15	uniform	2	7.00 x 4.00	3.03 x 1.73	0.433	4.76	5.72	7	FALSE	180 x 180	TRUE
-Figure 6	D	plot_41	uniform	2	9.00 x 5.00	3.90 x 2.17	0.433	4.76	5.72	7	FALSE	180 x 180	TRUE
-Figure 6	E	plot_42	uniform	2	7.00 x 4.50	3.03 x 1.95	0.433	4.76	5.72	7	FALSE	180 x 180	TRUE
+Figure 1	F	plot_13	uniform	3	3.39 x 1.93	0.96 x 0.54	0.282	3.1	3.72	7	FALSE	180 x 134	TRUE
+Figure 2	A	plot_16	uniform	3	3.39 x 2.64	2.26 x 1.76	0.666	7.33	8.79	7	TRUE	180 x 149	TRUE
+Figure 2	B	plot_17	uniform	3	3.39 x 3.82	2.26 x 2.54	0.666	7.33	8.79	7	TRUE	180 x 149	TRUE
+Figure 2	C	plot_19	uniform	3	3.39 x 2.82	2.26 x 1.88	0.666	7.33	8.79	7	TRUE	180 x 149	TRUE
+Figure 2	D	plot_28	uniform	3	3.39 x 2.64	2.26 x 1.76	0.666	7.33	8.79	7	TRUE	180 x 149	TRUE
+Figure 2	E	plot_29	uniform	3	3.39 x 4.25	2.26 x 2.83	0.666	7.33	8.79	7	TRUE	180 x 149	TRUE
+Figure 2	F	plot_31	uniform	3	3.39 x 2.82	2.26 x 1.88	0.666	7.33	8.79	7	TRUE	180 x 149	TRUE
+Figure 3	A	plot_20	uniform	2	3.39 x 2.82	1.24 x 1.03	0.365	4.01	4.81	7	FALSE	180 x 193	TRUE
+Figure 3	B	plot_21	uniform	2	3.39 x 2.82	1.24 x 1.03	0.365	4.01	4.81	7	FALSE	180 x 193	TRUE
+Figure 3	C	plot_22	uniform	2	3.39 x 3.01	1.24 x 1.10	0.365	4.01	4.81	7	FALSE	180 x 193	TRUE
+Figure 3	D	plot_24	uniform	2	3.39 x 2.82	1.24 x 1.03	0.365	4.01	4.81	7	FALSE	180 x 193	TRUE
+Figure 3	E	plot_25	uniform	2	10.00 x 7.00	3.65 x 2.55	0.365	4.01	4.81	7	FALSE	180 x 193	TRUE
+Figure 3	F	plot_26	uniform	2	9.00 x 5.00	3.28 x 1.82	0.365	4.01	4.81	7	FALSE	180 x 193	TRUE
+Figure 3	G	plot_27	uniform	2	8.00 x 5.00	2.92 x 1.82	0.365	4.01	4.81	7	FALSE	180 x 193	TRUE
+Figure 4	A	plot_30	uniform	3	3.39 x 2.54	2.26 x 1.69	0.666	7.33	8.79	7	TRUE	180 x 127	TRUE
+Figure 4	B	plot_32	uniform	3	3.39 x 2.26	2.26 x 1.51	0.666	7.33	8.79	7	TRUE	180 x 127	TRUE
+Figure 4	C	plot_37	uniform	3	3.39 x 2.54	2.26 x 1.69	0.666	7.33	8.79	7	TRUE	180 x 127	TRUE
+Figure 4	D	plot_38	uniform	3	3.39 x 2.54	2.26 x 1.69	0.666	7.33	8.79	7	TRUE	180 x 127	TRUE
+Figure 4	E	plot_39	uniform	3	3.39 x 4.25	2.26 x 2.83	0.666	7.33	8.79	7	TRUE	180 x 127	TRUE
+Figure 4	F	plot_40	uniform	3	3.39 x 3.39	2.26 x 2.26	0.666	7.33	8.79	7	TRUE	180 x 127	TRUE
+Figure 5	A	plot_33	uniform	2	3.39 x 2.42	3.46 x 2.47	1.022	11.25	13.49	7	TRUE	180 x 208	TRUE
+Figure 5	B	plot_34	uniform	2	3.39 x 1.90	3.46 x 1.95	1.022	11.25	13.49	7	TRUE	180 x 208	TRUE
+Figure 5	C	plot_35	uniform	2	3.39 x 1.90	3.46 x 1.95	1.022	11.25	13.49	7	TRUE	180 x 208	TRUE
+Figure 5	D	plot_36	uniform	2	3.39 x 2.42	3.46 x 2.47	1.022	11.25	13.49	7	TRUE	180 x 208	TRUE
+Figure 5	E	plot_43	uniform	2	3.39 x 1.61	3.46 x 1.65	1.022	11.25	13.49	7	TRUE	180 x 208	TRUE
+Figure 5	F	plot_44	uniform	2	3.39 x 2.42	3.46 x 2.47	1.022	11.25	13.49	7	TRUE	180 x 208	TRUE
+Figure 6	A	plot_10	uniform	2	7.00 x 5.00	4.67 x 3.33	0.667	7.34	8.8	7	TRUE	180 x 174	TRUE
+Figure 6	B	plot_14	uniform	2	3.39 x 2.26	2.26 x 1.51	0.667	7.34	8.8	7	TRUE	180 x 174	TRUE
+Figure 6	C	plot_15	uniform	2	3.39 x 1.93	2.26 x 1.29	0.667	7.34	8.8	7	TRUE	180 x 174	TRUE
+Figure 6	D	plot_41	uniform	2	3.39 x 1.89	2.26 x 1.26	0.667	7.34	8.8	7	TRUE	180 x 174	TRUE
+Figure 6	E	plot_42	uniform	2	3.39 x 2.18	2.26 x 1.45	0.667	7.34	8.8	7	TRUE	180 x 174	TRUE
 Supplementary Figure 1	A	plot_2	uniform	2	7.00 x 5.00	3.23 x 2.31	0.462	5.08	6.1	7	FALSE	180 x 153	TRUE
 Supplementary Figure 1	B	plot_3	uniform	2	7.00 x 5.00	3.23 x 2.31	0.462	5.08	6.1	7	FALSE	180 x 153	TRUE
 Supplementary Figure 1	C	plot_4	uniform	2	7.00 x 5.00	3.23 x 2.31	0.462	5.08	6.1	7	FALSE	180 x 153	TRUE
 Supplementary Figure 1	D	plot_5	uniform	2	8.00 x 7.00	3.70 x 3.23	0.462	5.08	6.1	7	FALSE	180 x 153	TRUE
-Supplementary Figure 2	A	plot_11	uniform	2	6.00 x 5.00	2.97 x 2.47	0.495	5.44	6.53	7	FALSE	180 x 138	TRUE
-Supplementary Figure 2	B	plot_12	uniform	2	6.00 x 5.00	2.97 x 2.47	0.495	5.44	6.53	7	FALSE	180 x 138	TRUE
-Supplementary Figure 2	C	plot_18	uniform	2	7.00 x 5.00	3.46 x 2.47	0.495	5.44	6.53	7	FALSE	180 x 138	TRUE
-Supplementary Figure 2	D	plot_23	uniform	2	7.00 x 5.00	3.46 x 2.47	0.495	5.44	6.53	7	FALSE	180 x 138	TRUE
+Supplementary Figure 2	A	plot_11	uniform	2	6.00 x 5.00	3.46 x 2.89	0.577	6.35	7.62	7	FALSE	180 x 121	TRUE
+Supplementary Figure 2	B	plot_12	uniform	2	6.00 x 5.00	3.46 x 2.89	0.577	6.35	7.62	7	FALSE	180 x 121	TRUE
+Supplementary Figure 2	C	plot_18	uniform	2	3.39 x 2.42	1.96 x 1.40	0.577	6.35	7.62	7	FALSE	180 x 121	TRUE
+Supplementary Figure 2	D	plot_23	uniform	2	3.39 x 2.42	1.96 x 1.40	0.577	6.35	7.62	7	FALSE	180 x 121	TRUE

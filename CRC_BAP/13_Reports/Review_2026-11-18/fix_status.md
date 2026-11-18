@@ -4,7 +4,7 @@
 |---|---|---|---|
 | R01 | P0 | **OPEN** | No bibliography yet; needs a verified reference list (~40 entries) |
 | R02 | P0 | **DRAFTED** | Statements section added; Funding, Author contributions, ethics approvals and code DOI are `[TODO]` |
-| R03 | P0 | **IN PROGRESS** | Panel-size control implemented and tested; re-render of the panel set still to run |
+| R03 | P0 | **PARTIAL** | Rendered at CRC_PANEL_MAX_W=3.4: Figures 2/4/5/6 now 7.33/7.33/11.25/7.34 pt. Still below floor: Fig 1 3.10 (discovery chain not re-run, label risk), Fig 3 4.01 (20_spatial_analysis aborted on a curl download), S1 5.08, S2 6.35 |
 | R04 | P0 | **OPEN** | Group sizes and per-model n still missing |
 | R05 | P0 | **OPEN** | Legends still carry no n/test/interval definition |
 | R06 | P1 | **FIXED** | Title and Abstract Conclusions now say "associated with" and "no detectable incremental value" |
