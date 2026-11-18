@@ -53,6 +53,34 @@ association replicated in an independent cohort, **E1** exploratory or post hoc,
 
 ---
 
+## Methods
+
+**Data.** TCGA-COAD/READ RNA-seq (624 tumours; GDC Data Release 46.0). External cohorts: GSE39582 (585), GSE17536
+(177), GSE14333 (290, DFS only), GSE38832 (122, CEL files). CPTAC-COAD proteome and phosphoproteome (PDC000116, via
+the cBioPortal datahub). TCGA 450K methylation (393 tumours). Visium: GSE283052 (12 sections) and GSE267401 (4).
+Single-cell reference: GSE132465.
+
+**Scoring.** Fifty Hallmark sets; discovery used GSVA, external layers the mean of within-set gene z-scores, with
+phosphosites averaged per gene. Sets are frozen in `Environment/hallmark_frozen.gmt` so scoring is offline and
+reproducible.
+
+**Classifier.** Nearest centroid on 50 programme scores, computed in discovery and frozen. Applied to every external
+layer without refitting; recoverable features are reported for each layer.
+
+**Statistics.** Cox models with likelihood-ratio tests; C-index; fixed-effect inverse-variance meta-analysis;
+bootstrap (500 resamples) for stability; permutation nulls (1,000 for cross-layer ARI; 199 for spatial
+autocorrelation). Endpoints analysed separately and never pooled across families (OS/CSS/DSS versus DFS/RFS).
+Complete-case analysis for covariates, with counts reported.
+
+**Grading.** E3 cross-platform convergence; E2 replicated association; E1 exploratory/post hoc; descriptive;
+not_supported. Fifteen findings (F01–F15) were graded and are the sole licence for claims.
+
+**Reproducibility.** All analyses scripted (`06_Analysis/1_R/1_Rscripts/`), logged (`Logs/DECISION_LOG.tsv`) and
+version-controlled. One level of parallelism (6 workers) with BLAS pinned to one thread per worker. Figures are
+composed from a machine-readable plan (`12_Manuscript/figures_plan.tsv`) by `Scripts/compose_figures.R`.
+
+---
+
 ## Results
 
 ### 1. A stable two-ecotype axis in discovery (Figure 1)
@@ -226,34 +254,6 @@ co-localisation statistic is directionally reproducible but its magnitude is met
 
 **What we do not claim.** No new prognostic classifier; no clinically actionable subtype; no causal role for any
 programme; no refinement beyond CMS; no measured kinase activity; no spatial ecotype assignment.
-
----
-
-## Methods
-
-**Data.** TCGA-COAD/READ RNA-seq (624 tumours; GDC Data Release 46.0). External cohorts: GSE39582 (585), GSE17536
-(177), GSE14333 (290, DFS only), GSE38832 (122, CEL files). CPTAC-COAD proteome and phosphoproteome (PDC000116, via
-the cBioPortal datahub). TCGA 450K methylation (393 tumours). Visium: GSE283052 (12 sections) and GSE267401 (4).
-Single-cell reference: GSE132465.
-
-**Scoring.** Fifty Hallmark sets; discovery used GSVA, external layers the mean of within-set gene z-scores, with
-phosphosites averaged per gene. Sets are frozen in `Environment/hallmark_frozen.gmt` so scoring is offline and
-reproducible.
-
-**Classifier.** Nearest centroid on 50 programme scores, computed in discovery and frozen. Applied to every external
-layer without refitting; recoverable features are reported for each layer.
-
-**Statistics.** Cox models with likelihood-ratio tests; C-index; fixed-effect inverse-variance meta-analysis;
-bootstrap (500 resamples) for stability; permutation nulls (1,000 for cross-layer ARI; 199 for spatial
-autocorrelation). Endpoints analysed separately and never pooled across families (OS/CSS/DSS versus DFS/RFS).
-Complete-case analysis for covariates, with counts reported.
-
-**Grading.** E3 cross-platform convergence; E2 replicated association; E1 exploratory/post hoc; descriptive;
-not_supported. Fifteen findings (F01–F15) were graded and are the sole licence for claims.
-
-**Reproducibility.** All analyses scripted (`06_Analysis/1_R/1_Rscripts/`), logged (`Logs/DECISION_LOG.tsv`) and
-version-controlled. One level of parallelism (6 workers) with BLAS pinned to one thread per worker. Figures are
-composed from a machine-readable plan (`12_Manuscript/figures_plan.tsv`) by `Scripts/compose_figures.R`.
 
 ---
 
